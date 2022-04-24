@@ -1,7 +1,7 @@
 import './Canvas.css'
 
 
-const Canvas = () => { //baghcha obj
+const Canvas = ({handleClick,highlightPaths,highlightNodes}) => { //baghchal obj
 
     let nodes = Array.from(Array(25).keys());
     let paths = ['0-1', '1-2', '2-3', '3-4',
@@ -17,24 +17,38 @@ const Canvas = () => { //baghcha obj
                  '4-9', '9-14', '14-19', '19-24',
 
                  '0-6', '6-12', '12-18', '18-24', //diagonal paths (main diagonal)
-                 '4-8', '8-12', '12-16', '16-20', //
+                 '4-8', '8-12', '12-16', '16-20', 
 
                  '2-8','8-14','14-18','18-22',
                  '2-6','6-10','10-16','16-22'
                 ]
-
+    
     return ( 
         
         <div className="canvas-container">
             {
                 nodes.map(node => {
-                                return (<div className = {`Node Node-${String(node)}`} key = {node}></div>)
+                            let classname = `Node Node-${String(node)}`;
+                            if(highlightNodes.includes(node)){
+                                classname = `Node Node-${String(node)} highlight-safe`
+                            }
+                                return (
+
+                                    
+                                    <div className = {classname} key = {node} onClick = {()=>{handleClick(node)}}></div>
+                                    
+                                )
                             }) 
 
             }
             {      
+
                 paths.map(path => {
-                                return (<div className = {`Path Path-${String(path)}`} key = {paths.indexOf(path)}></div>)
+                                let classname = `Path Path-${String(path)}`;
+                                if(highlightPaths.includes(path)){
+                                    classname = `${classname} highlight-safe`;
+                                }
+                                return (<div className = {classname} key = {paths.indexOf(path)}></div>)
                             }) 
             }
                             
