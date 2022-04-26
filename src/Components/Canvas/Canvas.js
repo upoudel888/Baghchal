@@ -48,7 +48,7 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes}) => { //baghchal obj
                                 if(highlightPaths.includes(path)){
                                     classname = `${classname} highlight-safe`;
                                 }
-                                return (<div className = {classname} key = {paths.indexOf(path)}></div>)
+                                return (<div className = {classname} key = {paths.indexOf(path)} ></div>)
                             }) 
             }
                             

@@ -3,3 +3,8 @@
   padding: 0px;
   box-sizing: border-box;
 }
+
+.App{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}

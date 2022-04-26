@@ -26,7 +26,7 @@ class Baghchal{
             trapStatus : [1,1,1,1]   //1 means not trapped  and 0 means trapped
         };
         this.goats = {
-            available: Array.from(Array(25).keys()),      // 24 goats in total
+            available: Array.from(Array(20).keys()),      // 24 goats in total
             onBoard  : [],
             eaten    : []                                 // 0 goats eaten/captured at the beginning
         };
@@ -76,40 +76,56 @@ class Baghchal{
         return possibleNodes;
     }
 
+    getBoardStatus(){
+        return [this.tigers,this.goats,this.turn];
+    }
+
     startGame(){
 
         this.parent = document.querySelector(".canvas-container");
 
         //initializing 4 tigers on four corners of the board
         let elem = document.createElement('div');
-        elem.textContent = 'T';
         elem.classList.add('tiger','tiger-0');
+        elem.setAttribute('role','img');
+        elem.setAttribute('aria-label','Tiger');
+        
         this.parent.appendChild(elem);
-        document.querySelector('.Node-0').style.zIndex = 2; //onClick is on Nodes only not on tigers
-        document.querySelector('.Node-0').style.opacity = 0; //onClick is on Nodes only not on tigers
         
         elem = document.createElement('div');
-        elem.textContent = 'T';
         elem.classList.add('tiger','tiger-4');
+        elem.setAttribute('role','img');
+        elem.setAttribute('aria-label','Tiger');
         this.parent.appendChild(elem);
-        document.querySelector('.Node-4').style.zIndex = 2;
-        document.querySelector('.Node-4').style.opacity = 0;
         
         
         elem = document.createElement('div');
-        elem.textContent = 'T';
         elem.classList.add('tiger','tiger-20');
+        elem.setAttribute('role','img');
+        elem.setAttribute('aria-label','Tiger');
         this.parent.appendChild(elem);
-        document.querySelector('.Node-20').style.zIndex = 2;
-        document.querySelector('.Node-20').style.opacity = 0;
         
         
         elem = document.createElement('div');
-        elem.textContent = 'T';
         elem.classList.add('tiger','tiger-24');
+        elem.setAttribute('role','img');
+        elem.setAttribute('aria-label','Tiger');
         this.parent.appendChild(elem);
-        document.querySelector('.Node-24').style.zIndex = 2;
-        document.querySelector('.Node-24').style.opacity = 0;
+        
+        //onClick doesn't tigger from tiger or goat div so bringing forth Node
+        setTimeout(()=>{
+            document.querySelector('.Node-0').style.zIndex = 2;  
+            document.querySelector('.Node-0').style.opacity = 0; 
+            
+            document.querySelector('.Node-4').style.opacity = 0;
+            document.querySelector('.Node-4').style.zIndex = 2;
+
+            document.querySelector('.Node-20').style.opacity = 0;
+            document.querySelector('.Node-20').style.zIndex = 2;
+
+            document.querySelector('.Node-24').style.opacity = 0;
+            document.querySelector('.Node-24').style.zIndex = 2;
+        },200);
 
         return this.highlightNodes();   
     }
@@ -170,25 +186,30 @@ class Baghchal{
                             let goatPos = point;
 
                             //helper function
-                            const updatePathWithJumps = (possibleJumps)=>{      
+                            const updatePathWithJumps = (possibleJumps)=>{ 
+                                console.log('from', possibleJumps)     
                                 for(let i in possibleJumps){
                                     let point1 = possibleJumps[i];
                                     
                                     if(pathNotExists(pos,point1)) continue;
 
+
                                     if(isInBoard(point1)){
                                         // if(pathNotExists(goatPos,point1)) continue;
                                         //if there's empty pos then the tiger can jump to capture
                                         if(this.board[Math.floor(point1/5)][point1%5] ===null){
+
+                                            if(pathNotExists(goatPos,point1)) continue;
+
                                             possibleNodes.push(point1);
-                                            possibleNodes.push(goatPos);
+                                            // possibleNodes.push(goatPos);
                                             //path from pos to goatPos
                                             (pos<goatPos)? possiblePaths.push(`${pos}-${goatPos}`) : possiblePaths.push(`${goatPos}-${pos}`);
                                             //path from goatPos to point1
                                             (goatPos<point1)? possiblePaths.push(`${goatPos}-${point1}`) : possiblePaths.push(`${point1}-${goatPos}`);
         
                                             //show that the goat in middle is in danger
-                                            document.querySelector(`.goat-${goatPos}`).classList.add('highlight-danger');
+                                            document.querySelector(`.Node-${goatPos}`).classList.add('highlight-danger');
                                         }
                                     }
                                 }
@@ -232,32 +253,72 @@ class Baghchal{
         }
         this.prevSelection = pos;
         this.prevSuggestions = possibleNodes;
-        console.log(this.prevSuggestions);
         return [possiblePaths,possibleNodes];
     }
 
 
     updateWithGoat(pos){
-        //if user presses elsewhere from where he was suggested
-        if(!this.prevSuggestions.includes(pos)) return this.prevSuggestions;
+        //if goats are available for insertion in Nodes simply put them
+        //else if there are goats on board then move them       
+           
+        if(this.hasAvailableGoats()){
+            //if user presses elsewhere from where he was suggested
+            if(!this.prevSuggestions.includes(pos)) return this.prevSuggestions;
+    
+            //putting goat on the board
+            let elem = document.createElement('div');
+            elem.classList.add('goat',`goat-${pos}`);
+            elem.style.marginTop = `${Math.floor(pos/5)*8}rem`;
+            elem.style.marginLeft = `${(pos%5)*8}rem`;
+            elem.style.zIndex = 1;
+            this.parent.appendChild(elem);
+    
+            //updating this.board
+            this.board[Math.floor(pos/5)][Math.floor(pos%5)] = 1;
+    
+            //updating this.goats
+            this.goats.onBoard.push(this.goats.available.pop());
+    
+            //bringing the node forward so the click gets detected      
+            document.querySelector(`.Node-${pos}`).style.zIndex =2; 
+            document.querySelector(`.Node-${pos}`).style.opacity =0; 
 
-        //putting goat on the board
-        let elem = document.createElement('div');
-        elem.textContent = 'G';
-        elem.classList.add('goat',`goat-${pos}`);
-        elem.style.marginTop = `${Math.floor(pos/5)*8}rem`;
-        elem.style.marginLeft = `${(pos%5)*8}rem`;
-        this.parent.appendChild(elem);
+        }else{
+            if(this.goats.onBoard.length){
+                //cancel suggestions
+                if(this.prevSelection === pos || !this.prevSuggestions.includes(pos)){
+                    this.prevSuggestions = [];
+                    this.prevSelection = -1;                
+                    return [[],[]];
+                }
 
-        //updating this.board
-        this.board[Math.floor(pos/5)][Math.floor(pos%5)] = 1;
+                //updating this.board
+                this.board[Math.floor(pos/5)][pos%5] = 1;
+                this.board[Math.floor(this.prevSelection/5)][this.prevSelection%5] = null;
 
-        //updating this.goats
-        this.goats.onBoard.push(this.goats.available.pop());
+                //updating DOM    
+                let goat1 = document.querySelector(`.goat-${this.prevSelection}`);
+                goat1.style.marginLeft = `${(pos%5)*8}rem`;
+                goat1.style.marginTop =`${Math.floor(pos/5)*8}rem` ;
+
+                
+                document.querySelector(`.Node-${this.prevSelection}`).style.zIndex =1; 
+                document.querySelector(`.Node-${this.prevSelection}`).style.opacity =1;             
+                // then you rename the class
+                goat1.classList.remove(`goat-${this.prevSelection}`);
+                goat1.classList.add(`goat-${pos}`);
+                //bringing the node forward so the click gets detected
+                setTimeout(()=>{
+                    document.querySelector(`.Node-${pos}`).style.zIndex =2; 
+                    document.querySelector(`.Node-${pos}`).style.opacity =0; 
+                },200);  
+            }
+        }
         
         this.prevSuggestions = [];
+        this.prevSelection = -1;
         this.turn = 0;               // toggle turns
-        return this.prevSuggestions; // highlightedNodes disappear
+        return [[],[]]; // highlightedNodes disappear
     }
 
     updateWithTiger(pos){
@@ -282,63 +343,78 @@ class Baghchal{
 
         let tiger1 = document.querySelector(`.tiger-${this.prevSelection}`);
 
-        //*****linear movement*****
-           
+        
         //normal movement
         let factor1 = Math.abs(this.prevSelection-pos) ;
         let factor2 = Math.abs(pos - this.prevSelection);
 
-        if(factor1 === 1 || factor2 === 5){
+        
+        //*****straight movement*****          ********diagonal movement******
+
+        if(factor1 === 1 || factor2 === 5 || factor1 === 4 || factor2 === 6){             // manuevering movements
             tiger1.style.marginLeft = `${(pos%5)*8}rem`;
             tiger1.style.marginTop =`${Math.floor(pos/5)*8}rem` ;
 
-            //if user decides not to capture the goat 
-            let goatsInDanger = document.querySelectorAll('.highlight-danger');
-            if(goatsInDanger){
-                goatsInDanger.forEach(goat => goat.classList.remove('highlight-danger'));
-            }
-        
-                   // left-right      up-down       jump
-        }else if(factor1 === 2 || factor2 === 10){    //jump to capture movement
+        }else if(factor1 === 2 || factor2 === 10 || factor1 === 8 || factor2 === 12){    //jump to capture movement           
             tiger1.style.marginLeft = `${(pos%5)*8}rem`;
             tiger1.style.marginTop =`${Math.floor(pos/5)*8}rem` ;
 
             //removing the captured goat
-            
             let removePos = -1;
-            if(factor1 === 2){
+            if(factor1 === 2){                          //straight capture
                 if(pos > this.prevSelection){
                     removePos = pos-1;
                 }else{
                     removePos = pos+1;
                 }
-            }
-            if(factor2 === 10){
+            }else if(factor2 === 10){                   //straight capture
                 if(pos > this.prevSelection){
                     removePos = pos-5;
                 }else{
                     removePos = pos+5;
                 }
+            }else if(factor1 === 8){                     //diagonal capture
+                if(pos > this.prevSelection){
+                    removePos = pos-4;
+                }else{
+                    removePos = pos+4;
+                }
+            }else{
+                if(pos > this.prevSelection){           //diagonal capture
+                    removePos = pos-6;
+                }else{
+                    removePos = pos+6;
+                }
+
             }
+            
+            document.querySelector(`.Node-${removePos}`).style.zIndex =1; 
+            document.querySelector(`.Node-${removePos}`).style.opacity =1;
+            
             let removeEle = document.querySelector(`.goat-${removePos}`);
             this.parent.removeChild(removeEle);
             this.goats.eaten.push(this.goats.onBoard.pop());
-            this.board[Math.floor(removePos/5)][removePos%5] = null;
-
-        //****digonal movement */    
-        }else{ 
-            tiger1.style.marginLeft = `${(pos%5)*8}rem`;
-            tiger1.style.marginTop =`${Math.floor(pos/5)*8}rem` ;
+            this.board[Math.floor(removePos/5)][removePos%5] = null;   
         }
-        //animation runs here
+        
+        document.querySelector(`.Node-${this.prevSelection}`).style.zIndex =1; 
+        document.querySelector(`.Node-${this.prevSelection}`).style.opacity =1;             
         // then you rename the class
         tiger1.classList.remove(`tiger-${this.prevSelection}`);
         tiger1.classList.add(`tiger-${pos}`);
-        document.querySelector(`.Node-${pos}`).style.zIndex =2; 
-        document.querySelector(`.Node-${pos}`).style.opacity =0; 
-        //the you resize the node
-        document.querySelector(`.Node-${this.prevSelection}`).style.zIndex =1; 
-        document.querySelector(`.Node-${this.prevSelection}`).style.opacity =1; 
+        //bringing the node forward so the click gets detected
+        setTimeout(()=>{
+            document.querySelector(`.Node-${pos}`).style.zIndex =2; 
+            document.querySelector(`.Node-${pos}`).style.opacity =0; 
+        },200);  
+        
+        
+
+        //if user decides not to capture higlighted goats
+        let goatsInDanger = document.querySelectorAll('.highlight-danger');
+        if(goatsInDanger){
+            goatsInDanger.forEach(goat => goat.classList.remove('highlight-danger'));
+        } 
 
         this.prevSuggestions = [];
         this.prevSelection = -1;

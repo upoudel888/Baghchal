@@ -12,7 +12,7 @@ html{
     border-radius: 1rem;
     box-shadow: 1px 1px 2px 0.5px;
 }
-.Node,.tiger,.goat{
+.Node{
     position: absolute;
     background-color: #202930;
     height: 3rem;
@@ -21,13 +21,29 @@ html{
     border-radius: 50%;
 }
 .tiger{
+    position: absolute;
     transition: 0.2s ease-in;
-    background-color: blue;
+    background-color: none;
+    background-image: url('../../assets/TIGER.png');
+    background-position: center;
+    background-size: cover;
+    width: 5.5rem;
+    height: 5.5rem;
     color: white;
+    transform: translate(-40%,-40%);
 }
 .goat{
-    background-color: rgb(255, 170, 0);
+    position: absolute;
+    transition: 0.2s ease-in;
+    background-color: none;
+    background-image: url('../../assets/GOAT.png');
+    background-position: center;
+    background-size: cover;
+    width: 5.5rem;
+    height: 5.5rem;
     color: white;
+    transform: translate(-37%,-40%);
+    
 }
 
 .Path{
@@ -344,13 +360,16 @@ html{
 }
 
 .highlight-safe{
-    background-color: rgb(13, 179, 185);
+    /* background-color: rgb(13, 179, 185); */
+    box-shadow:  0px 0px 8px 4px rgb(13, 179, 185) !important ;
     transition: background-color 0.1s ease-in;
     box-shadow: none; 
 }
 
 .highlight-danger{
-    box-shadow: 0px 0px 8px 4px rgb(249, 60, 73) ; 
+    box-shadow: 0px 0px 8px 4px rgb(249, 60, 73) !important ; 
+    opacity: 1 !important;
+    z-index: 1 !important;
 }
 
 
