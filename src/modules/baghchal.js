@@ -113,7 +113,7 @@ class Baghchal{
         this.parent.appendChild(elem);
         
         //onClick doesn't tigger from tiger or goat div so bringing forth Node
-        setTimeout(()=>{
+        
             document.querySelector('.Node-0').style.zIndex = 2;  
             document.querySelector('.Node-0').style.opacity = 0; 
             
@@ -125,7 +125,7 @@ class Baghchal{
 
             document.querySelector('.Node-24').style.opacity = 0;
             document.querySelector('.Node-24').style.zIndex = 2;
-        },200);
+        
 
         return this.highlightNodes();   
     }
@@ -423,6 +423,8 @@ class Baghchal{
 
         return [[],[]];
     }
+
+
 
 
 

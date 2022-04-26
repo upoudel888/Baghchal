@@ -13,7 +13,7 @@ function App({ game }) {
                                                   trapStatus : [1,1,1,1]   //1 means not trapped  and 0 means trapped
                                                 },
                                                 {
-                                                  available: Array.from(Array(25).keys()),      // 24 goats in total
+                                                  available: Array.from(Array(20).keys()),      // 24 goats in total
                                                   onBoard  : [],
                                                   eaten    : []                                 // 0 goats eaten/captured at the beginning
                                                 },1]);
@@ -64,10 +64,15 @@ function App({ game }) {
   }
 
   return (
-    <div className="App">
+    <div className="baghchal-app">
       <Canvas handleClick={handleClick} highlightPaths={highlightPaths} highlightNodes={highlightNodes} />
-      <Status statusArr = {boardStatus}></Status>
+      <div className="turn"> 
+        <span className="title-name">Turn</span><br />
+        { boardStatus[2] ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
+                    :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
+      </div>
       <button onClick={handleNewGame}>NewGame</button>
+      <Status statusArr = {boardStatus}></Status>
     </div>
   );
 }
