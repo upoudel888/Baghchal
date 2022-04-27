@@ -25,6 +25,8 @@ html{
     transform: translate(-25%,-25%);
     border-radius: 50%;
     z-index: 1;
+    cursor: pointer;
+    
 }
 .tiger{
     position: absolute;
