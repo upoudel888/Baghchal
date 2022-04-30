@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { Canvas,Status } from './Components'
+import { Canvas,Status,Options } from './Components'
 
 
 function App({ game }) {
@@ -17,6 +17,8 @@ function App({ game }) {
                                                   onBoard  : [],
                                                   eaten    : []                                 // 0 goats eaten/captured at the beginning
                                                 },1]);
+  //for rulesIcon in Options
+  const [isHoveringIcon,setIsHoveringIcon]= useState(false);
 
   const handleClick = (pos) => {
 
@@ -66,12 +68,7 @@ function App({ game }) {
   return (
     <div className="baghchal-app">
       <Canvas handleClick={handleClick} highlightPaths={highlightPaths} highlightNodes={highlightNodes} />
-      <div className="turn"> 
-        <span className="title-name">Turn</span><br />
-        { boardStatus[2] ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
-                    :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
-      </div>
-      <button onClick={handleNewGame}>NewGame</button>
+      <Options handleNewGame = {handleNewGame} turnStatus={boardStatus[2]} isHovering = {isHoveringIcon} setIsHovering = {setIsHoveringIcon}/>     
       <Status statusArr = {boardStatus}></Status>
     </div>
   );

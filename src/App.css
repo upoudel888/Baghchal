@@ -9,43 +9,34 @@
 .baghchal-app{ 
   display: grid;
   grid-template-columns: 39rem 5rem 18rem;
-  grid-template-rows: 10rem;
+  grid-template-rows: 12rem;
   justify-content: center;
   grid-row-gap: 0px;
   grid-column-gap: 0px;
-  margin:5vh auto ; 
+  margin: 4% 0px ; 
 }
-.disp-goat,.disp-tiger{
-  width: 5rem;
-  height:5rem; 
-  
-  border: 1px solid white;
-  border-left: none;
-  border-top-right-radius: 5%;
-  border-bottom-right-radius: 5%;
-  box-shadow: 1px 1px 5px 0.5px white;
-  background-color: rgb(13, 179, 185);
-  background-image: url('assets/GOAT.png');
-  background-position: center;
-  background-size: cover;
-  transition: 0.15s ease-in; 
-  z-index: 2;
+
+@media screen and (max-width: 992px) {
+  .baghchal-app{
+    justify-content: left;
+    transform: scale(0.85);
+    transform: translateX(-0.8rem);
+  }
 }
-.disp-tiger{
-  background-image: url('assets/TIGER.png');
+@media screen and (max-width: 688px) {
+  .baghchal-app{
+    margin: auto;
+  }
 }
-.disp-goat{
-  background-image: url('assets/GOAT.png');
-}
-.turn{
-  margin-left: 5px;
-  margin-top: 1.5rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-size: 1.4rem;
-  color: white;
-}
-button{
-  width: 4rem;
-  position: absolute;
+@media screen and (max-width: 560px) {
+  .baghchal-app{
+    transform: rotatez(90deg) scale(0.6);
+    /* margin: auto 0px; */
+    justify-content: space-around;
+    align-items: center;
+
+  }
+  .game-status{
+    transform: translateY(-3rem);
+  }
 }
