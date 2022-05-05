@@ -87,14 +87,10 @@ class Baghchal{
     startGame(){
         //removing tigers and goats of previous game if any   
         this.parent = document.querySelector(".canvas-container");
-        let arr = [...this.goats.pos,...this.tigers.pos];
-        arr.forEach((pos)=>{
-            let elem = document.querySelector(`.Node-${pos}`);
-
-            if(elem){
-                elem.style.zIndex = '';
-                elem.style.opacity = '';
-            }
+        
+        document.querySelectorAll(".Node").forEach((elem)=>{
+            elem.style.zIndex = '';
+            elem.style.opacity = '';
         });
 
         let removeEle = document.querySelectorAll(".tiger");
