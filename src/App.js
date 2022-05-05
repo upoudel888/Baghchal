@@ -76,6 +76,7 @@ function App({ game }) {
       <Canvas handleClick={handleClick} highlightPaths={highlightPaths} highlightNodes={highlightNodes} statusArr = {boardStatus}/>
       <Options handleNewGame = {handleNewGame} turnStatus={boardStatus[2]} isHovering = {isHoveringIcon} setIsHovering = {setIsHoveringIcon}/>     
       <Status statusArr = {boardStatus}></Status>
+      {game.isOver() && <div className="gameover">GaMe is over </div>}
     </div>
   );
 }

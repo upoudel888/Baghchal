@@ -86,11 +86,17 @@ class Baghchal{
 
     startGame(){
         //removing tigers and goats of previous game if any   
+        //removing tigers and goats of previous game if any   
         this.parent = document.querySelector(".canvas-container");
-        
-        document.querySelectorAll(".Node").forEach((elem)=>{
-            elem.style.zIndex = '';
-            elem.style.opacity = '';
+        let arr = [...this.goats.pos,...this.tigers.pos];
+        arr.forEach((pos)=>{
+            let elem = document.querySelector(`.Node-${pos}`);
+
+        //removing tigers and goats of previous game 
+            if(elem){
+                elem.style.zIndex = '';
+                elem.style.opacity = '';
+            }
         });
 
         let removeEle = document.querySelectorAll(".tiger");
@@ -548,7 +554,7 @@ class Baghchal{
 
     isOver(){
 
-        if(this.goats.onBoard.eaten === 0) return 1;
+        if(this.goats.eaten.length === 20 ) return 1;
         return this.tigers.trapStatus.reduce((a,b)=>a+b) === 4;
         
     }
