@@ -10,6 +10,10 @@ class Baghchal{
     prevSuggestions;                        //where user was suggested to move to 
 
     constructor(){
+        this.initialize();
+    }
+    
+    initialize(){
         // 0's denote tigers
         // 1's denote goats
         // null means emptyPos
@@ -31,10 +35,10 @@ class Baghchal{
             eaten    : [],                                 // 0 goats eaten/captured at the beginning
             pos : []
         };
-
+    
         this.turn = 1;                                    // no selection at the beginning
         this.prevSelection = -1;
-        this.prevSuggestions = [];                          
+        this.prevSuggestions = [];                             
     }
 
     setParent(){
@@ -81,10 +85,17 @@ class Baghchal{
     }
 
     startGame(){
-        
+        //removing tigers and goats of previous game if any   
         this.parent = document.querySelector(".canvas-container");
+        let arr = [...this.goats.pos,...this.tigers.pos];
+        arr.forEach((pos)=>{
+            let elem = document.querySelector(`.Node-${pos}`);
 
-        //removing tigers and goats of previous game 
+            if(elem){
+                elem.style.zIndex = '';
+                elem.style.opacity = '';
+            }
+        });
 
         let removeEle = document.querySelectorAll(".tiger");
         if(removeEle){
@@ -94,8 +105,9 @@ class Baghchal{
         if(removeEle){
             removeEle.forEach((ele)=>this.parent.removeChild(ele));
         }
-
-
+        
+        //now initialinzing a new board state
+        this.initialize();
 
         //initializing 4 tigers on four corners of the board
         let elem = document.createElement('div');
