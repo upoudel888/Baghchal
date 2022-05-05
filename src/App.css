@@ -6,6 +6,7 @@
   font-family: 'Abel', sans-serif;
 }
 
+
 .baghchal-app{ 
   display: grid;
   grid-template-columns: 39rem 5rem 18rem;
@@ -31,7 +32,6 @@
 @media screen and (max-width: 560px) {
   .baghchal-app{
     transform: rotatez(90deg) scale(0.6);
-    /* margin: auto 0px; */
     justify-content: space-around;
     align-items: center;
 

@@ -1,7 +1,7 @@
 import './Canvas.css'
 
 
-const Canvas = ({handleClick,highlightPaths,highlightNodes}) => { 
+const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr}) => { 
 
     let nodes = Array.from(Array(25).keys());
     let paths = ['0-1', '1-2', '2-3', '3-4',                        //horizontal paths
@@ -21,7 +21,15 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes}) => {
 
                  '2-8','8-14','14-18','18-22',
                  '2-6','6-10','10-16','16-22'
-                ]
+                ];
+                        // turn ? goat.pos : tiger.pos
+    let focusableNodes = (statusArr[2]) ? statusArr[1]['pos'] : statusArr[0]['pos'];
+    // if it is goats turn and user has goats available
+    // then the nodes with goats on them are no longer focusable
+    if(statusArr[1]['available'].length && statusArr[2]){
+        focusableNodes = [];
+    }
+
     
     return ( 
         
@@ -29,8 +37,11 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes}) => {
             {
                 nodes.map(node => {
                             let classname = `Node Node-${String(node)}`;
-                            if(highlightNodes.includes(node)){
-                                classname = `Node Node-${String(node)} highlight-safe`
+                            if(highlightNodes.includes(node) || focusableNodes.includes(node)){
+                                classname = `Node Node-${String(node)} pointer-cursor`;
+                                if(highlightNodes.includes(node)){
+                                    classname = `Node Node-${String(node)} highlight-safe pointer-cursor`;
+                                }
                             }
                                 return (
 

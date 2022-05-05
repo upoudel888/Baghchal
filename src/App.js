@@ -1,7 +1,8 @@
 import './App.css';
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Canvas,Status,Options } from './Components'
+
 
 
 function App({ game }) {
@@ -10,14 +11,15 @@ function App({ game }) {
   const [highlightNodes, setHighlightNodes] = useState([null]);
   const [boardStatus,setBoardStatus] = useState([{
                                                   pos : [0,4,20,24],       // tigers spawn at four corners of the board
-                                                  trapStatus : [1,1,1,1]   //1 means not trapped  and 0 means trapped
+                                                  trapStatus : [0,0,0,0]   //1 means trapped  and 0 means not trapped
                                                 },
                                                 {
                                                   available: Array.from(Array(20).keys()),      // 24 goats in total
                                                   onBoard  : [],
-                                                  eaten    : []                                 // 0 goats eaten/captured at the beginning
+                                                  eaten    : [],                                 // 0 goats eaten/captured at the beginning
+                                                  pos      :  []
                                                 },1]);
-  //for rulesIcon in Options
+  //for rulesIcon in Options component to change color of svg upon hovering
   const [isHoveringIcon,setIsHoveringIcon]= useState(false);
 
   const handleClick = (pos) => {
@@ -40,6 +42,7 @@ function App({ game }) {
         }
         setHightlightPaths(arr1[0]);
         setHighlightNodes(arr1[1]);
+        
       }
   
     //tigers turn  
@@ -62,12 +65,13 @@ function App({ game }) {
   }
 
   const handleNewGame = () => {
+      
     setHighlightNodes(game.startGame());
   }
 
   return (
     <div className="baghchal-app">
-      <Canvas handleClick={handleClick} highlightPaths={highlightPaths} highlightNodes={highlightNodes} />
+      <Canvas handleClick={handleClick} highlightPaths={highlightPaths} highlightNodes={highlightNodes} statusArr = {boardStatus}/>
       <Options handleNewGame = {handleNewGame} turnStatus={boardStatus[2]} isHovering = {isHoveringIcon} setIsHovering = {setIsHoveringIcon}/>     
       <Status statusArr = {boardStatus}></Status>
     </div>
