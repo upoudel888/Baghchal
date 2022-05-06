@@ -65,10 +65,12 @@ function App({ game }) {
   }
 
   const handleNewGame = () => {
-    setHightlightPaths([null]);
-    setHighlightNodes([null]);
-    setHighlightNodes(game.startGame());
-    setBoardStatus(game.getBoardStatus());
+    setTimeout(()=>{
+      setHightlightPaths([null]);
+      setHighlightNodes([null]);
+      setHighlightNodes(game.startGame());
+      setBoardStatus(game.getBoardStatus());
+    },200);
   }
 
   return (

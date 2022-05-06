@@ -6,15 +6,15 @@
   font-family: 'Abel', sans-serif;
 }
 
-
 .baghchal-app{ 
   display: grid;
   grid-template-columns: 39rem 5rem 18rem;
-  grid-template-rows: 12rem;
+  grid-template-rows: 12rem 29rem;
   justify-content: center;
   grid-row-gap: 0px;
   grid-column-gap: 0px;
   margin: 4% 0px ; 
+  
 }
 
 @media screen and (max-width: 992px) {
@@ -31,10 +31,20 @@
 }
 @media screen and (max-width: 560px) {
   .baghchal-app{
+    margin-top: 3vh;
     transform: rotatez(90deg) scale(0.6);
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-
+   }
+  .game-status{
+    transform: translateY(-3rem);
+  }
+}
+@media screen and (max-width: 380px) {
+  
+  .baghchal-app {  
+    transform: scale(0.5) rotateZ(90deg);
+    margin:auto;
   }
   .game-status{
     transform: translateY(-3rem);
