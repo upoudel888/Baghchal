@@ -1,0 +1,29 @@
+.game-status{
+    grid-row: 2/3;
+    grid-column: 2/4;
+   
+    margin-left: 2rem;
+    height:fit-content;
+    width: 18rem;
+    border-radius: 5%;
+   
+    box-shadow: 1px 1px 5px 0.5px white;
+    background-color: #28313b;
+    color: white;
+
+    text-align: center;
+    
+}
+
+.game-status > div{
+    width: 18rem;
+    padding: 0.8rem;  
+}
+
+.title-name{
+    font-size: 1.4rem;
+}
+.display-numbers{
+    font-size: 1.5rem;
+    
+}
