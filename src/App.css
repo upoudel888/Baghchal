@@ -27,6 +27,7 @@
 @media screen and (max-width: 688px) {
   .baghchal-app{
     margin: auto;
+    margin-top: 3vh;
   }
 }
 @media screen and (max-width: 560px) {

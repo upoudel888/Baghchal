@@ -1,7 +1,7 @@
 import './Canvas.css'
 
 
-const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr}) => { 
+const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr,isOver,handleNewGame}) => { 
 
     let nodes = Array.from(Array(25).keys());
     let paths = ['0-1', '1-2', '2-3', '3-4',                        //horizontal paths
@@ -29,6 +29,14 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr}) => {
     if(statusArr[1]['available'].length && statusArr[2]){
         focusableNodes = [];
     }
+
+    let overLayClass = isOver ? 'baghchal-overlay overlay-visible' : "baghchal-overlay";
+    let winnerTextClass = isOver ? 'winner-text  wobble-hor-top' : "winner-text";
+    let winnerClass = 'winner winner-Tiger';
+    if(isOver){
+        winnerClass = statusArr[1]['eaten'].length === 20 ? 'winner winner-Tiger' : 'winner winner-Goat';
+    }
+
 
     
     return ( 
@@ -62,10 +70,19 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr}) => {
                                 return (<div className = {classname} key = {paths.indexOf(path)} ></div>)
                             }) 
             }
-                            
+            {
+                
+                <div className={overLayClass}>
+                    <div className={winnerClass} role="img" aria-label={winnerClass}></div>
+                    <div className={winnerTextClass}>{winnerClass.split('-')[1]} Won ! </div>
+                    <button className="play-again-btn" onClick={handleNewGame}>Play Again</button>
+                </div>
+            }
+        
+        </div>
                 
 
-        </div>
+            
      );
 }
  

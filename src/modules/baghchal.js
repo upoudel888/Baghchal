@@ -44,11 +44,7 @@ class Baghchal{
     setParent(){
         this.parent = document.querySelector(".canvas-container");
     }
-    //if all goats are eaten or if all tigers are trapped
-    isGameOver(){
-        return this.goats.eaten.length === 20 || this.tigers.trapStatus.every(stat => stat===0);
-    }
-
+  
     getTurnStatus(){
         return this.turn;
     }
@@ -56,34 +52,22 @@ class Baghchal{
     isShowingSuggestions(){
         return this.prevSuggestions.length ? true : false;
     }
-
-    hasAvailableGoats(){
-        return this.goats.available.length ? true : false;
-    }
-
-    hasTigerAt(pos){
-        return this.board[Math.floor(pos/5)][pos%5] === 0;
-    }
-    //to highlight nodes where AVAILABLE GOATS can be placed
-    highlightNodes(){
-        let possibleNodes = [];
-        if(this.turn === 1){
-            for(let i = 0; i<5; i++){
-                for(let j = 0; j< 5; j++){
-                    if(this.board[i][j]===null){
-                        possibleNodes.push(i*5+j);
-                    }
-                }
-            }
-        }
-        this.prevSuggestions = possibleNodes;
-        return possibleNodes;
-    }
-
+        
     getBoardStatus(){
         return [this.tigers,this.goats,this.turn];
     }
+    
+    hasTigerAt(pos){
+        return this.board[Math.floor(pos/5)][pos%5] === 0;
+    }
 
+    isOver(){
+
+        if(this.goats.eaten.length === 20 ) return 1;
+        return this.tigers.trapStatus.reduce((a,b)=>a+b) === 4;
+        
+    }
+    
     startGame(){
         //removing tigers and goats of previous game if any   
         //removing tigers and goats of previous game if any   
@@ -156,10 +140,24 @@ class Baghchal{
         return this.highlightNodes();   
     }
 
+    //to highlight nodes where AVAILABLE GOATS can be placed
+    highlightNodes(){
+        let possibleNodes = [];
+        if(this.turn === 1){
+            for(let i = 0; i<5; i++){
+                for(let j = 0; j< 5; j++){
+                    if(this.board[i][j]===null){
+                        possibleNodes.push(i*5+j);
+                    }
+                }
+            }
+        }
+        this.prevSuggestions = possibleNodes;
+        return possibleNodes;
+    }
     
 
     highlightPath(pos){
-        console.log(this.board);
         //if there's no goat or tiger at POS there's no need of highlighting path
         if(this.board[Math.floor(pos/5)][pos%5] === null) return [[],[]];
 
@@ -213,7 +211,6 @@ class Baghchal{
 
                             //helper function
                             const updatePathWithJumps = (possibleJumps)=>{ 
-                                console.log('from', possibleJumps)     
                                 for(let i in possibleJumps){
                                     let point1 = possibleJumps[i];
                                      
@@ -279,6 +276,9 @@ class Baghchal{
         return [possiblePaths,possibleNodes];
     }
 
+    hasAvailableGoats(){
+        return this.goats.available.length ? true : false;
+    }
 
     updateWithGoat(pos){
         //if goats are available for insertion in Nodes simply put them
@@ -552,12 +552,7 @@ class Baghchal{
         }
     }
 
-    isOver(){
-
-        if(this.goats.eaten.length === 20 ) return 1;
-        return this.tigers.trapStatus.reduce((a,b)=>a+b) === 4;
-        
-    }
+    
 
 
 
