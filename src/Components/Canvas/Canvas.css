@@ -475,8 +475,8 @@ html{
   }
 
 .wobble-hor-top {
-	-webkit-animation: wobble-hor-top 1s both 4;
-	        animation: wobble-hor-top 1s both 4;
+	-webkit-animation: wobble-hor-top 1s both 2;
+	        animation: wobble-hor-top 1s both 2;
 }
 
 @-webkit-keyframes wobble-hor-top {

@@ -2,14 +2,14 @@ import './Options.css'
 import { GiChecklist } from "react-icons/gi";
 
 
-const Options = ({handleNewGame,turnStatus,isHovering,setIsHovering}) => {
+const Options = ({handleNewGame,turnStatus,isHovering,setIsHovering,setIsOver}) => {
     return ( 
         <div className="options">
             <div className="turn"> 
                 <span className="title-name">Turn</span><br />
                 { turnStatus ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
                             :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
-                <button className = "give-up-btn"  onClick={()=>{alert("Work in progess")}}>Give Up  </button>
+                <button className = "give-up-btn"  onClick={()=>{setIsOver(true)}}>Give Up  </button>
             </div>
             <div className="buttons">
                 <button className = "new-game-btn" onClick={handleNewGame}>New Game</button>

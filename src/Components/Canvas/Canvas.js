@@ -32,10 +32,20 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr,isOver,hand
 
     let overLayClass = isOver ? 'baghchal-overlay overlay-visible' : "baghchal-overlay";
     let winnerTextClass = isOver ? 'winner-text  wobble-hor-top' : "winner-text";
-    let winnerClass = 'winner winner-Tiger';
+    let winnerClass = 'winner';
     if(isOver){
-        winnerClass = statusArr[1]['eaten'].length === 20 ? 'winner winner-Tiger' : 'winner winner-Goat';
+        //One of the players win
+        if( statusArr[1]['eaten'].length === 20){
+            winnerClass = 'winner winner-Tiger';
+        }else if(statusArr[0]['trapStatus'].reduce((a,b)=>a+b) === 4){
+            winnerClass = 'winner winner-Goat';
+        //gameover by surrender
+        //Player with current turn loses 
+        }else{        
+            winnerClass = statusArr[2] ? 'winner winner-Tiger' : 'winner winner-Goat';
+        }
     }
+
 
 
     
@@ -74,7 +84,7 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr,isOver,hand
                 
                 <div className={overLayClass}>
                     <div className={winnerClass} role="img" aria-label={winnerClass}></div>
-                    <div className={winnerTextClass}>{winnerClass.split('-')[1]} Won ! </div>
+                    <div className={winnerTextClass}>{winnerClass.split('-')[1]}s Won ! </div>
                     <button className="play-again-btn" onClick={handleNewGame}>Play Again</button>
                 </div>
             }
