@@ -12,7 +12,9 @@ const Options = ({handleNewGame,boardStatus,isHovering,setIsHovering,setIsOver,i
         turnClass = 'turn hide';
     }
     if(boardStatus[1]['onBoard'].length || boardStatus[1]['available'].length !== 20 ){
-        turnClass = `${turnClass} clickable`;
+        if(!isOver){
+            turnClass = `${turnClass} clickable`;
+        }
     }
 
     return ( 
