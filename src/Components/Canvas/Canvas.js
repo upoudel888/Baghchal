@@ -19,7 +19,7 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr,isOver,hand
                  '0-6', '6-12', '12-18', '18-24',                   //diagonal paths (main diagonal)
                  '4-8', '8-12', '12-16', '16-20', 
 
-                 '2-8','8-14','14-18','18-22',
+                 '2-8','8-14','14-18','18-22',                      //diagonal path (other digonal)
                  '2-6','6-10','10-16','16-22'
                 ];
                         // turn ? goat.pos : tiger.pos

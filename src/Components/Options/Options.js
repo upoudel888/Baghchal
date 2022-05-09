@@ -2,12 +2,25 @@ import './Options.css'
 import { GiChecklist } from "react-icons/gi";
 
 
-const Options = ({handleNewGame,turnStatus,isHovering,setIsHovering,setIsOver}) => {
+const Options = ({handleNewGame,boardStatus,isHovering,setIsHovering,setIsOver,isOver}) => {
+    let turnClass =  'turn unveal';
+    // turnstatus is -1 at the very beginning
+    if(boardStatus[2] === -1){
+        turnClass = 'turn hide'
+    }
+
+    if(boardStatus[1]['onBoard'].length || boardStatus[1]['available'].length !== 20 ){
+        turnClass = `${turnClass} clickable`;
+    }
+    if(isOver){
+        turnClass = 'turn hide';
+    }
+
     return ( 
         <div className="options">
-            <div className="turn"> 
+            <div className={turnClass}> 
                 <span className="title-name">Turn</span><br />
-                { turnStatus ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
+                { boardStatus[2] ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
                             :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
                 <button className = "give-up-btn"  onClick={()=>{setIsOver(true)}}>Give Up  </button>
             </div>
