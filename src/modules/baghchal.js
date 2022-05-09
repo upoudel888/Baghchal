@@ -7,7 +7,7 @@ class Baghchal{
     turn;
 
     prevSelection;                          // where user previously clicked to move the piece
-    prevSuggestions;                        //where user was suggested to move to 
+    prevSuggestions;                        // where user was suggested to move to 
 
     constructor(){
         this.initialize();
@@ -26,8 +26,8 @@ class Baghchal{
         ];
         
         this.tigers = {
-            pos : [0,4,20,24],       // tigers spawn at four corners of the board
-            trapStatus : [0,0,0,0]   // 1 means trapped  and 0 means not trapped
+            pos : [0,4,20,24],                              // tigers spawn at four corners of the board
+            trapStatus : [0,0,0,0]                          // 1 means trapped  and 0 means not trapped
         };
         this.goats = {
             available: Array.from(Array(20).keys()),      // 24 goats in total
@@ -36,8 +36,8 @@ class Baghchal{
             pos : []
         };
     
-        this.turn = 1;                                    // no selection at the beginning
-        this.prevSelection = -1;
+        this.turn = 1;                                      // 1 means goat
+        this.prevSelection = -1;                            // no selection at the beginning
         this.prevSuggestions = [];                             
     }
 
@@ -69,24 +69,15 @@ class Baghchal{
     }
     
     startGame(){
-        //removing tigers and goats of previous game if any   
+
         //removing tigers and goats of previous game if any   
         this.parent = document.querySelector(".canvas-container");
-        let arr = [...this.goats.pos,...this.tigers.pos];
-        arr.forEach((pos)=>{
-            let elem = document.querySelector(`.Node-${pos}`);
-
-        //removing tigers and goats of previous game 
-            if(elem){
-                elem.style.zIndex = '';
-                elem.style.opacity = '';
-            }
-        });
-
+            //removing tigers
         let removeEle = document.querySelectorAll(".tiger");
         if(removeEle){
             removeEle.forEach((ele)=>this.parent.removeChild(ele));
         }
+            //removing goats
         removeEle = document.querySelectorAll(".goat");
         if(removeEle){
             removeEle.forEach((ele)=>this.parent.removeChild(ele));
@@ -123,20 +114,6 @@ class Baghchal{
         elem.setAttribute('aria-label','Tiger');
         this.parent.appendChild(elem);
         
-        //onClick doesn't tigger from tiger or goat div so bringing forth Node
-        
-        document.querySelector('.Node-0').style.zIndex = 2;  
-        document.querySelector('.Node-0').style.opacity = 0; 
-        
-        document.querySelector('.Node-4').style.opacity = 0;
-        document.querySelector('.Node-4').style.zIndex = 2;
-
-        document.querySelector('.Node-20').style.opacity = 0;
-        document.querySelector('.Node-20').style.zIndex = 2;
-
-        document.querySelector('.Node-24').style.opacity = 0;
-        document.querySelector('.Node-24').style.zIndex = 2;
-
         return this.highlightNodes();   
     }
 
@@ -161,7 +138,7 @@ class Baghchal{
         //if there's no goat or tiger at POS there's no need of highlighting path
         if(this.board[Math.floor(pos/5)][pos%5] === null) return [[],[]];
 
-        // return params
+        // return parameters
         let possiblePaths = [];
         let possibleNodes = [pos];
 
@@ -281,9 +258,9 @@ class Baghchal{
     }
 
     updateWithGoat(pos){
+
         //if goats are available for insertion in Nodes simply put them
-        //else if there are goats on board then move them       
-           
+        //else (if there are goats on board) then move them         
         if(this.hasAvailableGoats()){
             //if user presses elsewhere from where he was suggested
             if(!this.prevSuggestions.includes(pos)) return this.prevSuggestions;
@@ -302,10 +279,6 @@ class Baghchal{
             //updating this.goats
             this.goats.onBoard.push(this.goats.available.pop());
             this.goats.pos.push(pos);
-    
-            //bringing the node forward so the click gets detected      
-            document.querySelector(`.Node-${pos}`).style.zIndex =2; 
-            document.querySelector(`.Node-${pos}`).style.opacity =0; 
 
         }else{
             if(this.goats.onBoard.length){
@@ -328,18 +301,10 @@ class Baghchal{
                 //updating this.goat.pos
                 this.goats.pos.splice(this.goats.pos.indexOf(this.prevSelection),1);
                 this.goats.pos.push(pos);
-
-                
-                document.querySelector(`.Node-${this.prevSelection}`).style.zIndex =1; 
-                document.querySelector(`.Node-${this.prevSelection}`).style.opacity =1;             
+         
                 // then you rename the class
                 goat1.classList.remove(`goat-${this.prevSelection}`);
                 goat1.classList.add(`goat-${pos}`);
-                //bringing the node forward so the click gets detected
-                setTimeout(()=>{
-                    document.querySelector(`.Node-${pos}`).style.zIndex =2; 
-                    document.querySelector(`.Node-${pos}`).style.opacity =0; 
-                },200);  
             }
         }
 
@@ -363,15 +328,12 @@ class Baghchal{
             return [[],[]];
         }
         
-
         //updating this.board
         this.board[Math.floor(pos/5)][pos%5] = 0;
         this.board[Math.floor(this.prevSelection/5)][this.prevSelection%5] = null;
         
 
         let tiger1 = document.querySelector(`.tiger-${this.prevSelection}`);
-
-        
         //normal movement
         let factor1 = Math.abs(this.prevSelection-pos) ;
         let factor2 = Math.abs(pos - this.prevSelection);
@@ -416,9 +378,6 @@ class Baghchal{
 
             }
             
-            document.querySelector(`.Node-${removePos}`).style.zIndex =1; 
-            document.querySelector(`.Node-${removePos}`).style.opacity =1;
-            
             let removeEle = document.querySelector(`.goat-${removePos}`);
             this.parent.removeChild(removeEle);
             this.goats.eaten.push(this.goats.onBoard.pop());
@@ -432,20 +391,11 @@ class Baghchal{
         //updating this.tigers.pos
         this.tigers.pos.splice(this.tigers.pos.indexOf(this.prevSelection),1);
         this.tigers.pos.push(pos);
-
-        document.querySelector(`.Node-${this.prevSelection}`).style.zIndex =1; 
-        document.querySelector(`.Node-${this.prevSelection}`).style.opacity =1;             
+         
         // then you rename the class
         tiger1.classList.remove(`tiger-${this.prevSelection}`);
         tiger1.classList.add(`tiger-${pos}`);
-        //bringing the node forward so the click gets detected
-        setTimeout(()=>{
-            document.querySelector(`.Node-${pos}`).style.zIndex =2; 
-            document.querySelector(`.Node-${pos}`).style.opacity =0; 
-        },200);  
-        
-        
-
+         
         //if user decides not to capture higlighted goats
         let goatsInDanger = document.querySelectorAll('.highlight-danger');
         if(goatsInDanger){
@@ -454,7 +404,6 @@ class Baghchal{
 
         this.prevSuggestions = [];
         this.prevSelection = -1;
-
         this.turn = 1;
 
         return [[],[]];
@@ -551,13 +500,6 @@ class Baghchal{
             this.tigers['trapStatus'][i] = (trapped) ? 1 : 0;
         }
     }
-
-    
-
-
-
-
-
 }
 
 export default Baghchal;

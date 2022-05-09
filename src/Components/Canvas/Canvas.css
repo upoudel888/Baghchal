@@ -27,8 +27,12 @@ html{
     
 }
 
-.pointer-cursor{
+.Node.pointer-cursor{
+    transition : none;
+    z-index: 2;
+    opacity: 0;
     cursor: pointer;
+    
 }
 
 

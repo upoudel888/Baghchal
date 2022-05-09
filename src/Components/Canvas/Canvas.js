@@ -62,10 +62,7 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr,isOver,hand
                                 }
                             }
                                 return (
-
-                                    
-                                    <div className = {classname} key = {node} onClick = {()=>{handleClick(node)}}></div>
-                                    
+                                    <div className = {classname} key = {node} onClick = {()=>{handleClick(node)}}></div>   
                                 )
                             }) 
 

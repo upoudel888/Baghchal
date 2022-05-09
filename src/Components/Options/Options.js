@@ -7,13 +7,12 @@ const Options = ({handleNewGame,boardStatus,isHovering,setIsHovering,setIsOver,i
     // turnstatus is -1 at the very beginning
     if(boardStatus[2] === -1){
         turnClass = 'turn hide'
-    }
-
-    if(boardStatus[1]['onBoard'].length || boardStatus[1]['available'].length !== 20 ){
-        turnClass = `${turnClass} clickable`;
-    }
+    }    
     if(isOver){
         turnClass = 'turn hide';
+    }
+    if(boardStatus[1]['onBoard'].length || boardStatus[1]['available'].length !== 20 ){
+        turnClass = `${turnClass} clickable`;
     }
 
     return ( 
