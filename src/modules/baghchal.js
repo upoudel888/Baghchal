@@ -86,34 +86,18 @@ class Baghchal{
         //now initialinzing a new board state
         this.initialize();
 
-        //initializing 4 tigers on four corners of the board
-        let elem = document.createElement('div');
-        elem.classList.add('tiger','tiger-0');
-        elem.setAttribute('role','img');
-        elem.setAttribute('aria-label','Tiger');
-        
-        this.parent.appendChild(elem);
-        
-        elem = document.createElement('div');
-        elem.classList.add('tiger','tiger-4');
-        elem.setAttribute('role','img');
-        elem.setAttribute('aria-label','Tiger');
-        this.parent.appendChild(elem);
-        
-        
-        elem = document.createElement('div');
-        elem.classList.add('tiger','tiger-20');
-        elem.setAttribute('role','img');
-        elem.setAttribute('aria-label','Tiger');
-        this.parent.appendChild(elem);
-        
-        
-        elem = document.createElement('div');
-        elem.classList.add('tiger','tiger-24');
-        elem.setAttribute('role','img');
-        elem.setAttribute('aria-label','Tiger');
-        this.parent.appendChild(elem);
-        
+        //positioning four tigers at four corners
+        let tigerPos = [0,4,20,24];
+        tigerPos.forEach((pos)=>{
+            //initializing 4 tigers on four corners of the board
+            let elem = document.createElement('div');
+            elem.classList.add('tiger',`tiger-${pos}`);
+            elem.setAttribute('role','img');
+            elem.setAttribute('aria-label','Tiger');
+            elem.style.zIndex = 1;
+            this.parent.appendChild(elem);
+
+        });
         return this.highlightNodes();   
     }
 
@@ -140,7 +124,7 @@ class Baghchal{
 
         // return parameters
         let possiblePaths = [];
-        let possibleNodes = [pos];
+        let possibleNodes = [];
 
         //helpers
         let possibleMoves = [];

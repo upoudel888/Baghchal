@@ -56,9 +56,15 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr,isOver,hand
                 nodes.map(node => {
                             let classname = `Node Node-${String(node)}`;
                             if(highlightNodes.includes(node) || focusableNodes.includes(node)){
+                                // added class pointer-cursor to show it's focusable
                                 classname = `Node Node-${String(node)} pointer-cursor`;
                                 if(highlightNodes.includes(node)){
-                                    classname = `Node Node-${String(node)} highlight-safe pointer-cursor`;
+                                    classname = `Node Node-${String(node)} highlight-safe pointer-cursor`; 
+                                }
+                                //if the node has tiger/goat on in then the Zindex NODE need's to be changes
+                                // so that click events get detected
+                                if(focusableNodes.includes(node)){
+                                    classname = `Node Node-${String(node)} highlight-safe pointer-cursor1`;
                                 }
                             }
                                 return (

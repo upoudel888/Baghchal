@@ -15,6 +15,7 @@ html{
     box-shadow: 1px 1px 5px 0.5px white;
     background-color:  #28313b;  
 }
+
 .Node{
     position: absolute;
     background-color: #202930;
@@ -22,17 +23,19 @@ html{
     width: 3em;
     transform: translate(-25%,-25%);
     border-radius: 50%;
+    /* paths have zIndex 0 and nodes have 1 so that nodes appear above paths */
     z-index: 1;
     -webkit-tap-highlight-color: rgba(0,0,0,0)
     
 }
 
 .Node.pointer-cursor{
-    transition : none;
+    cursor: pointer;  
+}
+.Node.pointer-cursor1{
     z-index: 2;
     opacity: 0;
-    cursor: pointer;
-    
+    cursor: pointer;  
 }
 
 
@@ -388,6 +391,9 @@ html{
     opacity: 1 !important;
     z-index: 1 !important;
 }
+
+/* overlay section */
+
 .baghchal-overlay{
     position:absolute;
     width: 100%;
