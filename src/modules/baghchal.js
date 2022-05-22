@@ -30,7 +30,7 @@ class Baghchal{
             trapStatus : [0,0,0,0]                          // 1 means trapped  and 0 means not trapped
         };
         this.goats = {
-            available: Array.from(Array(20).keys()),      // 24 goats in total
+            available: Array.from(Array(20).keys()),      // 20 goats in total
             onBoard  : [],
             eaten    : [],                                 // 0 goats eaten/captured at the beginning
             pos : []
@@ -61,11 +61,17 @@ class Baghchal{
         return this.board[Math.floor(pos/5)][pos%5] === 0;
     }
 
-    isOver(){
+    hasGoatAt(pos){
+        return this.board[Math.floor(pos/5)][pos%5] === 1;
+    }
 
+    isOver(){
         if(this.goats.eaten.length === 20 ) return 1;
-        return this.tigers.trapStatus.reduce((a,b)=>a+b) === 4;
-        
+        return this.tigers.trapStatus.reduce((a,b)=>a+b) === 4;   
+    }
+
+    wasPreviousSelection(pos){
+        return this.prevSelection === pos;
     }
     
     startGame(){
@@ -118,10 +124,16 @@ class Baghchal{
     }
     
 
-    highlightPath(pos){
+    highlightPath(pos,removeDanger = false){
         //if there's no goat or tiger at POS there's no need of highlighting path
         if(this.board[Math.floor(pos/5)][pos%5] === null) return [[],[]];
 
+        if(removeDanger){
+            let goatsInDanger = document.querySelectorAll('.highlight-danger');
+            if(goatsInDanger){
+                goatsInDanger.forEach(goat => goat.classList.remove('highlight-danger'));
+            }
+        }
         // return parameters
         let possiblePaths = [];
         let possibleNodes = [];

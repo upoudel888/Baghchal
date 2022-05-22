@@ -34,23 +34,36 @@ function App({ game }) {
       if(game.hasAvailableGoats()){
         setHighlightNodes(game.updateWithGoat(pos))
       //once we run out of Goats then we start moving them like tigers
-      }else{                
-        if (!game.isShowingSuggestions() && !game.hasTigerAt(pos)) {
-          
+      }else{    
+        //read comments of tigers turn below for better understanding            
+        if (!game.isShowingSuggestions() && game.hasGoatAt(pos)) {
           arr1 = game.highlightPath(pos);        
-        } else {
-          arr1 = game.updateWithGoat(pos);        
+        } else if(game.isShowingSuggestions() && game.hasGoatAt(pos)) {
+            arr1 = game.wasPreviousSelection(pos) ? game.updateWithGoat(pos) : game.highlightPath(pos);  
+        }else{
+          arr1 = game.updateWithGoat(pos);
         }
         setHightlightPaths(arr1[0]);
         setHighlightNodes(arr1[1]);
         
       }
-  
     //tigers turn  
     } else {
+      //user clicks on a tiger to reveal positions it can move to 
       if (!game.isShowingSuggestions() && game.hasTigerAt(pos)) {
-        arr1 = game.highlightPath(pos);        
-      } else {
+        arr1 = game.highlightPath(pos);
+      }else if(game.isShowingSuggestions() && game.hasTigerAt(pos)){
+        //user clicks on another tiger while suggestions for another tiger is being shown        
+        if(!game.wasPreviousSelection(pos)){
+          //true arguement to remove goats highlighted danger
+          arr1 = game.highlightPath(pos,true);
+        //clicking on the same tiger again cancels suggestions
+        }else{
+          arr1 = game.updateWithTiger(pos);
+        }
+      //user clicks where he was suggested to move the tiger
+      //this also counters condition where user clicks the unsuggested node and 
+      }else{   
         arr1 = game.updateWithTiger(pos);
         //highlight nodes where goats can be placed if available 
         if(game.hasAvailableGoats()){
@@ -59,6 +72,7 @@ function App({ game }) {
           }, 200);
         }        
       }
+      
       setHightlightPaths(arr1[0]);
       setHighlightNodes(arr1[1]);
     }
