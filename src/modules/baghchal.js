@@ -386,6 +386,7 @@ class Baghchal{
             goatsInDanger.forEach(goat => goat.classList.remove('highlight-danger'));
         } 
 
+        this.checkForTrappedTigers();
         this.prevSuggestions = [];
         this.prevSelection = -1;
         this.turn = 1;
