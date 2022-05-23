@@ -120,7 +120,7 @@ class Baghchal{
             }
         }
         this.prevSuggestions = possibleNodes;
-        return possibleNodes;
+        return [[],possibleNodes,[]];
     }
     
 
@@ -128,15 +128,10 @@ class Baghchal{
         //if there's no goat or tiger at POS there's no need of highlighting path
         if(this.board[Math.floor(pos/5)][pos%5] === null) return [[],[]];
 
-        if(removeDanger){
-            let goatsInDanger = document.querySelectorAll('.highlight-danger');
-            if(goatsInDanger){
-                goatsInDanger.forEach(goat => goat.classList.remove('highlight-danger'));
-            }
-        }
         // return parameters
         let possiblePaths = [];
         let possibleNodes = [];
+        let endangeredGoats = [];
 
         //helpers
         let possibleMoves = [];
@@ -205,7 +200,7 @@ class Baghchal{
                                             (goatPos<point1)? possiblePaths.push(`${goatPos}-${point1}`) : possiblePaths.push(`${point1}-${goatPos}`);
         
                                             //show that the goat in middle is in danger
-                                            document.querySelector(`.Node-${goatPos}`).classList.add('highlight-danger');
+                                            endangeredGoats.push(goatPos);
                                         }
                                     }
                                 }
@@ -246,7 +241,7 @@ class Baghchal{
         }
         this.prevSelection = pos;
         this.prevSuggestions = possibleNodes;
-        return [possiblePaths,possibleNodes];
+        return [possiblePaths,possibleNodes,endangeredGoats];
     }
 
     hasAvailableGoats(){
@@ -259,7 +254,7 @@ class Baghchal{
         //else (if there are goats on board) then move them         
         if(this.hasAvailableGoats()){
             //if user presses elsewhere from where he was suggested
-            if(!this.prevSuggestions.includes(pos)) return this.prevSuggestions;
+            if(!this.prevSuggestions.includes(pos)) return [[],this.prevSuggestions,[]];
     
             //putting goat on the board
             let elem = document.createElement('div');
@@ -282,7 +277,7 @@ class Baghchal{
                 if(this.prevSelection === pos || !this.prevSuggestions.includes(pos)){
                     this.prevSuggestions = [];
                     this.prevSelection = -1;                
-                    return [[],[]];
+                    return [[],[],[]];
                 }
 
                 //updating this.board
@@ -309,7 +304,7 @@ class Baghchal{
         this.prevSuggestions = [];
         this.prevSelection = -1;
         this.turn = 0;               // toggle turns
-        return [[],[]]; // highlightedNodes disappear
+        return [[],[],[]]; // highlightedNodes disappear
     }
 
     updateWithTiger(pos){
@@ -317,11 +312,7 @@ class Baghchal{
         if(this.prevSelection === pos || !this.prevSuggestions.includes(pos)){
             this.prevSuggestions = [];
             this.prevSelection = -1;
-            let goatsInDanger = document.querySelectorAll('.highlight-danger');
-            if(goatsInDanger){
-                goatsInDanger.forEach(goat => goat.classList.remove('highlight-danger'));
-            }
-            return [[],[]];
+            return [[],[],[]];
         }
         
         //updating this.board
@@ -392,18 +383,12 @@ class Baghchal{
         tiger1.classList.remove(`tiger-${this.prevSelection}`);
         tiger1.classList.add(`tiger-${pos}`);
          
-        //if user decides not to capture higlighted goats
-        let goatsInDanger = document.querySelectorAll('.highlight-danger');
-        if(goatsInDanger){
-            goatsInDanger.forEach(goat => goat.classList.remove('highlight-danger'));
-        } 
-
         this.checkForTrappedTigers();
         this.prevSuggestions = [];
         this.prevSelection = -1;
         this.turn = 1;
 
-        return [[],[]];
+        return [[],[],[]];
     }
 
     checkForTrappedTigers(){

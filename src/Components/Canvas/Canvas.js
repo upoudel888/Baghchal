@@ -1,8 +1,8 @@
 import './Canvas.css'
 
 
-const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr,isOver,handleNewGame}) => { 
-
+const Canvas = ({handleClick,statusArr,isOver,handleNewGame,highlightElems}) => { 
+    let [highlightPaths,highlightNodes,endangeredNodes] = highlightElems;
     let nodes = Array.from(Array(25).keys());
     let paths = ['0-1', '1-2', '2-3', '3-4',                        //horizontal paths
                  '5-6', '6-7', '7-8', '8-9',
@@ -55,21 +55,23 @@ const Canvas = ({handleClick,highlightPaths,highlightNodes,statusArr,isOver,hand
             {
                 nodes.map(node => {
                             let classname = `Node Node-${String(node)}`;
-                            if(highlightNodes.includes(node) || focusableNodes.includes(node)){
-                                // added class pointer-cursor to show it's focusable
-                                classname = `Node Node-${String(node)} pointer-cursor`;
-                                if(highlightNodes.includes(node)){
-                                    classname = `Node Node-${String(node)} highlight-safe pointer-cursor`; 
-                                }
-                                //if the node has tiger/goat on in then the Zindex NODE need's to be changes
-                                // so that click events get detected
-                                if(focusableNodes.includes(node)){
-                                    classname = `Node Node-${String(node)} highlight-safe pointer-cursor1`;
-                                }
+                            
+                            // added class pointer-cursor to show it's focusable
+                            if(highlightNodes.includes(node)){
+                                classname = `Node Node-${String(node)} highlight-safe pointer-cursor`; 
                             }
-                                return (
-                                    <div className = {classname} key = {node} onClick = {()=>{handleClick(node)}}></div>   
-                                )
+                            //if the node has tiger/goat on in then the Zindex NODE need's to be changes
+                            // so that click events get detected
+                            if(focusableNodes.includes(node)){
+                                classname = `Node Node-${String(node)} highlight-safe pointer-cursor1`;
+                            }
+                            if(endangeredNodes.includes(node)){
+                                classname = `Node Node-${String(node)} highlight-danger`;
+                            }
+                        
+                            return (
+                                <div className = {classname} key = {node} onClick = {()=>{handleClick(node)}}></div>   
+                            )
                             }) 
 
             }

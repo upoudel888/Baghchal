@@ -7,8 +7,9 @@ import { Canvas,Status,Options } from './Components'
 
 function App({ game }) {
 
-  const [highlightPaths, setHightlightPaths] = useState([null]);
-  const [highlightNodes, setHighlightNodes] = useState([null]);
+  //highlightElems = [[highlightPaths],[HightlightNodes],[endangeredNodes]]
+  // all of them used to direct user with suggestions
+  const [highlightElems,setHighlightElems] = useState([[],[],[]]);
   const [boardStatus,setBoardStatus] = useState([{
                                                   pos : [0,4,20,24],       // tigers spawn at four corners of the board
                                                   trapStatus : [0,0,0,0]   //1 means trapped  and 0 means not trapped
@@ -23,16 +24,15 @@ function App({ game }) {
   //for rulesIcon in Options component to change color of svg upon hovering
   const [isHoveringIcon,setIsHoveringIcon]= useState(false);
 
-  const handleClick = (pos) => {
 
+  const handleClick = (pos) => {
     //array used to Highlight Nodes and Vertices later on
     let arr1 = [];
-
     //goats turn
     if (game.getTurnStatus() === 1){
       //first empty nodes are filled with available Goats
       if(game.hasAvailableGoats()){
-        setHighlightNodes(game.updateWithGoat(pos))
+        arr1 = game.updateWithGoat(pos);
       //once we run out of Goats then we start moving them like tigers
       }else{    
         //read comments of tigers turn below for better understanding            
@@ -43,10 +43,8 @@ function App({ game }) {
         }else{
           arr1 = game.updateWithGoat(pos);
         }
-        setHightlightPaths(arr1[0]);
-        setHighlightNodes(arr1[1]);
-        
       }
+      setHighlightElems(arr1);
     //tigers turn  
     } else {
       //user clicks on a tiger to reveal positions it can move to 
@@ -62,19 +60,18 @@ function App({ game }) {
           arr1 = game.updateWithTiger(pos);
         }
       //user clicks where he was suggested to move the tiger
-      //this also counters condition where user clicks the unsuggested node and 
+      //this also counters condition where user clicks the unsuggested node m
       }else{   
         arr1 = game.updateWithTiger(pos);
         //highlight nodes where goats can be placed if available 
         if(game.hasAvailableGoats()){
-          setTimeout(() => {
-            setHighlightNodes(game.highlightNodes());
+          setTimeout((arr1) => {
+            arr1 = game.highlightNodes();
+            setHighlightElems(arr1);
           }, 200);
         }        
       }
-      
-      setHightlightPaths(arr1[0]);
-      setHighlightNodes(arr1[1]);
+      setHighlightElems(arr1);
     }
     setBoardStatus(game.getBoardStatus());
     setIsOver(game.isOver());
@@ -82,17 +79,16 @@ function App({ game }) {
 
   const handleNewGame = () => {
     setTimeout(()=>{
-      setHightlightPaths([null]);
-      setHighlightNodes([null]);
+      setHighlightElems([[],[],[]]);
       setIsOver(false);
-      setHighlightNodes(game.startGame());
+      setHighlightElems(game.startGame());
       setBoardStatus(game.getBoardStatus());
     },200);
   }
 
   return (
     <div className="baghchal-app">
-      <Canvas handleClick={handleClick} highlightPaths={highlightPaths} highlightNodes={highlightNodes} statusArr = {boardStatus} isOver = {isOver} handleNewGame = {handleNewGame}/>
+      <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems}/>
       <Options handleNewGame = {handleNewGame} boardStatus={boardStatus} isHovering = {isHoveringIcon} setIsHovering = {setIsHoveringIcon} setIsOver = {setIsOver} isOver = {isOver}/>     
       <Status statusArr = {boardStatus}></Status>
     </div>
