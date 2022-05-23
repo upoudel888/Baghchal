@@ -26,14 +26,17 @@ class Baghchal{
         ];
         
         this.tigers = {
+            trapStatus : [0,0,0,0],                         // 1 means trapped  and 0 means not trapped
             pos : [0,4,20,24],                              // tigers spawn at four corners of the board
-            trapStatus : [0,0,0,0]                          // 1 means trapped  and 0 means not trapped
+            validMoves : []
+
         };
         this.goats = {
             available: Array.from(Array(20).keys()),      // 20 goats in total
             onBoard  : [],
             eaten    : [],                                 // 0 goats eaten/captured at the beginning
-            pos : []
+            pos : [],
+            validMoves: [],
         };
     
         this.turn = 1;                                      // 1 means goat
@@ -124,7 +127,7 @@ class Baghchal{
     }
     
 
-    highlightPath(pos,removeDanger = false){
+    highlightPath(pos,chkTigerValidMoves = false){
         //if there's no goat or tiger at POS there's no need of highlighting path
         if(this.board[Math.floor(pos/5)][pos%5] === null) return [[],[]];
 
@@ -173,8 +176,10 @@ class Baghchal{
                         possibleNodes.push(point);
                         (pos<point)? possiblePaths.push(`${pos}-${point}`) : possiblePaths.push(`${point}-${pos}`);
                     }else{
-                        //if it is tigers turn then tigers can hop over a goat while capturing it
-                        if(this.turn === 0 && this.board[Math.floor(point/5)][point%5] !== 0){
+                        //if it is tigers turn or we are checking valid moves using this.checkValidMovesTigers()
+                        //then tigers can hop over a goat while capturing it
+                        if((this.turn === 0 || chkTigerValidMoves)  && this.board[Math.floor(point/5)][point%5] === 1){
+
                             let goatPos = point;
 
                             //helper function
@@ -299,11 +304,13 @@ class Baghchal{
             }
         }
 
-        this.checkForTrappedTigers();
-
+        //checking for trapped tigers
+        this.computeValidMovesTigers();
+        
         this.prevSuggestions = [];
         this.prevSelection = -1;
         this.turn = 0;               // toggle turns
+
         return [[],[],[]]; // highlightedNodes disappear
     }
 
@@ -383,7 +390,9 @@ class Baghchal{
         tiger1.classList.remove(`tiger-${this.prevSelection}`);
         tiger1.classList.add(`tiger-${pos}`);
          
-        this.checkForTrappedTigers();
+        //checking for trapped tigers
+        this.computeValidMovesTigers();
+
         this.prevSuggestions = [];
         this.prevSelection = -1;
         this.turn = 1;
@@ -391,97 +400,39 @@ class Baghchal{
         return [[],[],[]];
     }
 
-    checkForTrappedTigers(){
-        let possibleMoves = [];
-        let pos = 0;
-
-        //helper
-        let impossible= [
-            [0,5,10,15,20],           // no path (from) this array of nodes
-            [4,9,14,19,24]            //         ( to ) this array of nodes
-        ]
-
+    computeValidMovesTigers(){
+        // clearing previous valid moves
+        this.tigers.validMoves = [];
+        // calculating new valid moves
         for(let i in this.tigers.pos){
-            let trapped = true;
-
-            pos = this.tigers.pos[i];
-            if(pos%2 ===0){ 
-                possibleMoves = [
-                    [pos-1,pos+1],              //       left        right
-                    [pos+5,pos+5-1,pos+5+1],    //top    top-left    top-right
-                    [pos-5,pos-5-1,pos-5+1],    //bottom bottom-left bottom-right
-                ];
-            }else{
-                possibleMoves = [  
-                    [pos-1,pos+1],
-                    [pos+5],
-                    [pos-5]
-                ];
-            }
-
-            const pathNotExists = (pos,point)=>{
-                return (impossible[0].includes(pos) && impossible[1].includes(point)) || (impossible[0].includes(point) && impossible[1].includes(pos))
-            }
-            const isInBoard = (pos)=>{
-                return (Number(pos) >= 0 && Number(pos) <= 24)
-            }
-            for(let j in possibleMoves){
-                for(let k in possibleMoves[j]){
-                    let point = possibleMoves[j][k];
-                    if(pathNotExists(pos,point)) continue;
-                    if(isInBoard(point)){
-                        //normal maneuvering
-                        if(this.board[Math.floor(point/5)][point%5] === null){
-                            trapped = false;
-                            break;
-                        //jump to capture    
-                        }else if(this.board[Math.floor(point/5)][point%5] === 1) {
-                           
-                            let goatPos = point;
-                            let possibleJumps = [];
-                            switch(Number(j)){
-                                case 0:
-                                    possibleJumps = [goatPos-1,goatPos+1];
-                                    break;
-                                case 1:
-                                    if(pos%2 === 0){
-                                        possibleJumps = [goatPos+5,goatPos+5-1,goatPos+5+1]
-                                    }else{
-                                        possibleJumps = [goatPos+5]
-                                    }                                        
-                                    possibleJumps = [possibleJumps[k]];
-                                    break;
-
-                                case 2:  
-                                    if(pos%2 === 0){
-                                        possibleJumps = [goatPos-5,goatPos-5-1,goatPos-5+1]
-                                    }else{
-                                        possibleJumps = [goatPos-5]
-                                    }
-                                    possibleJumps = [possibleJumps[k]];
-                                    break;
-                                default:
-                            }
-                            for(let l in possibleJumps){
-                                let point1 = possibleJumps[l];
-                                if(pathNotExists(pos,point1)) continue;
-                                if(isInBoard(point1)){
-                                    if(this.board[Math.floor(point1/5)][point1%5] ===null){
-                                        if(pathNotExists(goatPos,point1)) continue;
-                                        trapped = false;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                }
-                if(!trapped) break;
-            }
-            this.tigers['trapStatus'][i] = (trapped) ? 1 : 0;
+            // highlight path return [[Path],[Nodes],[dangerPos]]
+            let tempArr = this.highlightPath(this.tigers['pos'][i],true);
+            // tempArr[1].lenght === 0 means there are no valid moves left for that tigers
+            // i.e it is trapped
+            this.tigers['trapStatus'][i] = tempArr[1].length ? 0 : 1;
+    
+            this.tigers.validMoves.push(tempArr[1])
         }
     }
+    
+    computeValidMovesGoats(){
+        this.goats.validMoves = [];
+        for(let i in this.goats.pos){
+            //highlight path return [[Path],[Nodes],[dangerPos]]
+            let tempArr = this.highlightPath(this.goats['pos'][i],true);
+            this.goats.validMoves.push(tempArr[1])
+        }
+    }
+
+    // getValidMovesTigers(){
+    //     let arr = [];
+    //     for(let i in this.tigers.pos){
+            
+    //     }
+    //     for(let i in this.goats.pos){
+
+    //     }
+    // }
 }
 
 export default Baghchal;

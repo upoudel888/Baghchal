@@ -53,8 +53,7 @@ function App({ game }) {
       }else if(game.isShowingSuggestions() && game.hasTigerAt(pos)){
         //user clicks on another tiger while suggestions for another tiger is being shown        
         if(!game.wasPreviousSelection(pos)){
-          //true arguement to remove goats highlighted danger
-          arr1 = game.highlightPath(pos,true);
+          arr1 = game.highlightPath(pos);
         //clicking on the same tiger again cancels suggestions
         }else{
           arr1 = game.updateWithTiger(pos);
