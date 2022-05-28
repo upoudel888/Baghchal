@@ -24,6 +24,9 @@ function App({ game }) {
   const [isOver,setIsOver] = useState(false);
   //for rulesIcon in Options component to change color of svg upon hovering
   const [isHoveringIcon,setIsHoveringIcon]= useState(false);
+  const [vsPlayer2,setVsPlayer2] = useState(false);
+  const [vsCompGoat,setVsCompGoat] = useState(false);
+  const [vsCompTiger,setVsCompTiger] = useState(true);
 
 
   const handleClick = (pos) => {
@@ -76,17 +79,51 @@ function App({ game }) {
     setBoardStatus(game.getBoardStatus());
     setIsOver(game.isOver());
 
-    game.showBoard();
+    //if AI is playing
+    if(!vsPlayer2){
+      if(vsCompGoat && game.getTurnStatus()){
+        let move = findBestMove(game);
+        let tempArr = move.split('-');
+        if(tempArr.length === 2){
+          setTimeout(()=>{
+            handleClick(Number(tempArr[1]));
+          },400);
+        }else{
+          setTimeout(()=>{
+            handleClick(Number(tempArr[1]));
+          },200);
+          setTimeout(()=>{
+            handleClick(Number(tempArr[tempArr.length-1]));
+          },600);
+        }
+      }
+      if(vsCompTiger && !game.getTurnStatus()){
+        let move = findBestMove(game);
+        let tempArr = move.split('-');
+        setTimeout(()=>{
+          handleClick(Number(tempArr[1]));
+        },200);
+        setTimeout(()=>{
+          handleClick(Number(tempArr[tempArr.length-1]));
+        },400);
 
-    findBestMove(game);
+      }
+    }
   }
-
+  
   const handleNewGame = () => {
     setTimeout(()=>{
       setHighlightElems([[],[],[]]);
       setIsOver(false);
       setHighlightElems(game.startGame());
       setBoardStatus(game.getBoardStatus());
+      if(vsCompGoat){
+        let move = findBestMove(game);
+        var tempArr =  move.split('-');
+        setTimeout(()=>{
+          handleClick(Number(tempArr[tempArr.length - 1]));
+        },200);
+      }
     },200);
   }
 

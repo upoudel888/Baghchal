@@ -38,8 +38,7 @@ class Baghchal{
             pos         : [],
             eaten       : [],                                 // 0 goats eaten/captured at the beginning
             validMoves  : [],
-            endangered  : []
-
+            endangered  : [],
         };
     
         this.turn = 1;                                      // 1 means goat
@@ -567,14 +566,13 @@ class Baghchal{
         let score = 0;
 
         if(this.isOver()){
-            //  if it is goats turn and game is over tiger wins
-            //  tiger winning is bad for goat
             score = this.turn ? -1000 : 1000;
         }else{
             score = score +  this.tigers.trapStatus.reduce((a,b)=>a+b) * 250;
             score = score + this.goats.available.length;
-            score = score -  this.goats.eaten.length * 50;
-            score = score -  this.goats.endangered.length * 26;
+            score = score -  this.goats.eaten.length * 80;
+            score = score -  this.goats.endangered.length * 39;
+            //tiger pos
         }
         return score;
 
