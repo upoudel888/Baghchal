@@ -2,6 +2,7 @@ import './App.css';
 import React from 'react'
 import { useState } from 'react'
 import { Canvas,Status,Options } from './Components'
+import findBestMove from './modules/smartMove';
 
 
 
@@ -74,6 +75,10 @@ function App({ game }) {
     }
     setBoardStatus(game.getBoardStatus());
     setIsOver(game.isOver());
+
+    game.showBoard();
+
+    findBestMove(game);
   }
 
   const handleNewGame = () => {

@@ -9,6 +9,7 @@ class Baghchal{
     prevSelection;                          // where user previously clicked to move the piece
     prevSuggestions;                        // where user was suggested to move to 
 
+
     constructor(){
         this.initialize();
     }
@@ -26,17 +27,19 @@ class Baghchal{
         ];
         
         this.tigers = {
-            trapStatus : [0,0,0,0],                         // 1 means trapped  and 0 means not trapped
-            pos : [0,4,20,24],                              // tigers spawn at four corners of the board
-            validMoves : []
+            trapStatus  : [0,0,0,0],                         // 1 means trapped  and 0 means not trapped
+            pos         : [0,4,20,24],                              // tigers spawn at four corners of the board
+            validMoves  : []
 
         };
         this.goats = {
-            available: Array.from(Array(20).keys()),      // 20 goats in total
-            onBoard  : [],
-            eaten    : [],                                 // 0 goats eaten/captured at the beginning
-            pos : [],
-            validMoves: [],
+            available   : Array.from(Array(20).keys()),      // 20 goats in total
+            onBoard     : [],
+            pos         : [],
+            eaten       : [],                                 // 0 goats eaten/captured at the beginning
+            validMoves  : [],
+            endangered  : []
+
         };
     
         this.turn = 1;                                      // 1 means goat
@@ -47,7 +50,8 @@ class Baghchal{
     setParent(){
         this.parent = document.querySelector(".canvas-container");
     }
-  
+
+
     getTurnStatus(){
         return this.turn;
     }
@@ -197,7 +201,12 @@ class Baghchal{
 
                                             if(pathNotExists(goatPos,point1)) continue;
 
-                                            possibleNodes.push(point1);
+                                            if(chkTigerValidMoves){
+                                                possibleNodes.push(`X-${goatPos}-${point1}`);
+                                            }else{
+                                                possibleNodes.push(point1);
+                                            }
+
                                             // possibleNodes.push(goatPos);
                                             //path from pos to goatPos
                                             (pos<goatPos)? possiblePaths.push(`${pos}-${goatPos}`) : possiblePaths.push(`${goatPos}-${pos}`);
@@ -374,15 +383,15 @@ class Baghchal{
             
             let removeEle = document.querySelector(`.goat-${removePos}`);
             this.parent.removeChild(removeEle);
-            this.goats.eaten.push(this.goats.onBoard.pop());
+            //updating this.board
             this.board[Math.floor(removePos/5)][removePos%5] = null; 
-            
-            //updating this.goats.pos
+            //updating this.goats
+            this.goats.eaten.push(this.goats.onBoard.pop());
             this.goats.pos.splice(this.goats.pos.indexOf(removePos),1);
 
         }
 
-        //updating this.tigers.pos
+        //updating this.tigers
         this.tigers.pos.splice(this.tigers.pos.indexOf(this.prevSelection),1);
         this.tigers.pos.push(pos);
          
@@ -400,9 +409,22 @@ class Baghchal{
         return [[],[],[]];
     }
 
+    getValidMoves(){
+        
+        this.computeValidMovesGoats();
+        this.computeValidMovesTigers();
+        //for goats
+        if(this.turn){
+            return this.goats.validMoves;
+        }else{
+            return this.tigers.validMoves;
+        }
+    }
+
     computeValidMovesTigers(){
         // clearing previous valid moves
         this.tigers.validMoves = [];
+        this.goats.endangered = [];
         // calculating new valid moves
         for(let i in this.tigers.pos){
             // highlight path return [[Path],[Nodes],[dangerPos]]
@@ -410,29 +432,153 @@ class Baghchal{
             // tempArr[1].lenght === 0 means there are no valid moves left for that tigers
             // i.e it is trapped
             this.tigers['trapStatus'][i] = tempArr[1].length ? 0 : 1;
-    
-            this.tigers.validMoves.push(tempArr[1])
+
+            // tempArr[2].forEach(pos => this.goats['endangered'].push(pos));
+            if(tempArr[2].length){
+                this.goats['endangered'].push(...tempArr[2]);
+            }
+
+            //writing in proper format
+            let moves =  tempArr[1].map((move)=>`t-${this.tigers['pos'][i]}-${move}`)
+            this.tigers.validMoves.push(...moves)
         }
     }
+    
+    
     
     computeValidMovesGoats(){
         this.goats.validMoves = [];
-        for(let i in this.goats.pos){
-            //highlight path return [[Path],[Nodes],[dangerPos]]
-            let tempArr = this.highlightPath(this.goats['pos'][i],true);
-            this.goats.validMoves.push(tempArr[1])
+        if(this.goats.available.length){
+            let tempArr = this.highlightNodes();
+            let moves = tempArr[1].map((move)=>`g-${move}`);
+            this.goats.validMoves.push(...moves);
+        }else{
+            for(let i in this.goats.pos){
+                let tempArr = this.highlightPath(this.goats['pos'][i],false);
+                
+                let moves = tempArr[1].map((move)=>`g-${this.goats['pos'][i]}-${move}`)
+                this.goats.validMoves.push(...moves);
+            }
         }
     }
 
-    // getValidMovesTigers(){
-    //     let arr = [];
-    //     for(let i in this.tigers.pos){
-            
-    //     }
-    //     for(let i in this.goats.pos){
+    makeMove(move){
+        // [turn,from,X,deletePos,to]
+        let tempArr = move.split('-');
+        let [from,to] = [Number(tempArr[1]),Number(tempArr[tempArr.length - 1])];
+        let enumTurn = {
+            'g':1,
+            't':0
+        }
 
-    //     }
-    // }
+        //updating this.board
+        this.board[Math.floor(from/5)][from%5] = null;
+        this.board[Math.floor(to/5)][to%5] = enumTurn[tempArr[0]];
+
+        //updating this.tigers and this.goats
+
+        if(from === to){ // goats are available and are being placed on board
+            this.goats.onBoard.push(this.goats.available.pop());
+            this.goats.pos.push(from);
+
+        //goats and tigers are maneuvering
+        }else{
+            
+            //normal maneuvering
+            if(enumTurn[tempArr[0]]){
+                this.goats.pos.splice(this.goats.pos.indexOf(from),1);
+                this.goats.pos.push(to);
+            }else{
+                this.tigers.pos.splice(this.tigers.pos.indexOf(from),1);
+                this.tigers.pos.push(to);
+            }
+
+            //removing middle goat when tigers jumps to capture
+            if(tempArr.length > 3){
+                let deletePos = Number(tempArr[3]);
+                this.board[Math.floor(deletePos/5)][deletePos%5] = null;
+                // updating this.goats
+                this.goats.eaten.push(this.goats.onBoard.pop());
+                this.goats.pos.splice(this.goats.pos.indexOf(deletePos),1);
+                this.goats.endangered.splice(this.goats.pos.indexOf(deletePos),1);
+            }
+            
+        }
+        
+        this.turn = Number(!enumTurn[tempArr[0]]);
+    }
+    
+    
+    
+    undoMove(move){
+        // [turn,from,X,deletePos,to]
+        let tempArr = move.split('-');
+        let [from,to] = [Number(tempArr[1]),Number(tempArr[tempArr.length - 1])];
+        let enumTurn = {
+            'g':1,
+            't':0
+        }
+        //updating this.board
+        this.board[Math.floor(from/5)][from%5] = enumTurn[tempArr[0]];
+        this.board[Math.floor(to/5)][to%5] = null;
+
+
+        //updating this.goats
+        if(from === to){ 
+            this.goats.available.push(this.goats.onBoard.pop());
+            this.goats.pos.splice(this.goats.pos.indexOf(from),1);
+            //goats and tigers are maneuvering
+        }else{
+            
+            //normal maneuvering
+            if(enumTurn[tempArr[0]]){
+                this.goats.pos.splice(this.goats.pos.indexOf(to),1);
+                this.goats.pos.push(from);
+            }else{
+                this.tigers.pos.splice(this.tigers.pos.indexOf(to),1);
+                this.tigers.pos.push(from);
+            }
+            
+            //removing middle goat when tigers jumps to capture
+            if(tempArr.length > 3){
+                let deletePos = Number(tempArr[3]);
+                this.board[Math.floor(deletePos/5)][deletePos%5] = 1;
+                // updating this.goats
+                this.goats.onBoard.push(this.goats.eaten.pop());
+                this.goats.pos.push(deletePos);
+                this.goats.endangered.splice(this.goats.endangered.indexOf(deletePos),1);
+                
+            }
+            
+        }
+
+    }
+
+    showBoard(){
+        console.log(this.board);
+    }
+
+    //goat is the maximizing player
+    scoreBoard(){
+        // gameover         =  30
+        // tigerTrapped     =  50 each
+        // goatCaptured     =  15 each
+        // goatEndangered   =  10 each
+        let score = 0;
+
+        if(this.isOver()){
+            //  if it is goats turn and game is over tiger wins
+            //  tiger winning is bad for goat
+            score = this.turn ? -1000 : 1000;
+        }else{
+            score = score +  this.tigers.trapStatus.reduce((a,b)=>a+b) * 250;
+            score = score + this.goats.available.length;
+            score = score -  this.goats.eaten.length * 50;
+            score = score -  this.goats.endangered.length * 26;
+        }
+        return score;
+
+    }
 }
 
 export default Baghchal;
