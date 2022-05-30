@@ -22,8 +22,7 @@ function App({ game }) {
                                                   pos      :  []
                                                 },-1]);
   const [isOver,setIsOver] = useState(false);
-  //for rulesIcon in Options component to change color of svg upon hovering
-  const [isHoveringIcon,setIsHoveringIcon]= useState(false);
+
   const [vsPlayer2,setVsPlayer2] = useState(false);
   const [vsCompGoat,setVsCompGoat] = useState(false);
   const [vsCompTiger,setVsCompTiger] = useState(true);
@@ -130,7 +129,7 @@ function App({ game }) {
   return (
     <div className="baghchal-app">
       <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems}/>
-      <Options handleNewGame = {handleNewGame} boardStatus={boardStatus} isHovering = {isHoveringIcon} setIsHovering = {setIsHoveringIcon} setIsOver = {setIsOver} isOver = {isOver}/>     
+      <Options handleNewGame = {handleNewGame} boardStatus={boardStatus} setIsOver = {setIsOver} isOver = {isOver}/>     
       <Status statusArr = {boardStatus}></Status>
     </div>
   );

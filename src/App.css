@@ -9,7 +9,8 @@
 .baghchal-app{ 
   display: grid;
   grid-template-columns: 39rem 5rem 18rem;
-  grid-template-rows: 12rem 29rem;
+  /* 12rem 29rem */
+  grid-template-rows: 14rem 29rem;
   justify-content: center;
   grid-row-gap: 0px;
   grid-column-gap: 0px;
@@ -40,6 +41,9 @@
   .game-status{
     transform: translateY(-3rem);
   }
+  .options{
+    margin-top:2.5rem ;
+  }
 }
 @media screen and (max-width: 380px) {
   
@@ -49,5 +53,8 @@
   }
   .game-status{
     transform: translateY(-3rem);
+  }
+  .options{
+    margin-top:2.5rem ;
   }
 }
