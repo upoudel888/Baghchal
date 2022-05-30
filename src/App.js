@@ -24,8 +24,8 @@ function App({ game }) {
   const [isOver,setIsOver] = useState(false);
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
-  const [vsCompGoat,setVsCompGoat] = useState(true);
-  const [vsCompTiger,setVsCompTiger] = useState(false);
+  const [vsCompGoat,setVsCompGoat] = useState(false);
+  const [vsCompTiger,setVsCompTiger] = useState(true);
 
 
   const handleClick = (pos) => {

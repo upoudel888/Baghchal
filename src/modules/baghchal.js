@@ -246,6 +246,7 @@ class Baghchal{
                                     updatePathWithJumps(possibleJumps);
                                     break;
                                 default:
+                                    break;
                             }
                         }        
                     }
@@ -500,10 +501,8 @@ class Baghchal{
                 this.goats.eaten.push(this.goats.onBoard.pop());
                 this.goats.pos.splice(this.goats.pos.indexOf(deletePos),1);
                 this.goats.endangered.splice(this.goats.pos.indexOf(deletePos),1);
-            }
-            
+            }  
         }
-        
         this.turn = Number(!enumTurn[tempArr[0]]);
     }
     
@@ -545,24 +544,18 @@ class Baghchal{
                 // updating this.goats
                 this.goats.onBoard.push(this.goats.eaten.pop());
                 this.goats.pos.push(deletePos);
-                this.goats.endangered.splice(this.goats.endangered.indexOf(deletePos),1);
-                
+                this.goats.endangered.splice(this.goats.endangered.indexOf(deletePos),1);    
             }
-            
         }
-
     }
 
     showBoard(){
         console.log(this.board);
     }
 
+    //evaluation function for minMax
     //goat is the maximizing player
     scoreBoard(){
-        // gameover         =  30
-        // tigerTrapped     =  50 each
-        // goatCaptured     =  15 each
-        // goatEndangered   =  10 each
         let score = 0;
 
         if(this.isOver()){
@@ -572,7 +565,6 @@ class Baghchal{
             score = score + this.goats.available.length;
             score = score -  this.goats.eaten.length * 80;
             score = score -  this.goats.endangered.length * 39;
-            //tiger pos
         }
         return score;
 
