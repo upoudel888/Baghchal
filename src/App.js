@@ -20,12 +20,12 @@ function App({ game }) {
                                                   onBoard  : [],
                                                   eaten    : [],                                 // 0 goats eaten/captured at the beginning
                                                   pos      :  []
-                                                },-1]);
+                                                },-1]);                                         // turn Status (-1 signifies game not started)
   const [isOver,setIsOver] = useState(false);
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
-  const [vsCompGoat,setVsCompGoat] = useState(false);
-  const [vsCompTiger,setVsCompTiger] = useState(true);
+  const [vsCompGoat,setVsCompGoat] = useState(true);
+  const [vsCompTiger,setVsCompTiger] = useState(false);
 
 
   const handleClick = (pos) => {
@@ -62,7 +62,7 @@ function App({ game }) {
           arr1 = game.updateWithTiger(pos);
         }
       //user clicks where he was suggested to move the tiger
-      //this also counters condition where user clicks the unsuggested node m
+      //this block also handles condition where user clicks the unsuggested node 
       }else{   
         arr1 = game.updateWithTiger(pos);
         //highlight nodes where goats can be placed if available 
@@ -78,36 +78,50 @@ function App({ game }) {
     setBoardStatus(game.getBoardStatus());
     setIsOver(game.isOver());
 
-    //if AI is playing
-    if(!vsPlayer2){
-      if(vsCompGoat && game.getTurnStatus()){
-        let move = findBestMove(game);
-        let tempArr = move.split('-');
-        if(tempArr.length === 2){
-          setTimeout(()=>{
-            handleClick(Number(tempArr[1]));
-          },400);
-        }else{
+    
+    setTimeout(()=>{
+      //if AI is playing
+      if(!vsPlayer2){
+        if(vsCompGoat && game.getTurnStatus()){
+          //finding the next best move using minMax
+          let move = findBestMove(game);
+          // obtained moves are in the form:
+          // g-0 i.e place a goat in 0
+          // g-1-2 i.e move the goat in pos-1 to pos-2
+          // t-1-2 i.e move the tiger in pos-1 to pos-2
+          // t-1-X-2-3 i.e jump the tiger in pos-1 to pos-3 and capture goat in pos-2
+          let tempArr = move.split('-');
+          //simply put the goat in the position
+          if(tempArr.length === 2){
+            setTimeout(()=>{
+              handleClick(Number(tempArr[1]));
+            },200);
+          }else{
+            //move goat from one position to another
+
+            //first highlight the possible position
+            setTimeout(()=>{
+              handleClick(Number(tempArr[1]));
+            },200);
+            //then move the goat afterwards
+            setTimeout(()=>{
+              handleClick(Number(tempArr[tempArr.length-1]));
+            },400);
+          }
+        }
+        if(vsCompTiger && !game.getTurnStatus()){
+          let move = findBestMove(game);
+          let tempArr = move.split('-');
+          //move tiger from one position to another
           setTimeout(()=>{
             handleClick(Number(tempArr[1]));
           },200);
           setTimeout(()=>{
             handleClick(Number(tempArr[tempArr.length-1]));
-          },600);
+          },400);
         }
       }
-      if(vsCompTiger && !game.getTurnStatus()){
-        let move = findBestMove(game);
-        let tempArr = move.split('-');
-        setTimeout(()=>{
-          handleClick(Number(tempArr[1]));
-        },200);
-        setTimeout(()=>{
-          handleClick(Number(tempArr[tempArr.length-1]));
-        },400);
-
-      }
-    }
+    },215);
   }
   
   const handleNewGame = () => {
