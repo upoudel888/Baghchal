@@ -1,7 +1,21 @@
 import './Canvas.css'
+import React from 'react'
 
 
-const Canvas = ({handleClick,statusArr,isOver,handleNewGame,highlightElems}) => { 
+const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems}) => { 
+    let turnClass =  'turn unveal';
+    // turnstatus is -1 at the very beginning
+    if(statusArr[2] === -1){
+        turnClass = 'turn hide'
+    }    
+    if(isOver){
+        turnClass = 'turn hide';
+    }
+    if(statusArr[1]['onBoard'].length || statusArr[1]['available'].length !== 20 ){
+        if(!isOver){
+            turnClass = `${turnClass} clickable`;
+        }
+    }
     let [highlightPaths,highlightNodes,endangeredNodes] = highlightElems;
     let nodes = Array.from(Array(25).keys());
     let paths = ['0-1', '1-2', '2-3', '3-4',                        //horizontal paths
@@ -51,6 +65,7 @@ const Canvas = ({handleClick,statusArr,isOver,handleNewGame,highlightElems}) => 
     
     return ( 
         
+        <React.Fragment>
         <div className="canvas-container">
             {
                 nodes.map(node => {
@@ -95,6 +110,15 @@ const Canvas = ({handleClick,statusArr,isOver,handleNewGame,highlightElems}) => 
             }
         
         </div>
+
+        <div className={turnClass}> 
+            <span className="title-name">Turn</span><br />
+            { statusArr[2] ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
+                        :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
+            <button className = "give-up-btn"  onClick={()=>{setIsOver(true)}}>Give Up  </button>
+        </div>
+        </React.Fragment>
+
                 
 
             

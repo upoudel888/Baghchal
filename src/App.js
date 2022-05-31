@@ -24,8 +24,8 @@ function App({ game }) {
   const [isOver,setIsOver] = useState(false);
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
-  const [vsCompGoat,setVsCompGoat] = useState(false);
-  const [vsCompTiger,setVsCompTiger] = useState(true);
+  const [vsCompGoat,setVsCompGoat] = useState(true);
+  const [vsCompTiger,setVsCompTiger] = useState(false);
 
 
   const handleClick = (pos) => {
@@ -131,20 +131,20 @@ function App({ game }) {
       setHighlightElems(game.startGame());
       setBoardStatus(game.getBoardStatus());
       if(vsCompGoat){
-        let move = findBestMove(game);
-        var tempArr =  move.split('-');
         setTimeout(()=>{
-          handleClick(Number(tempArr[tempArr.length - 1]));
+            let move = findBestMove(game);
+            var tempArr =  move.split('-');
+            handleClick(Number(tempArr[tempArr.length - 1]));
         },200);
       }
-    },200);
+    },100);
   }
 
   return (
     <div className="baghchal-app">
-      <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems}/>
-      <Options handleNewGame = {handleNewGame} boardStatus={boardStatus} setIsOver = {setIsOver} isOver = {isOver}/>     
-      <Status statusArr = {boardStatus}></Status>
+      <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} setIsOver = {setIsOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems}/>
+      <Options  boardStatus={boardStatus} setIsOver = {setIsOver} isOver = {isOver}/>     
+      <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver}></Status>
     </div>
   );
 }
