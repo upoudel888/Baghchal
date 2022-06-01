@@ -51,10 +51,4 @@
     transform: scale(0.5) rotateZ(90deg);
     margin:auto;
   }
-  /* .game-status{
-    transform: translateY(-3rem);
-  }
-  .options{
-    margin-top:2.5rem ;
-  } */
 }

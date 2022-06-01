@@ -127,3 +127,7 @@ span.title-name{
     box-shadow:  0px 0px 8px 4px rgb(13, 179, 185) !important ;
     border-color : rgb(13, 179, 185) !important;
   }
+  
+  .hidden{
+      visibility: hidden;
+  }

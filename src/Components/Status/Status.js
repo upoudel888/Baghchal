@@ -107,11 +107,14 @@ const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
     
 
     let statusClass = 'status-form-container show-score';
+    let  buttonClass = 'new-game-btn hidden'
     if(statusArr[2] === -1){
         statusClass = 'status-form-container'
+        buttonClass = 'new-game-btn';
     }    
     if(isOver){
         statusClass = 'status-form-container';
+        buttonClass = 'new-game-btn';
     }
 
 
@@ -172,7 +175,7 @@ const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
                                 <span className = {optionClass["vsGoat"][1]}>VS Goat</span>
                             </div>
                         </IconContext.Provider>
-                        <button className = "new-game-btn" onClick={handleNewGame}>New Game</button>
+                        <button className = {buttonClass} onClick={handleNewGame}>New Game</button>
                         
                     </IconContext.Provider>
                     </div>
