@@ -172,9 +172,9 @@ const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
                                 <span className = {optionClass["vsGoat"][1]}>VS Goat</span>
                             </div>
                         </IconContext.Provider>
-                    </IconContext.Provider>
-                    <button className = "new-game-btn" onClick={handleNewGame}>New Game</button>
+                        <button className = "new-game-btn" onClick={handleNewGame}>New Game</button>
                         
+                    </IconContext.Provider>
                     </div>
 
 
