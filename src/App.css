@@ -38,12 +38,12 @@
     justify-content: center;
     align-items: center;
    }
-  .game-status{
+  /* .game-status{
     transform: translateY(-3rem);
   }
   .options{
     margin-top:2.5rem ;
-  }
+  } */
 }
 @media screen and (max-width: 380px) {
   
@@ -51,10 +51,10 @@
     transform: scale(0.5) rotateZ(90deg);
     margin:auto;
   }
-  .game-status{
+  /* .game-status{
     transform: translateY(-3rem);
   }
   .options{
     margin-top:2.5rem ;
-  }
+  } */
 }
