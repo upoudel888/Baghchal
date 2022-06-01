@@ -82,8 +82,9 @@ span.title-name{
     align-items: center;
     margin-left: 4rem;
     margin-top: 0.1rem;
+    
 }
-.click-btn-inner{
+.click-btn > div{
     border : 1px solid white;
     width: 2.2rem;
     height: 2.2rem;
@@ -97,6 +98,7 @@ span.title-name{
 
 .no-click{
     color: #444444;
+    border-color: #444444 !important;
     pointer-events : none;
 }
 
@@ -121,3 +123,7 @@ span.title-name{
     font-size: 1.2rem;
   }
   
+  .active-btn{
+    box-shadow:  0px 0px 8px 4px rgb(13, 179, 185) !important ;
+    border-color : rgb(13, 179, 185) !important;
+  }

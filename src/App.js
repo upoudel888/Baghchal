@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react'
 import { useState } from 'react'
-import { Canvas,Status,Options } from './Components'
+import { Canvas,Status} from './Components'
 import findBestMove from './modules/smartMove';
 
 
@@ -24,7 +24,7 @@ function App({ game }) {
   const [isOver,setIsOver] = useState(false);
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
-  const [vsCompGoat,setVsCompGoat] = useState(true);
+  const [vsCompGoat,setVsCompGoat] = useState(false);
   const [vsCompTiger,setVsCompTiger] = useState(false);
 
 
@@ -125,7 +125,7 @@ function App({ game }) {
   }
   
   const handleNewGame = () => {
-    setTimeout(()=>{
+    
       setHighlightElems([[],[],[]]);
       setIsOver(false);
       setHighlightElems(game.startGame());
@@ -137,14 +137,19 @@ function App({ game }) {
             handleClick(Number(tempArr[tempArr.length - 1]));
         },200);
       }
-    },100);
+    
+  }
+
+  const setMode = (modeArr) =>{
+    setVsPlayer2(modeArr[0]);
+    setVsCompTiger(modeArr[1]);
+    setVsCompGoat(modeArr[2]);
   }
 
   return (
     <div className="baghchal-app">
       <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} setIsOver = {setIsOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems}/>
-      <Options  boardStatus={boardStatus} setIsOver = {setIsOver} isOver = {isOver}/>     
-      <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver}></Status>
+      <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver} setMode = {setMode}></Status>
     </div>
   );
 }

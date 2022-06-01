@@ -1,22 +1,32 @@
 import './Status.css'
 import React from 'react'
-import { GiChecklist,GiGoat,GiTiger,GiTigerHead } from "react-icons/gi";
+import { GiChecklist,GiGoat,GiTigerHead } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 import { RiComputerFill } from "react-icons/ri";
 
 import { useState } from 'react';
 import { IconContext } from 'react-icons';
+import _ from 'lodash';
 
-const Status = ({statusArr,handleNewGame,isOver}) => {
+const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
 
     const [isHovering,setIsHovering]= useState(false);
     const [userOptions,setUserOptions] = useState({
                                                                 //[hovering,selected]
-                                                    'vsPlayer2' : [false,true],         //0
-                                                    'vsComp'    : [false,false],        //1
-                                                    'vsTiger'   : [false,false],        //2
-                                                    'vsGoat'    : [false,false]         //3
+                                                    'vsPlayer2' : [false,true],                 //0
+                                                    'vsComp'    : [false,false],                //1
+                                                    'vsTiger'   : [false,false],          //2
+                                                    'vsGoat'    : [false,false]           //3
                                                 });
+    const [optionClass,setOptionClass] = useState({
+            "innerIconsStyle" : {size:'1.3rem' ,style : {zIndex : -1 , marginTop : 6}},
+            'vsPlayer2' : 'vsPlayer2 active-btn',                 
+            'vsComp'    : 'vsComp',            
+                                        //for inner text
+            'vsTiger'   : ['vsTiger no-click','title-name no-click'],          
+            'vsGoat'    : ['vsGoat no-click','title-name no-click'] 
+
+    });
 
                                                 
     var enumKey = {
@@ -31,34 +41,70 @@ const Status = ({statusArr,handleNewGame,isOver}) => {
         setUserOptions(userOptn);
     }
     
-    const handleClickOptn = (key)=>{
-        let userOptn = JSON.parse(JSON.stringify(userOptions));
-    
-        switch(key){
-            case '0':
-                alert('vsPlayer2 is being selected');
-                break;
-            case '1':
-                alert('vsComp is being selected');
-                break;
-            case '2':
-                alert('vsTiger is being selected');
-                break;
-            case '3':
-                alert('vsGoat is being selected');
-                break;
-            default:
-                break;
+    const manageClassName = (userOptn)=>{
+        let temp = _.cloneDeep(optionClass);
+
+        if(userOptn['vsPlayer2'][1]){
+
+            temp['vsPlayer2'] = 'vsPlayer2 active-btn';
+            
+            temp['vsComp'] = 'vsComp';
+            temp['vsTiger'] = ['vsComp no-click','title-name no-click'];
+            temp['vsGoat'] = ['vsComp no-click','title-name no-click'];
+            
+        }
+        if(userOptn['vsComp'][1]){
+            temp['innerIconsStyle'] = {size:'1.3rem' ,style : {zIndex : -1 ,marginTop : 6}};
+            temp['vsComp'] = 'vsComp active-btn';
+
+            temp['vsPlayer2'] = 'vsPlayer2';
+            temp['vsTiger'] = ['vsTiger active-btn','title-name'];
+            temp['vsGoat'] = ['vsGoat','title-name'];
+            
+        }else{
+            temp['innerIconsStyle'] = {size:'1.3rem' ,style : {zIndex : -1 ,marginTop : 6},color: 'rgb(68,68,68)'};
+            temp['vsComp'] = 'vsComp';
+            temp['vsTiger'] = ['vsTiger no-click','title-name no-click'];
+            temp['vsGoat'] = ['vsGoat no-click','title-name no-click'];
+        }
+
+        if(userOptn['vsGoat'][1]){
+            temp['vsGoat'] = ['vsGoat active-btn','title-name'];
+            temp['vsTiger'] = ['vsTiger','title-name'];
+        }
+        if(userOptn['vsTiger'][1])
+        {
+            temp['vsTiger'] = ['vsTiger active-btn','title-name'];
+            temp['vsGoat'] = ['vsGoat','title-name'];
 
         }
+        setUserOptions(userOptn)
+        setOptionClass(temp);
+    }
+    const handleClickOptn = (key)=>{
+        let userOptn = JSON.parse(JSON.stringify(userOptions));
+        for(let key1 in userOptn){
+            if(enumKey[key]===key1){
+                //change selected to true
+                userOptn[key1][1] = true;  
+            }else{
+                if(enumKey[key] !== 'vsPlayer2' && key1 === 'vsComp') continue;
+                if(enumKey[key] === 'vsComp' && key1 === 'vsTiger'){
+                    userOptn[key1] = [false,true];
+                }else{
+                    userOptn[key1] = [false,false];
+                }
+            }
+        }
+
+        setUserOptions(userOptn);
+        manageClassName(userOptn);
+        setMode([userOptn['vsPlayer2'][1],userOptn['vsTiger'][1],userOptn['vsGoat'][1]]);   
     }
 
 
-    const handleFormSubmit = (e)=>{
-        e.preventDefault();
-        console.log(e.target);
-        handleNewGame();
-    }
+
+    
 
     let statusClass = 'status-form-container show-score';
     if(statusArr[2] === -1){
@@ -82,48 +128,50 @@ const Status = ({statusArr,handleNewGame,isOver}) => {
                 <div className="status-form-container-inner">
                         
                     <div className="user-options">
-                    <IconContext.Provider value = {{size:'1.3rem' ,style : {marginTop : 6}}}>
+                    <IconContext.Provider value = {{size:'1.3rem' ,style : {zIndex : -1 ,marginTop : 6}}}>
                         {/* vs Player2 */}
                         <div className="click-btn">
-                            <div className="vsPlayer2 click-btn-inner " 
+                            <div className={optionClass["vsPlayer2"]} 
                                 onMouseEnter={()=>{handleHoverOptn('0',true)}} 
                                 onMouseLeave={()=>{handleHoverOptn('0',false)}} 
                                 onClick = {()=>{handleClickOptn('0')}}>
-                                { (userOptions['vsPlayer2'][0]) ? <FaUser color = 'rgb(13, 179, 185)'/> : <FaUser color = 'white'/>}
+                                    {/* if hovering or button is active */}
+                                { (userOptions['vsPlayer2'][0] || userOptions['vsPlayer2'][1]) ? <FaUser color = 'rgb(13, 179, 185)'/> : <FaUser color = 'white'/>}
                             </div>
                             <span className = "title-name">VS Player2</span>
                         </div>
 
                         {/* vs computer */}
                         <div className="click-btn">
-                            <div className="vsComp click-btn-inner " 
+                            <div className={optionClass["vsComp"]} 
                                 onMouseEnter={()=>{handleHoverOptn('1',true)}} 
                                 onMouseLeave={()=>{handleHoverOptn('1',false)}} 
                                 onClick = {()=>{handleClickOptn('1')}}>
-                                { (userOptions['vsComp'][0]) ? <RiComputerFill color = 'rgb(13, 179, 185)'/> : <RiComputerFill color = 'white'/>}
+                                { (userOptions['vsComp'][0] || userOptions['vsComp'][1]) ? <RiComputerFill color = 'rgb(13, 179, 185)'/> : <RiComputerFill color = 'white'/>}
                             </div>
                             <span className = "title-name">VS Computer</span>
                         </div>
-                        {/* vs Tiger */}
-                        <div className="click-btn no-click">
-                            <div className="vsTiger click-btn-inner " 
-                                onMouseEnter={()=>{handleHoverOptn('2',true)}} 
-                                onMouseLeave={()=>{handleHoverOptn('2',false)}} 
-                                onClick = {()=>{handleClickOptn('2')}}>
-                                { (userOptions['vsTiger'][0]) ? <GiTigerHead color = 'rgb(13, 179, 185)'/> : <GiTigerHead color = 'white'/>}
+                        <IconContext.Provider value = {optionClass['innerIconsStyle']}>
+                            <div className="click-btn">
+                                <div className={optionClass["vsTiger"][0]} 
+                                    onMouseEnter={()=>{handleHoverOptn('2',true)}} 
+                                    onMouseLeave={()=>{handleHoverOptn('2',false)}} 
+                                    onClick = {()=>{handleClickOptn('2')}}>
+                                    { (userOptions['vsTiger'][0] || userOptions['vsTiger'][1]) ? <GiTigerHead color = 'rgb(13, 179, 185)'/> : <GiTigerHead/>}
+                                </div>
+                                <span className = {optionClass["vsTiger"][1]}>VS Tiger</span>
                             </div>
-                            <span className = "title-name no-click">VS Tiger</span>
-                        </div>
-                        {/* vs Goat */}
-                        <div className="click-btn ">
-                            <div className="vsGoat click-btn-inner " 
-                                onMouseEnter={()=>{handleHoverOptn('3',true)}} 
-                                onMouseLeave={()=>{handleHoverOptn('3',false)}} 
-                                onClick = {()=>{handleClickOptn('3')}}>
-                                { (userOptions['vsGoat'][0]) ? <GiGoat color = 'rgb(13, 179, 185)'/> : <GiGoat color = 'white'/>}
+                            {/* vs Goat */}
+                            <div className="click-btn ">
+                                <div className={optionClass["vsGoat"][0]}
+                                    onMouseEnter={()=>{handleHoverOptn('3',true)}} 
+                                    onMouseLeave={()=>{handleHoverOptn('3',false)}} 
+                                    onClick = {()=>{handleClickOptn('3')}}>
+                                    { (userOptions['vsGoat'][0] || userOptions['vsGoat'][1]) ? <GiGoat color = 'rgb(13, 179, 185)'/> : <GiGoat/>}
+                                </div>
+                                <span className = {optionClass["vsGoat"][1]}>VS Goat</span>
                             </div>
-                            <span className = "title-name no-click">VS Goat</span>
-                        </div>
+                        </IconContext.Provider>
                     </IconContext.Provider>
                     <button className = "new-game-btn" onClick={handleNewGame}>New Game</button>
                         
