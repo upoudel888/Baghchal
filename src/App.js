@@ -86,6 +86,7 @@ function App({ game }) {
           //finding the next best move using minMax
           let move = findBestMove(game);
           // obtained moves are in the form:
+          if(!move) alert("there was an issue");
           // g-0 i.e place a goat in 0
           // g-1-2 i.e move the goat in pos-1 to pos-2
           // t-1-2 i.e move the tiger in pos-1 to pos-2
@@ -98,7 +99,7 @@ function App({ game }) {
             },200);
           }else{
             //move goat from one position to another
-
+            
             //first highlight the possible position
             setTimeout(()=>{
               handleClick(Number(tempArr[1]));
@@ -111,6 +112,7 @@ function App({ game }) {
         }
         if(vsCompTiger && !game.getTurnStatus()){
           let move = findBestMove(game);
+          if(!move) alert("there was an issue");
           let tempArr = move.split('-');
           //move tiger from one position to another
           setTimeout(()=>{

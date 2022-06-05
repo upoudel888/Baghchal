@@ -562,8 +562,9 @@ class Baghchal{
             score = this.turn ? -1000 : 1000;
         }else{
             let noOfTrapped= this.tigers.trapStatus.reduce((a,b)=>a+b);
-            score = score +   noOfTrapped * 250;
-            score = score + (this.goats.onBoard.length+this.goats.available.length) * (1-(noOfTrapped/4)) * 2;
+            let noOfGoatsOnPlay = this.goats.onBoard.length + this.goats.available.length;
+            score = score +   noOfTrapped * 250 * (noOfGoatsOnPlay/20);
+            score = score + noOfGoatsOnPlay * (1-(noOfTrapped/4)) * 2;
             score = score -  this.goats.eaten.length * 50;
             score = score -  this.goats.endangered.length * 7;
         }
