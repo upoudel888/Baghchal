@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Baghchal/static/css/main.5a449935.css",
-    "main.js": "/Baghchal/static/js/main.59827947.js",
+    "main.js": "/Baghchal/static/js/main.13c9d29e.js",
     "static/media/TIGER.png": "/Baghchal/static/media/TIGER.3aabfc71394103ad478e.png",
     "static/media/GOAT.png": "/Baghchal/static/media/GOAT.93a2cd5bc73afa880c29.png",
     "index.html": "/Baghchal/index.html",
     "main.5a449935.css.map": "/Baghchal/static/css/main.5a449935.css.map",
-    "main.59827947.js.map": "/Baghchal/static/js/main.59827947.js.map"
+    "main.13c9d29e.js.map": "/Baghchal/static/js/main.13c9d29e.js.map"
   },
   "entrypoints": [
     "static/css/main.5a449935.css",
-    "static/js/main.59827947.js"
+    "static/js/main.13c9d29e.js"
   ]
 }
