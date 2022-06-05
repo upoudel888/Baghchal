@@ -81,7 +81,7 @@ var score    = null;
                                             //currentmax, currentmin
 function findMoveNegaMaxAlphaBeta(gs,validArr,alpha,beta,depth = 2){
 
-    if(depth === 0){
+    if(depth === 0 || gs.isOver()){
         let multiplier = gs.getTurnStatus() ? 1 : -1;
         return multiplier * gs.scoreBoard();
     }

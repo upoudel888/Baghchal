@@ -9,6 +9,8 @@ class Baghchal{
     prevSelection;                          // where user previously clicked to move the piece
     prevSuggestions;                        // where user was suggested to move to 
 
+    moveHistory;
+
 
     constructor(){
         this.initialize();
@@ -43,7 +45,8 @@ class Baghchal{
     
         this.turn = 1;                                      // 1 means goat
         this.prevSelection = -1;                            // no selection at the beginning
-        this.prevSuggestions = [];                             
+        this.prevSuggestions = [];  
+        this.moveHistory = [];                           
     }
 
     setParent(){
@@ -285,6 +288,9 @@ class Baghchal{
             this.goats.onBoard.push(this.goats.available.pop());
             this.goats.pos.push(pos);
 
+            //updating moveHistory
+            this.moveHistory.push(`g-${pos}`);
+
         }else{
             if(this.goats.onBoard.length){
                 //cancel suggestions
@@ -310,6 +316,9 @@ class Baghchal{
                 // then you rename the class
                 goat1.classList.remove(`goat-${this.prevSelection}`);
                 goat1.classList.add(`goat-${pos}`);
+                
+                //updating moveHistory
+                this.moveHistory.push(`g-${this.prevSelection}-${pos}`);
             }
         }
 
@@ -347,6 +356,9 @@ class Baghchal{
         if(factor1 === 1 || factor2 === 5 || factor1 === 4 || factor2 === 6){             // normal manuevering movements
             tiger1.style.marginLeft = `${(pos%5)*8}rem`;
             tiger1.style.marginTop =`${Math.floor(pos/5)*8}rem` ;
+
+            //updating moveHistory
+            this.moveHistory.push(`t-${this.prevSelection}-${pos}`);
 
         }else if(factor1 === 2 || factor2 === 10 || factor1 === 8 || factor2 === 12){    //jump to capture movement           
             tiger1.style.marginLeft = `${(pos%5)*8}rem`;
@@ -388,6 +400,9 @@ class Baghchal{
             //updating this.goats
             this.goats.eaten.push(this.goats.onBoard.pop());
             this.goats.pos.splice(this.goats.pos.indexOf(removePos),1);
+
+            //updating moveHistory
+            this.moveHistory.push(`t-${this.prevSelection}-X-${removePos}-${pos}`);
 
         }
 
@@ -481,6 +496,7 @@ class Baghchal{
             this.goats.onBoard.push(this.goats.available.pop());
             this.goats.pos.push(from);
 
+
         //goats and tigers are maneuvering
         }else{
             
@@ -504,6 +520,9 @@ class Baghchal{
             }  
         }
         this.turn = Number(!enumTurn[tempArr[0]]);
+
+        //updating moveHistory
+        this.moveHistory.push(move)
     }
     
     
@@ -547,10 +566,51 @@ class Baghchal{
                 this.goats.endangered.splice(this.goats.endangered.indexOf(deletePos),1);    
             }
         }
+        //updating moveHistory
+        this.moveHistory.splice(this.moveHistory.lastIndexOf(move),1);    
+    }
+
+    getMoveHistory(){
+        return JSON.stringify(this.moveHistory);
     }
 
     showBoard(){
         console.log(this.board);
+    }
+
+    
+
+
+    checkRepetition(depth=3){
+        if(depth === 15) return 0;
+    
+        let startSplitAdd = this.moveHistory.length - depth * 4 ;
+        let arr1 = this.moveHistory.slice(startSplitAdd,startSplitAdd+depth*2);
+        let arr2 = this.moveHistory.slice(startSplitAdd+depth*2);
+    
+        //every element must have length 3 for them to normally maneuver
+        //or else the game state will change due to (goat capture t-1-X-2-3 or goat placement g-1 )
+        if((!arr1.every((elem)=>elem.split('-').length===3) || !arr2.every((elem)=>elem.split('-').length===3) )){  
+            console.log('here')
+            return 0;
+        }
+    
+        let finalPos = arr2.length-1;
+        for(let i = 0; i < (finalPos)/2; i = i + 2){
+            [arr2[i],arr2[finalPos-i-1]] = [arr2[finalPos-i-1],arr2[i]];
+            [arr2[i+1],arr2[finalPos-i]] = [arr2[finalPos-i],arr2[i+1]];
+        }
+        arr2 = arr2.map(elem => {
+            let tempArr = elem.split('-');
+            [tempArr[1],tempArr[tempArr.length-1]] = [tempArr[tempArr.length-1],tempArr[1]];
+            return tempArr.join('-');
+        })
+    
+        if(JSON.stringify(arr1)===JSON.stringify(arr2)){
+            return depth;
+        }else{
+            return this.checkRepetition(depth+1);
+        }   
     }
 
     //evaluation function for minMax
@@ -563,6 +623,7 @@ class Baghchal{
         }else{
             let noOfTrapped= this.tigers.trapStatus.reduce((a,b)=>a+b);
             let noOfGoatsOnPlay = this.goats.onBoard.length + this.goats.available.length;
+                                
             score = score +   noOfTrapped * 250 * (noOfGoatsOnPlay/20);
             score = score + noOfGoatsOnPlay * (1-(noOfTrapped/4)) * 2;
             score = score -  this.goats.eaten.length * 50;

@@ -124,6 +124,10 @@ function App({ game }) {
         }
       }
     },215);
+    console.log(game.getMoveHistory());
+    if(game.checkRepetition()){
+      alert("Repetition in moves Detected and it's bad very bad");
+    }
   }
   
   const handleNewGame = () => {
