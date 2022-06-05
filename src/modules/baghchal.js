@@ -561,10 +561,11 @@ class Baghchal{
         if(this.isOver()){
             score = this.turn ? -1000 : 1000;
         }else{
-            score = score +  this.tigers.trapStatus.reduce((a,b)=>a+b) * 125;
-            score = score + this.goats.available.length;
-            score = score -  this.goats.eaten.length * 80;
-            score = score -  this.goats.endangered.length * 39;
+            let noOfTrapped= this.tigers.trapStatus.reduce((a,b)=>a+b);
+            score = score +   noOfTrapped * 250;
+            score = score + (this.goats.onBoard.length+this.goats.available.length) * (1-(noOfTrapped/4)) * 2;
+            score = score -  this.goats.eaten.length * 50;
+            score = score -  this.goats.endangered.length * 7;
         }
         return score;
 

@@ -86,10 +86,20 @@ function findMoveNegaMaxAlphaBeta(gs,validArr,alpha,beta,depth = 2){
         return multiplier * gs.scoreBoard();
     }
 
-    let maxScore = -1000;
+    let maxScore = -10000;
     for(let i in validArr){
         gs.makeMove(validArr[i]);
-        score = -findMoveNegaMaxAlphaBeta(gs,gs.getValidMoves(),-beta,-alpha,depth-1);
+        //gs.makeMove toggles turn
+        //so 1 means tiger
+        //and 0 means goat
+        // this block makes sure to choose branch with lowest depth to gameOver
+        if(gs.getTurnStatus()){
+            score = -depth-findMoveNegaMaxAlphaBeta(gs,gs.getValidMoves(),-beta,-alpha,depth-1);
+        }else{
+            score = depth-findMoveNegaMaxAlphaBeta(gs,gs.getValidMoves(),-beta,-alpha,depth-1);
+        }
+        
+        
         if(score > maxScore){
             maxScore = score;
             if(depth === 4){
