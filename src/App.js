@@ -126,7 +126,7 @@ function App({ game }) {
     },215);
     console.log(game.getMoveHistory());
     if(game.checkRepetition()){
-      alert("Repetition in moves Detected and it's bad very bad");
+      alert("Repetition in moves Detected\n Assume draw and restart the game");
     }
   }
   

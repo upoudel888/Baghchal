@@ -587,6 +587,13 @@ class Baghchal{
         let startSplitAdd = this.moveHistory.length - depth * 4 ;
         let arr1 = this.moveHistory.slice(startSplitAdd,startSplitAdd+depth*2);
         let arr2 = this.moveHistory.slice(startSplitAdd+depth*2);
+
+        // if moves happen in unidirectional cycles
+        if(JSON.stringify(arr1) === JSON.stringify(arr2)){
+            return 1;
+        }
+
+        // for the moves that pulsate
     
         //every element must have length 3 for them to normally maneuver
         //or else the game state will change due to (goat capture t-1-X-2-3 or goat placement g-1 )
@@ -627,7 +634,7 @@ class Baghchal{
             score = score +   noOfTrapped * 250 * (noOfGoatsOnPlay/20);
             score = score + noOfGoatsOnPlay * (1-(noOfTrapped/4)) * 2;
             score = score -  this.goats.eaten.length * 50;
-            score = score -  this.goats.endangered.length * 7;
+            score = score -  this.goats.endangered.length * 10;
         }
         return score;
 
