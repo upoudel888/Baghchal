@@ -6,7 +6,7 @@ function findBestMove(game){
     let validArr = gs.getValidMoves();
     // findMoveMinMax(gs,validArr,4);
     // findMoveNegaMax(gs,validArr,4);
-    findMoveNegaMaxAlphaBeta(gs,validArr,-1000,1000,4);
+    findMoveNegaMaxAlphaBeta(gs,validArr,-1000,1000,6);
     return move
 }
 
@@ -81,7 +81,7 @@ var score    = null;
                                             //currentmax, currentmin
 function findMoveNegaMaxAlphaBeta(gs,validArr,alpha,beta,depth = 2){
 
-    if(depth === 0 || gs.isOver()){
+    if(depth === 0){
         let multiplier = gs.getTurnStatus() ? 1 : -1;
         return multiplier * gs.scoreBoard();
     }
@@ -102,7 +102,7 @@ function findMoveNegaMaxAlphaBeta(gs,validArr,alpha,beta,depth = 2){
         
         if(score > maxScore){
             maxScore = score;
-            if(depth === 4){
+            if(depth === 6){
                 move = validArr[i];
             }
         }

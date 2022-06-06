@@ -628,16 +628,19 @@ class Baghchal{
         if(this.isOver()){
             score = this.turn ? -1000 : 1000;
         }else{
-            let noOfTrapped= this.tigers.trapStatus.reduce((a,b)=>a+b);
-            let noOfGoatsOnPlay = this.goats.onBoard.length + this.goats.available.length;
-                                
-            score = score +   noOfTrapped * 250 * (noOfGoatsOnPlay/20);
-            score = score + noOfGoatsOnPlay * (1-(noOfTrapped/4)) * 2;
+            let noOfTrapped = this.tigers.trapStatus.reduce((a,b)=>a+b);
+
+            //reward the trap only if no goats are endangered
+            if(!this.goats.endangered.length){
+                score = score +   noOfTrapped * 250;
+            }else{
+                score = score + noOfTrapped * 10;
+            }
             score = score -  this.goats.eaten.length * 50;
-            score = score -  this.goats.endangered.length * 10;
+            score = score -   10 * this.goats.endangered.length ;
+            
         }
         return score;
-
     }
 }
 
