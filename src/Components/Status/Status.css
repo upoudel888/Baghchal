@@ -37,11 +37,38 @@
 
 .game-status{
     transform: rotateY(180deg);
+    display: flex;
+    flex-direction: row;
 }
 
-.game-status > div.status{
+.move-history{
+    width: 40%;
+    border-left: 1px solid rgb(183, 182, 182);
+    padding-top: 1.7rem;
+}
+.histories{
+    overflow-y: auto;
+    height: 85%;
+    margin-top: 0.5rem;
+    line-height: 1.5rem;
+}
+.move{
+    display: block;
+}
+
+.status-main{
+    display: flex;
+    flex-direction: column;
+    width : 60%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+div.status{
     width: 18rem;
-    padding: 0.8rem;  
+    padding: 0.5rem;  
 }
 
 .title-name{
@@ -51,7 +78,6 @@
     font-size: 1.5rem;
     
 }
-
 
 
 .rules-btn{
@@ -102,10 +128,7 @@ span.title-name{
     pointer-events : none;
 }
 
-.game-status{
-    display: flex;
-    flex-direction: column;
-}
+
 
 .new-game-btn{
     width: 60% !important;

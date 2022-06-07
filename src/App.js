@@ -22,6 +22,7 @@ function App({ game }) {
                                                   pos      :  []
                                                 },-1]);                                         // turn Status (-1 signifies game not started)
   const [isOver,setIsOver] = useState(false);
+  const [moveHistory,setMoveHistory] = useState([]);
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
   const [vsCompGoat,setVsCompGoat] = useState(false);
@@ -124,7 +125,7 @@ function App({ game }) {
         }
       }
     },215);
-    console.log(game.getMoveHistory());
+    setMoveHistory(game.getMoveHistory());
     if(game.checkRepetition()){
       alert("Repetition in moves Detected\n Assume draw and restart the game");
     }
@@ -133,6 +134,7 @@ function App({ game }) {
   const handleNewGame = () => {
     
       setHighlightElems([[],[],[]]);
+      setMoveHistory([]);
       setIsOver(false);
       setHighlightElems(game.startGame());
       setBoardStatus(game.getBoardStatus());
@@ -155,7 +157,7 @@ function App({ game }) {
   return (
     <div className="baghchal-app">
       <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} setIsOver = {setIsOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems}/>
-      <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver} setMode = {setMode}></Status>
+      <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver} setMode = {setMode} moveHistory = {moveHistory}></Status>
     </div>
   );
 }

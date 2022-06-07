@@ -570,8 +570,12 @@ class Baghchal{
         this.moveHistory.splice(this.moveHistory.lastIndexOf(move),1);    
     }
 
+    //  spread opreator creates a new array
+    // this way we don't send a mutated array(reacted doesn't detect it)
+    // instead a new array is sent and react can detected change
+    
     getMoveHistory(){
-        return JSON.stringify(this.moveHistory);
+        return [...this.moveHistory];
     }
 
     showBoard(){

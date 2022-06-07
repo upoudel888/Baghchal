@@ -1,14 +1,14 @@
 import './Status.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GiChecklist,GiGoat,GiTigerHead } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 import { RiComputerFill } from "react-icons/ri";
 
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import { IconContext } from 'react-icons';
 import _ from 'lodash';
 
-const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
+const Status = ({statusArr,setMode,handleNewGame,isOver,moveHistory}) => {
 
     const [isHovering,setIsHovering]= useState(false);
     const [userOptions,setUserOptions] = useState({
@@ -105,7 +105,7 @@ const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
 
 
     
-
+    //for flipping of the status-form-container
     let statusClass = 'status-form-container show-score';
     let  buttonClass = 'new-game-btn hidden'
     if(statusArr[2] === -1){
@@ -118,8 +118,22 @@ const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
     }
 
 
+    //creating a ref to scroll to bottom of the move History
+    const movesParent =  useRef(null);
+    const scrollToBottom = ()=>{
+        const domNode = movesParent.current;
+        if(domNode){
+            domNode.scrollTop = domNode.scrollHeight;
+        }
+    }
+    useEffect(()=>{
+        scrollToBottom();
+    },[moveHistory]);
+
+
     return ( 
         <React.Fragment>
+
             <div className="rules-btn" >
                     <div className="rules" onMouseEnter={()=>{setIsHovering(true)}} onMouseLeave={()=>{setIsHovering(false)}} onClick = {()=>{alert("Work in progress")}}>
                         { (isHovering) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
@@ -129,7 +143,7 @@ const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
 
             <div className={statusClass}>
                 <div className="status-form-container-inner">
-                        
+     
                     <div className="user-options">
                     <IconContext.Provider value = {{size:'1.3rem' ,style : {zIndex : -1 ,marginTop : 6}}}>
                         {/* vs Player2 */}
@@ -182,22 +196,38 @@ const Status = ({statusArr,setMode,handleNewGame,isOver}) => {
 
 
                     <div className="game-status">
-                        <div className="status">
-                            <span className="title-name">Goats Available </span><br />
-                            <span className="display-numbers">{statusArr[1]['available'].length} / 20</span>           
+                        
+                        <div className="status-main">
+                            <div className="status">
+                                <span className="title-name">Goats Available </span><br />
+                                <span className="display-numbers">{statusArr[1]['available'].length} / 20</span>           
+                            </div>
+                            <div className="status">
+                                <span className="title-name">Goats on board</span><br />
+                                <span className="display-numbers">{statusArr[1]['onBoard'].length} </span><br />
+                            </div>
+                            <div className="status">
+                                <span className="title-name">Goats Captured</span><br />
+                                <span className="display-numbers">{statusArr[1]['eaten'].length} / 20</span><br />
+                            </div>
+                            <div className="status">
+                                <span className="title-name">Tigers Trapped</span><br />
+                                <span className="display-numbers"> {statusArr[0]['trapStatus'].reduce((a,b)=>(a+b))} / 4</span><br />
+                            </div>   
                         </div>
-                        <div className="status">
-                            <span className="title-name">Goats on board</span><br />
-                            <span className="display-numbers">{statusArr[1]['onBoard'].length} </span><br />
+
+                    
+                        <div className="move-history">
+                            <span className='title-name'>Moves <br /></span>
+                            <div className="histories" ref = {movesParent}>
+                                {
+                                    moveHistory.map((move,index) => {
+                                        return <React.Fragment key = {index}>{move} <br/></React.Fragment>
+                                    })
+                                }
+                            </div>
+
                         </div>
-                        <div className="status">
-                            <span className="title-name">Goats Captured</span><br />
-                            <span className="display-numbers">{statusArr[1]['eaten'].length} / 20</span><br />
-                        </div>
-                        <div className="status">
-                            <span className="title-name">Tigers Trapped</span><br />
-                            <span className="display-numbers"> {statusArr[0]['trapStatus'].reduce((a,b)=>(a+b))} / 4</span><br />
-                        </div>   
                     </div>        
                 </div>
             </div>
