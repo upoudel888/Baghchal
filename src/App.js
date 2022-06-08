@@ -30,6 +30,7 @@ function App({ game }) {
 
 
   const handleClick = (pos) => {
+    if(game.isOver()) return;
     //array used to Highlight Nodes and Vertices later on
     let arr1 = [];
     //goats turn
@@ -87,7 +88,7 @@ function App({ game }) {
           //finding the next best move using minMax
           let move = findBestMove(game);
           // obtained moves are in the form:
-          if(!move) alert("there was an issue");
+          if(!move) alert("There was an issue \n SC and send it to me");
           // g-0 i.e place a goat in 0
           // g-1-2 i.e move the goat in pos-1 to pos-2
           // t-1-2 i.e move the tiger in pos-1 to pos-2
@@ -113,7 +114,7 @@ function App({ game }) {
         }
         if(vsCompTiger && !game.getTurnStatus()){
           let move = findBestMove(game);
-          if(!move) alert("there was an issue");
+          if(!move) alert("There was an issue.. help me with a SC ");
           let tempArr = move.split('-');
           //move tiger from one position to another
           setTimeout(()=>{
@@ -126,7 +127,7 @@ function App({ game }) {
       }
     },215);
     setMoveHistory(game.getMoveHistory());
-    if(game.checkRepetition()){
+    if(!game.isOver() && game.checkRepetition()){
       alert("Repetition in moves Detected\n Assume draw and restart the game");
     }
   }
@@ -138,6 +139,7 @@ function App({ game }) {
       setIsOver(false);
       setHighlightElems(game.startGame());
       setBoardStatus(game.getBoardStatus());
+      console.log(vsPlayer2,vsCompTiger,vsCompGoat);
       if(vsCompGoat){
         setTimeout(()=>{
             let move = findBestMove(game);

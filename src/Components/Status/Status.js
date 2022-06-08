@@ -36,6 +36,7 @@ const Status = ({statusArr,setMode,handleNewGame,isOver,moveHistory}) => {
         '3' : 'vsGoat'
     }
     const handleHoverOptn = (key,boolVal)=>{
+        //making a copy to change
         let userOptn = JSON.parse(JSON.stringify(userOptions));
         userOptn[enumKey[key]][0] = boolVal;
         setUserOptions(userOptn);

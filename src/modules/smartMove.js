@@ -2,11 +2,14 @@ import _ from 'lodash';
 var move = null;
 function findBestMove(game){
     let gs = _.cloneDeep(game);
-    move = null;
     let validArr = gs.getValidMoves();
+    console.log(JSON.stringify(validArr));
     // findMoveMinMax(gs,validArr,4);
     // findMoveNegaMax(gs,validArr,4);
-    findMoveNegaMaxAlphaBeta(gs,validArr,-1000,1000,4);
+    if(validArr){
+        findMoveNegaMaxAlphaBeta(gs,validArr,-1000,1000,4);
+    }
+
     return move
 }
 
@@ -81,12 +84,12 @@ var score    = null;
                                             //currentmax, currentmin
 function findMoveNegaMaxAlphaBeta(gs,validArr,alpha,beta,depth = 2){
 
-    if(depth === 0){
+    if(depth === 0 || gs.isOver()){
         let multiplier = gs.getTurnStatus() ? 1 : -1;
         return multiplier * gs.scoreBoard();
     }
 
-    let maxScore = -10000;
+    let maxScore = -Infinity;
     for(let i in validArr){
         gs.makeMove(validArr[i]);
         //gs.makeMove toggles turn
