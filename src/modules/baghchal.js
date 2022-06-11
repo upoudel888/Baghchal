@@ -30,6 +30,7 @@ class Baghchal{
         
         this.tigers = {
             trapStatus  : [0,0,0,0],                         // 1 means trapped  and 0 means not trapped
+            friendlyTrap : [0,0,0,0],
             pos         : [0,4,20,24],                              // tigers spawn at four corners of the board
             validMoves  : []
 
@@ -75,8 +76,11 @@ class Baghchal{
     }
 
     isOver(){
-        if(this.goats.eaten.length === 20 ) return 1;
-        return this.tigers.trapStatus.reduce((a,b)=>a+b) === 4;   
+        if(this.goats.eaten.length === 5 ) return 1;
+        //if it is goat's turn and there are no valid moves
+        if(this.goats.validMoves.length === 0 && this.turn ) return 2;
+        if(this.tigers.trapStatus.reduce((a,b)=>a+b) === 4) return 3;
+        return 0;   
     }
 
     wasPreviousSelection(pos){
@@ -113,13 +117,17 @@ class Baghchal{
             this.parent.appendChild(elem);
 
         });
+
+        //get valid moves of goats and tigers
+        this.getValidMoves();
+
         return this.highlightNodes();   
     }
 
     //to highlight nodes where AVAILABLE GOATS can be placed
-    highlightNodes(){
+    highlightNodes(computingValidMoves = false){
         let possibleNodes = [];
-        if(this.turn === 1){
+        if(this.turn === 1 || computingValidMoves){
             for(let i = 0; i<5; i++){
                 for(let j = 0; j< 5; j++){
                     if(this.board[i][j]===null){
@@ -147,8 +155,8 @@ class Baghchal{
         if(pos%2 ===0){ 
             possibleMoves = [
                 [pos-1,pos+1],              //       left        right
-                [pos+5,pos+5-1,pos+5+1],    //top    top-left    top-right
-                [pos-5,pos-5-1,pos-5+1],    //bottom bottom-left bottom-right
+                [pos+5,pos+5-1,pos+5+1],    //bottom bottom-left bottom-right
+                [pos-5,pos-5-1,pos-5+1],    //top    top-left    top-right
             ];
         }else{
             possibleMoves = [  
@@ -322,12 +330,13 @@ class Baghchal{
             }
         }
 
-        //checking for trapped tigers
         this.computeValidMovesTigers();
+        this.computeValidMovesGoats();
         
         this.prevSuggestions = [];
         this.prevSelection = -1;
         this.turn = 0;               // toggle turns
+
 
         return [[],[],[]]; // highlightedNodes disappear
     }
@@ -413,10 +422,10 @@ class Baghchal{
         // then you rename the class
         tiger1.classList.remove(`tiger-${this.prevSelection}`);
         tiger1.classList.add(`tiger-${pos}`);
-         
-        //checking for trapped tigers
-        this.computeValidMovesTigers();
 
+        this.computeValidMovesGoats();
+        this.computeValidMovesTigers();
+         
         this.prevSuggestions = [];
         this.prevSelection = -1;
         this.turn = 1;
@@ -439,6 +448,7 @@ class Baghchal{
     computeValidMovesTigers(){
         // clearing previous valid moves
         this.tigers.validMoves = [];
+        this.tigers.friendlyTrap = [];
         this.goats.endangered = [];
         // calculating new valid moves
         for(let i in this.tigers.pos){
@@ -447,8 +457,7 @@ class Baghchal{
             // tempArr[1].lenght === 0 means there are no valid moves left for that tigers
             // i.e it is trapped
             this.tigers['trapStatus'][i] = tempArr[1].length ? 0 : 1;
-
-            // tempArr[2].forEach(pos => this.goats['endangered'].push(pos));
+        
             if(tempArr[2].length){
                 this.goats['endangered'].push(...tempArr[2]);
             }
@@ -457,14 +466,36 @@ class Baghchal{
             let moves =  tempArr[1].map((move)=>`t-${this.tigers['pos'][i]}-${move}`)
             this.tigers.validMoves.push(...moves)
         }
+        //now checking for friendly traps
+        for(let i = 0; i< 4 ; i++){
+            if(this.tigers['trapStatus'][i]===1){
+                let checkPos = this.getNeighbours(this.tigers['pos'][i],1);
+                
+                let trapStatus = 1;
+                for(let index in checkPos){
+                    let pos1 = checkPos[index];
+                    if(this.board[Math.floor(pos1/5)][pos1%5] === 0){
+                        let nearbyTigerPos = this.tigers['pos'].indexOf(pos1);
+                        if(this.tigers['friendlyTrap'][this.tigers['pos'].indexOf(nearbyTigerPos)] === 1 ) continue;
+                        //if the nearbyTiger is not trapped then the tiger at "pos" is friendly trapped
+                        if(this.tigers['trapStatus'][nearbyTigerPos]){
+                            trapStatus = 0;
+                        }else{
+                            trapStatus = 1;
+                        }
+                    }
+                }
+                this.tigers['friendlyTrap'][i] = trapStatus;
+            }else{
+                this.tigers['friendlyTrap'][i] = 0;
+            }
+        }
     }
-    
-    
-    
+ 
     computeValidMovesGoats(){
         this.goats.validMoves = [];
         if(this.goats.available.length){
-            let tempArr = this.highlightNodes();
+            let tempArr = this.highlightNodes(true);
             let moves = tempArr[1].map((move)=>`g-${move}`);
             this.goats.validMoves.push(...moves);
         }else{
@@ -602,7 +633,6 @@ class Baghchal{
         //every element must have length 3 for them to normally maneuver
         //or else the game state will change due to (goat capture t-1-X-2-3 or goat placement g-1 )
         if((!arr1.every((elem)=>elem.split('-').length===3) || !arr2.every((elem)=>elem.split('-').length===3) )){  
-            console.log('here')
             return 0;
         }
     
@@ -630,21 +660,202 @@ class Baghchal{
         let score = 0;
 
         if(this.isOver()){
-            score = this.turn ? -1000 : 1000;
+            // score = this.turn ? -1000 : 1000;
+            switch(this.isOver()){
+                //tiger wins
+                case 1:
+                case 2:
+                    score = -1000;
+                    break;
+                //goats win
+                case 3: 
+                    score = 1000;
+                    break;
+                default:
+                    break;
+            }
         }else{
             let noOfTrapped = this.tigers.trapStatus.reduce((a,b)=>a+b);
 
             //reward the trap only if no goats are endangered
             if(!this.goats.endangered.length){
-                score = score +   noOfTrapped * 250;
+                let friendlyTrapCount = this.tigers.friendlyTrap.reduce((a,b)=>a+b);
+                if(friendlyTrapCount){
+                    score = score + (noOfTrapped -friendlyTrapCount) * 10;
+                }else{
+                    score = score +   noOfTrapped * 250;
+                }
             }else{
                 score = score + noOfTrapped * 10;
             }
-            score = score -  this.goats.eaten.length * 50;
-            score = score -   10 * this.goats.endangered.length ;
+            if(this.goats.onBoard.length >= 16){
+                let tempArr = this.countInaccessible();     
+                score = score + 200 * tempArr[0];          
+                score = score - 100 * tempArr[1];          
+            }
             
+            score = score -  this.goats.eaten.length * 200;
+            score = score -   40 * this.goats.endangered.length ;
         }
         return score;
+    }
+
+    //counts no. of positions where tigers or goats cannot move to
+    countInaccessible(){
+
+        //[[positions],[evaluations],[dependents]]
+      let evaluatedPosTigers = [[],[],[]];
+      let evaluatedPosGoats = [[],[],[]]
+      for(let i = 0; i < 5 ; i++){
+          for(let j = 0 ; j < 5 ; j++){
+              if(this.board[i][j]=== null && !evaluatedPosTigers[0].includes(i*5+j)){
+                  this.evaluateTigers(i*5+j,evaluatedPosTigers);  
+                }
+              if(this.board[i][j]=== null && !evaluatedPosGoats[0].includes(i*5+j)){
+                  this.evaluateGoats(i*5+j,evaluatedPosGoats);
+                }
+          }
+      }
+      let unreachableToTigers = evaluatedPosTigers[1].reduce( (a,b) => Number(a)+Number(b));
+      let unreachableToGoats = evaluatedPosGoats[1].reduce( (a,b) => Number(a)+Number(b));
+      return [unreachableToTigers,unreachableToGoats];
+    }
+  
+    //evaluate position where goats cannot reach to
+   evaluateGoats(pos,evaluatedPos){
+        let possibleChecks = this.getNeighbours(pos,1);
+        let verdict = true;
+        for(let position in possibleChecks){
+            let pos1 = possibleChecks[position]
+            let boardElem = this.board[Math.floor(pos1/5)][pos1 %5] ; 
+            if( boardElem === 0 ) continue;
+            if(boardElem === 1){
+                evaluatedPos[0].push(pos1);
+                evaluatedPos[1].push(false);
+                return false;
+            }
+            if(boardElem === null && !evaluatedPos[2].includes(pos1)){
+                if(evaluatedPos[0].includes(pos1)){
+                    verdict =  evaluatedPos[1][evaluatedPos[0].indexOf(pos1)]
+                }
+                if(evaluatedPos[2].includes(pos1)){
+                    continue;
+                }else{
+                    evaluatedPos[2].push(pos);
+                    verdict = this.evaluateGoats(pos1,evaluatedPos);
+                    evaluatedPos[2].pop();
+                }
+            }
+            
+        }
+        if(!verdict){
+            evaluatedPos[0].push(pos);
+            evaluatedPos[1].push(false);
+            return false;
+        }
+
+        evaluatedPos[0].push(pos);
+        evaluatedPos[1].push(true);
+        return true;
+    };
+
+    //evaluate position where tigers cannot react to
+    evaluateTigers(pos,evaluatedPos){
+  
+      let possibleChecks = this.getNeighbours(pos,2);
+      
+  
+      for( let dir in possibleChecks ){
+          //if both positions in the direction (dir) are inaccessible 
+          //verdict is true
+          let verdict = true;
+          for( let i in possibleChecks[dir]){
+              let pos1 = possibleChecks[dir][i];
+              let boardElem = this.board[Math.floor(pos1/5)][pos1%5];
+              if(boardElem === 1) continue;
+              if(boardElem === 0){
+                  evaluatedPos[0].push(pos);
+                  evaluatedPos[1].push(false);
+                  return false;
+              } 
+              if(boardElem === null && !evaluatedPos[2].includes(pos)){
+                  if(evaluatedPos[0].includes(pos1)){
+                      verdict = evaluatedPos[1][evaluatedPos[0].indexOf(pos1)]
+                  }
+                  if(evaluatedPos[2].includes(pos1)){
+                      continue;
+                  }else{
+                      //accessiblility of pos now depends on the accessibility of pos1
+                      evaluatedPos[2].push(pos);
+                      verdict = this.evaluateTigers(pos1,evaluatedPos);
+                      evaluatedPos[2].pop();
+                  }
+              } 
+          }
+          if(!verdict){
+              evaluatedPos[0].push(pos);
+              evaluatedPos[1].push(false);
+              return false;
+          } 
+      }
+  
+      //if all neighbouring positions are inaccessible then the pos is inaccessible too
+      evaluatedPos[0].push(pos);
+      evaluatedPos[1].push(true);
+      return true;
+  
+    }
+
+    
+    getNeighbours(pos,depth=1){
+        let possibleMoves = [];
+        if(pos%2 ===0){ 
+            possibleMoves = [
+                [pos-1,pos+1],              //       left        right
+                [pos+5,pos+5-1,pos+5+1],    //bottom bottom-left bottom-right
+                [pos-5,pos-5-1,pos-5+1],    //top    top-left    top-right
+            ];
+        }else{
+            possibleMoves = [  
+                [pos-1,pos+1],
+                [pos+5],
+                [pos-5]
+            ];
+        }
+    
+        //helpers
+        let impossible= [
+            [0,5,10,15,20],           // no path (from) this array of nodes
+            [4,9,14,19,24]            //         ( to ) this array of nodes
+        ]
+        const pathNotExists = (pos,point)=>{
+            return (impossible[0].includes(pos) && impossible[1].includes(point)) || (impossible[0].includes(point) && impossible[1].includes(pos))
+        }
+        const isInBoard = (pos)=>{
+            return (Number(pos) >= 0 && Number(pos) <= 24)
+        }
+        
+        for(let i in possibleMoves){
+            possibleMoves[i] = possibleMoves[i].filter(pos1 =>{
+                let test1 = isInBoard(pos1);
+                let test2 = pathNotExists(pos1,pos);
+                return test1 && !test2;
+            })
+        }
+        possibleMoves = possibleMoves.reduce((a,b) => [...a,...b]);
+        if(depth===2){
+            const pairSimilar = (pos,pos1)=>{
+                let factor = pos1 - pos;
+                let pair = pos1 + factor;
+                if(isInBoard(pair) && !pathNotExists(pos1,pair)){
+                    return [pos1,pair];
+                }else{
+                    return [pos1]
+                }
+            }
+            possibleMoves = possibleMoves.map(a => pairSimilar(pos,a));
+        }
+        return possibleMoves;
     }
 }
 

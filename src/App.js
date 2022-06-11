@@ -21,7 +21,8 @@ function App({ game }) {
                                                   eaten    : [],                                 // 0 goats eaten/captured at the beginning
                                                   pos      :  []
                                                 },-1]);                                         // turn Status (-1 signifies game not started)
-  const [isOver,setIsOver] = useState(false);
+  const [isOver,setIsOver] = useState(0);
+  const [isDraw,setIsDraw] = useState(false);
   const [moveHistory,setMoveHistory] = useState([]);
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
@@ -77,6 +78,7 @@ function App({ game }) {
       }
       setHighlightElems(arr1);
     }
+
     setBoardStatus(game.getBoardStatus());
     setIsOver(game.isOver());
 
@@ -128,7 +130,7 @@ function App({ game }) {
     },215);
     setMoveHistory(game.getMoveHistory());
     if(!game.isOver() && game.checkRepetition()){
-      alert("Repetition in moves Detected\n Assume draw and restart the game");
+      setIsDraw(true);
     }
   }
   
@@ -137,13 +139,14 @@ function App({ game }) {
       setHighlightElems([[],[],[]]);
       setMoveHistory([]);
       setIsOver(false);
+      setIsDraw(false);
       setHighlightElems(game.startGame());
       setBoardStatus(game.getBoardStatus());
-      console.log(vsPlayer2,vsCompTiger,vsCompGoat);
       if(vsCompGoat){
         setTimeout(()=>{
             let move = findBestMove(game);
-            var tempArr =  move.split('-');
+            var
+            tempArr =  move.split('-');
             handleClick(Number(tempArr[tempArr.length - 1]));
         },200);
       }
@@ -158,7 +161,7 @@ function App({ game }) {
 
   return (
     <div className="baghchal-app">
-      <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} setIsOver = {setIsOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems}/>
+      <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} setIsOver = {setIsOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems} isDraw = {isDraw}/>
       <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver} setMode = {setMode} moveHistory = {moveHistory}></Status>
     </div>
   );

@@ -3,7 +3,6 @@ var move = null;
 function findBestMove(game){
     let gs = _.cloneDeep(game);
     let validArr = gs.getValidMoves();
-    console.log(JSON.stringify(validArr));
     // findMoveMinMax(gs,validArr,4);
     // findMoveNegaMax(gs,validArr,4);
     if(validArr){

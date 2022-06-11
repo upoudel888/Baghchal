@@ -544,6 +544,10 @@ html{
       font-weight: 700;
   }
 
+  .draw-container{
+    display: flex;
+    margin-top: 3rem;
+  }
 .wobble-hor-top {
 	-webkit-animation: wobble-hor-top 1s both 2;
 	        animation: wobble-hor-top 1s both 2;

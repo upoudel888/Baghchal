@@ -50,7 +50,8 @@
     overflow-y: auto;
     height: 85%;
     margin-top: 0.5rem;
-    line-height: 1.5rem;
+    line-height: 1.5
+    rem;
 }
 .move{
     display: block;

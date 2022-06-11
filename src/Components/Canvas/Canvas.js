@@ -2,7 +2,7 @@ import './Canvas.css'
 import React from 'react'
 
 
-const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems}) => { 
+const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw}) => { 
     let turnClass =  'turn unveal';
     // turnstatus is -1 at the very beginning
     if(statusArr[2] === -1){
@@ -44,19 +44,22 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
         focusableNodes = [];
     }
 
-    let overLayClass = isOver ? 'baghchal-overlay overlay-visible' : "baghchal-overlay";
-    let winnerTextClass = isOver ? 'winner-text  wobble-hor-top' : "winner-text";
+    let overLayClass = isOver || isDraw ? 'baghchal-overlay overlay-visible' : "baghchal-overlay";
+    let winnerTextClass = isOver || isDraw ? 'winner-text  wobble-hor-top' : "winner-text";
     let winnerClass = 'winner';
     if(isOver){
-        //One of the players win
-        if( statusArr[1]['eaten'].length === 20){
-            winnerClass = 'winner winner-Tiger';
-        }else if(statusArr[0]['trapStatus'].reduce((a,b)=>a+b) === 4){
-            winnerClass = 'winner winner-Goat';
-        //gameover by surrender
-        //Player with current turn loses 
-        }else{        
-            winnerClass = statusArr[2] ? 'winner winner-Tiger' : 'winner winner-Goat';
+
+        winnerClass = statusArr[2] ? 'winner winner-Tiger' : 'winner winner-Goat';
+        switch(isOver){
+            case 1:
+            case 2:
+                winnerClass = 'winner winner-Tiger';
+                break;
+            case 3: 
+                winnerClass = 'winner winner-Goat';
+                break;
+            default:
+                break;
         }
     }
 
@@ -103,9 +106,23 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
             {
                 
                 <div className={overLayClass}>
-                    <div className={winnerClass} role="img" aria-label={winnerClass}></div>
-                    <div className={winnerTextClass}>{winnerClass.split('-')[1]}s Won ! </div>
+                    {
+                        isOver
+                        ? <React.Fragment>
+                            <div className={winnerClass} role="img" aria-label={winnerClass}></div>
+                            <div className={winnerTextClass}>{winnerClass.split('-')[1]}s Won ! </div>
+                            </React.Fragment>
+                        : <React.Fragment>
+                            <div className="draw-container">
+                                <div className='winner winner-Tiger' role="img" aria-label='tiger'></div>
+                                <div className='winner winner-Goat' role="img" aria-label='goat'></div>
+                            </div>
+                            <div className={winnerTextClass}>Draw </div>
+
+                            </React.Fragment>
+                    }
                     <button className="play-again-btn" onClick={handleNewGame}>Play Again</button>
+                    
                 </div>
             }
         
