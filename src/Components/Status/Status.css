@@ -23,7 +23,7 @@
 
 .status-form-container.show-score .status-form-container-inner{
     transform: rotateY(180deg);
-    box-shadow: -1px 1px 5px 0.5px white;
+    box-shadow: 0px 1px 5px 0.5px white;
 }
 .user-options , .game-status{
     position: absolute;
@@ -50,9 +50,31 @@
     overflow-y: auto;
     height: 85%;
     margin-top: 0.5rem;
-    line-height: 1.5
-    rem;
+    line-height: 1.5rem;
 }
+
+.histories::-webkit-scrollbar {
+    width: 0.8rem;
+    height: 1em;
+}
+  
+.histories::-webkit-scrollbar-track {
+background: #dddddd;
+border-radius: 100vw;
+margin-left: 0.5rem;
+}
+  
+.histories::-webkit-scrollbar-thumb {
+background: rgb(13, 179, 185);
+border: 2px solid #dddddd;
+border-radius: 100vw;
+}
+  
+.histories::-webkit-scrollbar-thumb:hover {
+background: rgb(3, 159, 165);
+}
+
+
 .move{
     display: block;
 }

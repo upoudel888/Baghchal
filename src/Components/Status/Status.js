@@ -8,13 +8,13 @@ import { useState,useRef } from 'react';
 import { IconContext } from 'react-icons';
 import _ from 'lodash';
 
-const Status = ({statusArr,setMode,handleNewGame,isOver,moveHistory}) => {
+const Status = ({statusArr,setMode,handleNewGame,isOver,isDraw,moveHistory}) => {
 
     const [isHovering,setIsHovering]= useState(false);
     const [userOptions,setUserOptions] = useState({
                                                                 //[hovering,selected]
-                                                    'vsPlayer2' : [false,true],                 //0
-                                                    'vsComp'    : [false,false],                //1
+                                                    'vsPlayer2' : [false,true],           //0
+                                                    'vsComp'    : [false,false],          //1
                                                     'vsTiger'   : [false,false],          //2
                                                     'vsGoat'    : [false,false]           //3
                                                 });
@@ -113,7 +113,7 @@ const Status = ({statusArr,setMode,handleNewGame,isOver,moveHistory}) => {
         statusClass = 'status-form-container'
         buttonClass = 'new-game-btn';
     }    
-    if(isOver){
+    if(isOver || isDraw){
         statusClass = 'status-form-container';
         buttonClass = 'new-game-btn';
     }

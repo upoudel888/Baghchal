@@ -162,7 +162,7 @@ function App({ game }) {
   return (
     <div className="baghchal-app">
       <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} setIsOver = {setIsOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems} isDraw = {isDraw}/>
-      <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver} setMode = {setMode} moveHistory = {moveHistory}></Status>
+      <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver} isDraw = {isDraw} setMode = {setMode} moveHistory = {moveHistory}></Status>
     </div>
   );
 }

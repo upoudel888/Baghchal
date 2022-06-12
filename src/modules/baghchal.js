@@ -660,9 +660,9 @@ class Baghchal{
         let score = 0;
 
         if(this.isOver()){
-            // score = this.turn ? -1000 : 1000;
+            
             switch(this.isOver()){
-                //tiger wins
+                //tigers win
                 case 1:
                 case 2:
                     score = -1000;
@@ -688,9 +688,10 @@ class Baghchal{
             }else{
                 score = score + noOfTrapped * 10;
             }
+            //accounting the inaccessible position for goats and tigers in the socer
             if(this.goats.onBoard.length >= 16){
                 let tempArr = this.countInaccessible();     
-                score = score + 200 * tempArr[0];          
+                score = score + 200 * tempArr[0] - this.goats.eaten.length * 15;          
                 score = score - 100 * tempArr[1];          
             }
             
