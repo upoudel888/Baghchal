@@ -688,15 +688,40 @@ class Baghchal{
             }else{
                 score = score + noOfTrapped * 10;
             }
-            //accounting the inaccessible position for goats and tigers in the socer
+            let tempArr = [0,0];
+            //accounting the inaccessible position for goats and tigers in the score
             if(this.goats.onBoard.length >= 16){
-                let tempArr = this.countInaccessible();     
-                score = score + 200 * tempArr[0] - this.goats.eaten.length * 15;          
+                //[inaccessibleToTigers,inaccessibleToGoats]
+                let tempArr = this.countInaccessible();
+                score = score + 200 * tempArr[0];          
                 score = score - 100 * tempArr[1];          
             }
             
-            score = score -  this.goats.eaten.length * 200;
+            score = score -  this;
             score = score -   40 * this.goats.endangered.length ;
+            //if the game draws after AI makes the move
+            if(this.checkRepetition()){
+                //this.turn is toggled in makeMove() method
+                //so if it is 1 it signifies it was tigers turn previously
+                if(this.turn){
+                    //if other tigers are trapped then go for the draw
+                    if(this.tigers.trapStatus.reduce((a,b)=>a+b) >=3){
+                        score = -1000;
+                    }else{
+                        // go for the other move
+                        score = score + 500;
+                    }
+                }else{
+                    //if 3 or more goats are eaten then go for the draw
+                    // goats eaten - inaccessible to tigers
+                    if(this.goats.eaten.length - tempArr[0] >= 3){
+                        score = 1000;
+                    }else{
+                        score = score - 500;
+                    }
+                        
+                }
+            }
         }
         return score;
     }

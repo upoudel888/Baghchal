@@ -8,7 +8,7 @@ import { useState,useRef } from 'react';
 import { IconContext } from 'react-icons';
 import _ from 'lodash';
 
-const Status = ({statusArr,setMode,handleNewGame,isOver,isDraw,moveHistory}) => {
+const Status = ({statusArr,handleNewGame,isOver,isDraw,setMode,moveHistory}) => {
 
     const [isHovering,setIsHovering]= useState(false);
     const [userOptions,setUserOptions] = useState({
