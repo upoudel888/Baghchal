@@ -22,7 +22,7 @@ function App({ game }) {
                                                   pos      :  []
                                                 },-1]);                                         // turn Status (-1 signifies game not started)
   const [isOver,setIsOver] = useState(0);
-  const [isDraw,setIsDraw] = useState(false);
+  const [isDraw,setIsDraw] = useState(true);
   const [moveHistory,setMoveHistory] = useState([]);
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
@@ -90,7 +90,7 @@ function App({ game }) {
           //finding the next best move using minMax
           let move = findBestMove(game);
           // obtained moves are in the form:
-          if(!move) alert("There was an issue \n SC and send it to me");
+          if(!move) alert("There was an issue .. help me with a SC");
           // g-0 i.e place a goat in 0
           // g-1-2 i.e move the goat in pos-1 to pos-2
           // t-1-2 i.e move the tiger in pos-1 to pos-2
@@ -135,22 +135,22 @@ function App({ game }) {
   }
   
   const handleNewGame = () => {
-    
-      setHighlightElems([[],[],[]]);
-      setMoveHistory([]);
-      setIsOver(false);
-      setIsDraw(false);
-      setHighlightElems(game.startGame());
-      setBoardStatus(game.getBoardStatus());
-      if(vsCompGoat){
-        setTimeout(()=>{
-            let move = findBestMove(game);
-            var
-            tempArr =  move.split('-');
-            handleClick(Number(tempArr[tempArr.length - 1]));
-        },200);
-      }
-    
+
+    setHighlightElems([[],[],[]]);
+    setMoveHistory([]);
+    setIsOver(false);
+    setIsDraw(false);
+    setHighlightElems(game.startGame());
+    setBoardStatus(game.getBoardStatus());
+    if(vsCompGoat){
+      setTimeout(()=>{
+          let move = findBestMove(game);
+          var
+          tempArr =  move.split('-');
+          handleClick(Number(tempArr[tempArr.length - 1]));
+      },200);
+    }
+
   }
 
   const setMode = (modeArr) =>{

@@ -164,7 +164,7 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
                                 </React.Fragment>
                         : null
                     }
-                    <Rules animationStyle={animationStyle}/>   
+                    <Rules animationStyle={animationStyle} handleRulesClick = {handleRulesClick}/>   
                 </div>
             
         
@@ -185,7 +185,8 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
                         { (isHoveringRules || isShowingRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
                     </div>
                     <span className = "title-name">Rules</span>
-            </div>
+        </div>
+
         </React.Fragment>
 
                 
