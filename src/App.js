@@ -22,16 +22,22 @@ function App({ game }) {
                                                   pos      :  []
                                                 },-1]);                                         // turn Status (-1 signifies game not started)
   const [isOver,setIsOver] = useState(0);
-  const [isDraw,setIsDraw] = useState(true);
+  const [isDraw,setIsDraw] = useState(false);
   const [moveHistory,setMoveHistory] = useState([]);
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
   const [vsCompGoat,setVsCompGoat] = useState(false);
   const [vsCompTiger,setVsCompTiger] = useState(false);
 
-
-  const handleClick = (pos) => {
+  const isAIturn = (turn)=>{
+    if(vsPlayer2) return 0;
+    if(vsCompGoat && turn===1) return 1;
+    if(vsCompTiger && turn===0) return 1;
+    return 0;
+  }                      
+  const handleClick = (pos,clicker = 1) => {  //1 means user and 0 means AI
     if(game.isOver()) return;
+    if(isAIturn(game.getTurnStatus()) && clicker === 1) return;
     //array used to Highlight Nodes and Vertices later on
     let arr1 = [];
     //goats turn
@@ -99,18 +105,18 @@ function App({ game }) {
           //simply put the goat in the position
           if(tempArr.length === 2){
             setTimeout(()=>{
-              handleClick(Number(tempArr[1]));
+              handleClick(Number(tempArr[1]),0);
             },200);
           }else{
             //move goat from one position to another
             
             //first highlight the possible position
             setTimeout(()=>{
-              handleClick(Number(tempArr[1]));
+              handleClick(Number(tempArr[1]),0);
             },200);
             //then move the goat afterwards
             setTimeout(()=>{
-              handleClick(Number(tempArr[tempArr.length-1]));
+              handleClick(Number(tempArr[tempArr.length-1]),0);
             },400);
           }
         }
@@ -120,10 +126,10 @@ function App({ game }) {
           let tempArr = move.split('-');
           //move tiger from one position to another
           setTimeout(()=>{
-            handleClick(Number(tempArr[1]));
+            handleClick(Number(tempArr[1]),0);
           },200);
           setTimeout(()=>{
-            handleClick(Number(tempArr[tempArr.length-1]));
+            handleClick(Number(tempArr[tempArr.length-1]),0);
           },400);
         }
       }
@@ -147,7 +153,7 @@ function App({ game }) {
           let move = findBestMove(game);
           var
           tempArr =  move.split('-');
-          handleClick(Number(tempArr[tempArr.length - 1]));
+          handleClick(Number(tempArr[tempArr.length - 1]),0);
       },200);
     }
 
