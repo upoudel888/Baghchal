@@ -1,8 +1,14 @@
 import './Canvas.css'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
+import Rules from '../Rules/Rules.js'
+import { GiChecklist} from "react-icons/gi";
 
 
 const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw}) => { 
+    const [isHoveringRules,setIsHoveringRules]= useState(false);
+    const [isShowingRules,setIsShowingRules]  = useState(true);
+    const [animationStyle,setAnimationStyle] = useState('scale-in-center');
+
     let turnClass =  'turn unveal';
     // turnstatus is -1 at the very beginning
     if(statusArr[2] === -1){
@@ -44,7 +50,7 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
         focusableNodes = [];
     }
 
-    let overLayClass = isOver || isDraw ? 'baghchal-overlay overlay-visible' : "baghchal-overlay";
+    var overLayClass = isOver || isDraw || isShowingRules ? 'baghchal-overlay overlay-visible scale-in-center' : "baghchal-overlay overlay-visible scale-out-center";
     let winnerTextClass = isOver || isDraw ? 'winner-text  wobble-hor-top' : "winner-text";
     let winnerClass = 'winner';
     if(isOver){
@@ -63,7 +69,34 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
         }
     }
 
+    const handleRulesClick = ()=>{
+        if(isShowingRules){         
+            setAnimationStyle('scale-out-center');   
+        }else{
+            setAnimationStyle('scale-in-center');
+        }
+        setIsShowingRules(!isShowingRules);
+        //scale out center to work
+        if(isShowingRules){
+            if(isOver || isDraw){
+                setAnimationStyle('hide-rules');
+                setIsShowingRules(!isShowingRules);
+            }else{
+                setTimeout(()=>{
+                    //hide-rules to remove <RULES> component from the dom
+                    setAnimationStyle('scale-out-center hide-rules');
+                    setIsShowingRules(!isShowingRules); 
+                },300);
+            }
+        }  
+    }
 
+    // stop showing rules and show winner/loser status screen or new board
+    // when new game btn , give up btn is clicked 
+
+    useEffect(()=>{
+        isShowingRules && statusArr[2] !== -1 && handleRulesClick();
+    },[isOver,isDraw]);
 
     
     return ( 
@@ -103,28 +136,37 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
                                 return (<div className = {classname} key = {paths.indexOf(path)} ></div>)
                             }) 
             }
-            {
+            
                 
                 <div className={overLayClass}>
                     {
-                        isOver
+                        !isShowingRules ?
+                        isOver 
                         ? <React.Fragment>
-                            <div className={winnerClass} role="img" aria-label={winnerClass}></div>
-                            <div className={winnerTextClass}>{winnerClass.split('-')[1]}s Won ! </div>
-                            </React.Fragment>
-                        : <React.Fragment>
-                            <div className="draw-container">
-                                <div className='winner winner-Tiger' role="img" aria-label='tiger'></div>
-                                <div className='winner winner-Goat' role="img" aria-label='goat'></div>
-                            </div>
-                            <div className={winnerTextClass}>Draw </div>
+                                <div className={winnerClass} role="img" aria-label={winnerClass}></div>
+                                <div className={winnerTextClass}>{winnerClass.split('-')[1]}s Won ! </div>
+                                <button className="play-again-btn" onClick={()=>{
+                                    handleRulesClick();
+                                    handleNewGame();
+                                }}>Play Again</button>
+                                </React.Fragment>
+                            : <React.Fragment>
+                                <div className="draw-container">
+                                    <div className='winner winner-Tiger' role="img" aria-label='tiger'></div>
+                                    <div className='winner winner-Goat' role="img" aria-label='goat'></div>
+                                </div>
+                                <div className={winnerTextClass}>Draw </div>
 
-                            </React.Fragment>
+                                <button className="play-again-btn" onClick={()=>{
+                                    handleRulesClick();
+                                    handleNewGame();
+                                }}>Play Again</button>
+                                </React.Fragment>
+                        : null
                     }
-                    <button className="play-again-btn" onClick={handleNewGame}>Play Again</button>
-                    
+                    <Rules animationStyle={animationStyle}/>   
                 </div>
-            }
+            
         
         </div>
 
@@ -134,6 +176,16 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
                         :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
             <button className = "give-up-btn"  onClick={()=>{setIsOver(true)}}>Give Up  </button>
         </div>
+
+        <div className="rules-btn" >
+                    <div className="rules" 
+                    onMouseEnter={()=>{setIsHoveringRules(true)}} 
+                    onMouseLeave={()=>{setIsHoveringRules(false)}} 
+                    onClick = {handleRulesClick}>
+                        { (isHoveringRules || isShowingRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
+                    </div>
+                    <span className = "title-name">Rules</span>
+            </div>
         </React.Fragment>
 
                 

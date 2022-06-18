@@ -16,7 +16,7 @@ function App({ game }) {
                                                   trapStatus : [0,0,0,0]   //1 means trapped  and 0 means not trapped
                                                 },
                                                 {
-                                                  available: Array.from(Array(20).keys()),      // 24 goats in total
+                                                  available: Array.from(Array(20).keys()),      // 20 goats in total
                                                   onBoard  : [],
                                                   eaten    : [],                                 // 0 goats eaten/captured at the beginning
                                                   pos      :  []
@@ -161,8 +161,21 @@ function App({ game }) {
 
   return (
     <div className="baghchal-app">
-      <Canvas handleClick={handleClick} statusArr = {boardStatus} isOver = {isOver} setIsOver = {setIsOver} handleNewGame = {handleNewGame} highlightElems = {highlightElems} isDraw = {isDraw}/>
-      <Status statusArr = {boardStatus} handleNewGame = {handleNewGame} isOver = {isOver} isDraw = {isDraw} setMode = {setMode} moveHistory = {moveHistory}></Status>
+      <Canvas
+        handleClick={handleClick} 
+        statusArr = {boardStatus} 
+        isOver = {isOver} 
+        setIsOver = {setIsOver} 
+        handleNewGame = {handleNewGame} 
+        highlightElems = {highlightElems} 
+        isDraw = {isDraw}/>
+      <Status 
+        statusArr = {boardStatus} 
+        handleNewGame = {handleNewGame} 
+        isOver = {isOver} 
+        isDraw = {isDraw} 
+        setMode = {setMode} 
+        moveHistory = {moveHistory}/>
     </div>
   );
 }

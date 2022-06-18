@@ -1,6 +1,6 @@
 import './Status.css'
 import React, { useEffect } from 'react'
-import { GiChecklist,GiGoat,GiTigerHead } from "react-icons/gi";
+import {GiGoat,GiTigerHead } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 import { RiComputerFill } from "react-icons/ri";
 
@@ -10,7 +10,7 @@ import _ from 'lodash';
 
 const Status = ({statusArr,handleNewGame,isOver,isDraw,setMode,moveHistory}) => {
 
-    const [isHovering,setIsHovering]= useState(false);
+    
     const [userOptions,setUserOptions] = useState({
                                                                 //[hovering,selected]
                                                     'vsPlayer2' : [false,true],           //0
@@ -135,12 +135,7 @@ const Status = ({statusArr,handleNewGame,isOver,isDraw,setMode,moveHistory}) => 
     return ( 
         <React.Fragment>
 
-            <div className="rules-btn" >
-                    <div className="rules" onMouseEnter={()=>{setIsHovering(true)}} onMouseLeave={()=>{setIsHovering(false)}} onClick = {()=>{alert("Work in progress")}}>
-                        { (isHovering) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
-                    </div>
-                    <span className = "title-name">Rules</span>
-            </div>
+            
 
             <div className={statusClass}>
                 <div className="status-form-container-inner">

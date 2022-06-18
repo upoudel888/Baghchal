@@ -475,6 +475,8 @@ html{
     z-index: 3;
 }
 
+/* to slide the winner/draw images to right with animation 
+/* It is of no use now that I used scale-in-center */
 .baghchal-overlay > div{
     margin-bottom: 1rem;
     transform: translateX(-5rem);
