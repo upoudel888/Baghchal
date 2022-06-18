@@ -21,23 +21,28 @@ function App({ game }) {
                                                   eaten    : [],                                 // 0 goats eaten/captured at the beginning
                                                   pos      :  []
                                                 },-1]);                                         // turn Status (-1 signifies game not started)
+  const [isAIturn,setIsAIturn] = useState(false);
   const [isOver,setIsOver] = useState(0);
   const [isDraw,setIsDraw] = useState(false);
+
   const [moveHistory,setMoveHistory] = useState([]);
+
 
   const [vsPlayer2,setVsPlayer2] = useState(false);
   const [vsCompGoat,setVsCompGoat] = useState(false);
   const [vsCompTiger,setVsCompTiger] = useState(false);
 
-  const isAIturn = (turn)=>{
-    if(vsPlayer2) return 0;
-    if(vsCompGoat && turn===1) return 1;
-    if(vsCompTiger && turn===0) return 1;
-    return 0;
-  }                      
+  const checkAIturn = (turn)=>{
+    if(vsPlayer2) return false;
+    if(vsCompGoat && turn===1) return true;
+    if(vsCompTiger && turn===0) return true;
+    return false;
+  }     
+  
+  
   const handleClick = (pos,clicker = 1) => {  //1 means user and 0 means AI
     if(game.isOver()) return;
-    if(isAIturn(game.getTurnStatus()) && clicker === 1) return;
+    if(isAIturn && clicker === 1) return;
     //array used to Highlight Nodes and Vertices later on
     let arr1 = [];
     //goats turn
@@ -138,6 +143,7 @@ function App({ game }) {
     if(!game.isOver() && game.checkRepetition()){
       setIsDraw(true);
     }
+    setIsAIturn(checkAIturn(game.getTurnStatus()));
   }
   
   const handleNewGame = () => {
@@ -148,6 +154,8 @@ function App({ game }) {
     setIsDraw(false);
     setHighlightElems(game.startGame());
     setBoardStatus(game.getBoardStatus());
+    setIsAIturn(checkAIturn(game.getTurnStatus()));
+    
     if(vsCompGoat){
       setTimeout(()=>{
           let move = findBestMove(game);
@@ -174,7 +182,8 @@ function App({ game }) {
         setIsOver = {setIsOver} 
         handleNewGame = {handleNewGame} 
         highlightElems = {highlightElems} 
-        isDraw = {isDraw}/>
+        isDraw = {isDraw}
+        isAIturn={isAIturn}/>
       <Status 
         statusArr = {boardStatus} 
         handleNewGame = {handleNewGame} 

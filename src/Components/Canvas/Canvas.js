@@ -4,7 +4,7 @@ import Rules from '../Rules/Rules.js'
 import { GiChecklist} from "react-icons/gi";
 
 
-const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw}) => { 
+const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw,isAIturn}) => { 
     const [isHoveringRules,setIsHoveringRules]= useState(false);
     const [isShowingRules,setIsShowingRules]  = useState(true);
     const [animationStyle,setAnimationStyle] = useState('scale-in-center');
@@ -174,7 +174,7 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
             <span className="title-name">Turn</span><br />
             { statusArr[2] ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
                         :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
-            <button className = "give-up-btn"  onClick={()=>{setIsOver(true)}}>Give Up  </button>
+            <button className = {isAIturn ? "give-up-btn no-click1" : 'give-up-btn' }  onClick={()=>{setIsOver(true)}}>Give Up  </button>
         </div>
 
         <div className="rules-btn" >

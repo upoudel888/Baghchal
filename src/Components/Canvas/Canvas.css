@@ -546,6 +546,10 @@ html{
       font-weight: 700;
   }
 
+  .give-up-btn.no-click1{
+    pointer-events: none;
+  }
+
   .draw-container{
     display: flex;
     margin-top: 3rem;
