@@ -11,6 +11,7 @@
     background-color: transparent; 
 }
 .status-form-container-inner{
+    will-change: transform;
     box-shadow: 1px 1px 5px 0.5px white;
     border-radius: 5%;
     background-color: #28313b;

@@ -100,8 +100,9 @@ html{
 
 
 .tiger{
+    will-change: margin;
     position: absolute;
-    transition: margin 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940);
+    transition: margin 0.17s cubic-bezier(.26,.45,.52,.77);
     background-color: none;
     background-image: url('../../assets/TIGER.png');
     background-position: center;
@@ -113,8 +114,9 @@ html{
     -webkit-tap-highlight-color: rgba(0,0,0,0)
 }
 .goat{
+    will-change: margin;
     position: absolute;
-    transition: margin 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940);
+    transition: margin 0.17s cubic-bezier(.26,.45,.52,.77);
     background-color: none;
     background-image: url('../../assets/GOAT.png');
     background-position: center;
@@ -488,6 +490,7 @@ html{
 }
 
 .winner{
+    will-change: transform;
     margin-top: 7vh;
     width: 13rem;
     height: 13rem;

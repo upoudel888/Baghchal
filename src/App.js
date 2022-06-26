@@ -111,14 +111,14 @@ function App({ game }) {
           if(tempArr.length === 2){
             setTimeout(()=>{
               handleClick(Number(tempArr[1]),0);
-            },200);
+            },215);
           }else{
             //move goat from one position to another
             
             //first highlight the possible position
             setTimeout(()=>{
               handleClick(Number(tempArr[1]),0);
-            },200);
+            },215);
             //then move the goat afterwards
             setTimeout(()=>{
               handleClick(Number(tempArr[tempArr.length-1]),0);
@@ -132,18 +132,19 @@ function App({ game }) {
           //move tiger from one position to another
           setTimeout(()=>{
             handleClick(Number(tempArr[1]),0);
-          },200);
+          },215);
           setTimeout(()=>{
             handleClick(Number(tempArr[tempArr.length-1]),0);
           },400);
         }
       }
+      setMoveHistory(game.getMoveHistory());
+      setIsAIturn(checkAIturn(game.getTurnStatus()));
+      if(!game.isOver() && game.checkRepetition()){
+        setIsDraw(true);
+      }
     },215);
-    setMoveHistory(game.getMoveHistory());
-    if(!game.isOver() && game.checkRepetition()){
-      setIsDraw(true);
-    }
-    setIsAIturn(checkAIturn(game.getTurnStatus()));
+    
   }
   
   const handleNewGame = () => {

@@ -22,6 +22,7 @@
   .baghchal-app{
     justify-content: left;
     transform: scale(0.85);
+    -webkit-transform: translateX(-0.8rem);
     transform: translateX(-0.8rem);
   }
 }
@@ -34,11 +35,13 @@
 @media screen and (max-width: 560px) {
   .baghchal-app{
     margin-top: 3vh;
+    -webkit-transform: rotatez(90deg) scale(0.6);
     transform: rotatez(90deg) scale(0.6);
     justify-content: center;
     align-items: center;
    }
    .status-form-container{
+     -webkit-transform: translateY(-4rem);
      transform: translateY(-4rem);
    }
    
@@ -46,10 +49,12 @@
   @media screen and (max-width: 380px) {
     
     .baghchal-app {  
+      -webkit-transform: rotatez(90deg) scale(0.5);
       transform: scale(0.5) rotateZ(90deg);
       margin:auto;
     }
     .status-form-container{
+      -webkit-transform: translateY(-4rem);
       transform: translateY(-4rem);
     }
 }
