@@ -1,13 +1,17 @@
 import './Canvas.css'
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useContext} from 'react'
 import Rules from '../Rules/Rules.js'
 import { GiChecklist} from "react-icons/gi";
+import BaghchalContext  from '../../BaghchalContext';
 
 
-const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw,isAIturn}) => { 
+
+const Canvas = () => { 
     const [isHoveringRules,setIsHoveringRules]= useState(false);
     const [isShowingRules,setIsShowingRules]  = useState(true);
     const [animationStyle,setAnimationStyle] = useState('scale-in-center');
+
+    const {handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw,isAIturn} =  useContext(BaghchalContext);
 
     let turnClass =  'turn unveal';
     // turnstatus is -1 at the very beginning

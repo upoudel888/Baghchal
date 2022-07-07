@@ -1,5 +1,5 @@
 import './Status.css'
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext} from 'react'
 import {GiGoat,GiTigerHead } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 import { RiComputerFill } from "react-icons/ri";
@@ -8,8 +8,10 @@ import { useState,useRef } from 'react';
 import { IconContext } from 'react-icons';
 import _ from 'lodash';
 
-const Status = ({statusArr,handleNewGame,isOver,isDraw,setMode,moveHistory}) => {
+import BaghchalContext from '../../BaghchalContext';
 
+const Status = () => {
+    const {statusArr,handleNewGame,isOver,isDraw,setMode,moveHistory} = useContext(BaghchalContext);
     
     const [userOptions,setUserOptions] = useState({
                                                                 //[hovering,selected]
