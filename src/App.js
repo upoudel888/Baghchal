@@ -1,13 +1,15 @@
 import './App.css';
 import React from 'react'
-import { useState } from 'react'
-import { Canvas,Status} from './Components'
+import { useState,useRef } from 'react'
+import { Canvas,Status,Navbar} from './Components'
+import Baghchal from './modules/baghchal';
 import findBestMove from './modules/smartMove';
+import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 
 
+function App() {
 
-function App({ game }) {
-
+  const game = useRef(new Baghchal());
   //highlightElems = [[highlightPaths],[HightlightNodes],[endangeredNodes]]
   // all of them used to direct user with suggestions
   const [highlightElems,setHighlightElems] = useState([[],[],[]]);
@@ -21,7 +23,7 @@ function App({ game }) {
                                                   eaten    : [],                                 // 0 goats eaten/captured at the beginning
                                                   pos      :  []
                                                 },-1]);                                         // turn Status (-1 signifies game not started)
-  const [isAIturn,setIsAIturn] = useState(false);
+  const [isAIturn,setIsAIturn] = useState(false);     //to regulate onClick and giveUp btn clicking when AI's turn                                           
   const [isOver,setIsOver] = useState(0);
   const [isDraw,setIsDraw] = useState(false);
 
@@ -41,65 +43,70 @@ function App({ game }) {
   
   
   const handleClick = (pos,clicker = 1) => {  //1 means user and 0 means AI
-    if(game.isOver()) return;
+    if(game.current.isOver()) return;
     if(isAIturn && clicker === 1) return;
     //array used to Highlight Nodes and Vertices later on
     let arr1 = [];
     //goats turn
-    if (game.getTurnStatus() === 1){
+    if (game.current.getTurnStatus() === 1){
       //first empty nodes are filled with available Goats
-      if(game.hasAvailableGoats()){
-        arr1 = game.updateWithGoat(pos);
+      if(game.current.hasAvailableGoats()){
+        arr1 = game.current.updateWithGoat(pos);
       //once we run out of Goats then we start moving them like tigers
       }else{    
         //read comments of tigers turn below for better understanding            
-        if (!game.isShowingSuggestions() && game.hasGoatAt(pos)) {
-          arr1 = game.highlightPath(pos);        
-        } else if(game.isShowingSuggestions() && game.hasGoatAt(pos)) {
-            arr1 = game.wasPreviousSelection(pos) ? game.updateWithGoat(pos) : game.highlightPath(pos);  
+        if (!game.current.isShowingSuggestions() && game.current.hasGoatAt(pos)) {
+          arr1 = game.current.highlightPath(pos);        
+        } else if(game.current.isShowingSuggestions() && game.current.hasGoatAt(pos)) {
+            arr1 = game.current.wasPreviousSelection(pos) ? game.current.updateWithGoat(pos) : game.current.highlightPath(pos);  
         }else{
-          arr1 = game.updateWithGoat(pos);
+          arr1 = game.current.updateWithGoat(pos);
         }
       }
-      setHighlightElems(arr1);
+      
     //tigers turn  
     } else {
       //user clicks on a tiger to reveal positions it can move to 
-      if (!game.isShowingSuggestions() && game.hasTigerAt(pos)) {
-        arr1 = game.highlightPath(pos);
-      }else if(game.isShowingSuggestions() && game.hasTigerAt(pos)){
+      if (!game.current.isShowingSuggestions() && game.current.hasTigerAt(pos)) {
+        arr1 = game.current.highlightPath(pos);
+      }else if(game.current.isShowingSuggestions() && game.current.hasTigerAt(pos)){
         //user clicks on another tiger while suggestions for another tiger is being shown        
-        if(!game.wasPreviousSelection(pos)){
-          arr1 = game.highlightPath(pos);
+        if(!game.current.wasPreviousSelection(pos)){
+          arr1 = game.current.highlightPath(pos);
         //clicking on the same tiger again cancels suggestions
         }else{
-          arr1 = game.updateWithTiger(pos);
+          arr1 = game.current.updateWithTiger(pos);
         }
       //user clicks where he was suggested to move the tiger
       //this block also handles condition where user clicks the unsuggested node 
       }else{   
-        arr1 = game.updateWithTiger(pos);
+        arr1 = game.current.updateWithTiger(pos);
         //highlight nodes where goats can be placed if available 
-        if(game.hasAvailableGoats()){
-          setTimeout((arr1) => {
-            arr1 = game.highlightNodes();
+        setTimeout((arr1) => {
+          if(game.current.hasAvailableGoats()){
+            arr1 = game.current.highlightNodes();
             setHighlightElems(arr1);
-          }, 200);
-        }        
+          }        
+        }, 300);
       }
-      setHighlightElems(arr1);
     }
+    setMoveHistory(game.current.getMoveHistory());
+    setHighlightElems(arr1);
+    setBoardStatus(game.current.getBoardStatus());
+    setIsOver(game.current.isOver());
+    setIsAIturn(checkAIturn(game.current.getTurnStatus()));
+    setTimeout(()=>{
+      if(!game.current.isOver() && game.current.checkRepetition()){
+        setIsDraw(true);
+      }
+    },250);
 
-    setBoardStatus(game.getBoardStatus());
-    setIsOver(game.isOver());
-
-    
     setTimeout(()=>{
       //if AI is playing
       if(!vsPlayer2){
-        if(vsCompGoat && game.getTurnStatus()){
+        if(vsCompGoat && game.current.getTurnStatus()){
           //finding the next best move using minMax
-          let move = findBestMove(game);
+          let move = findBestMove(game.current);
           // obtained moves are in the form:
           if(!move) alert("There was an issue .. help me with a SC");
           // g-0 i.e place a goat in 0
@@ -122,11 +129,11 @@ function App({ game }) {
             //then move the goat afterwards
             setTimeout(()=>{
               handleClick(Number(tempArr[tempArr.length-1]),0);
-            },400);
+            },430);
           }
         }
-        if(vsCompTiger && !game.getTurnStatus()){
-          let move = findBestMove(game);
+        if(vsCompTiger && !game.current.getTurnStatus()){
+          let move = findBestMove(game.current);
           if(!move) alert("There was an issue.. help me with a SC ");
           let tempArr = move.split('-');
           //move tiger from one position to another
@@ -135,13 +142,8 @@ function App({ game }) {
           },215);
           setTimeout(()=>{
             handleClick(Number(tempArr[tempArr.length-1]),0);
-          },400);
+          },430);
         }
-      }
-      setMoveHistory(game.getMoveHistory());
-      setIsAIturn(checkAIturn(game.getTurnStatus()));
-      if(!game.isOver() && game.checkRepetition()){
-        setIsDraw(true);
       }
     },215);
     
@@ -153,13 +155,13 @@ function App({ game }) {
     setMoveHistory([]);
     setIsOver(false);
     setIsDraw(false);
-    setHighlightElems(game.startGame());
-    setBoardStatus(game.getBoardStatus());
-    setIsAIturn(checkAIturn(game.getTurnStatus()));
+    setHighlightElems(game.current.startGame());
+    setBoardStatus(game.current.getBoardStatus());
+    setIsAIturn(checkAIturn(game.current.getTurnStatus()));
     
     if(vsCompGoat){
       setTimeout(()=>{
-          let move = findBestMove(game);
+          let move = findBestMove(game.current);
           var
           tempArr =  move.split('-');
           handleClick(Number(tempArr[tempArr.length - 1]),0);
@@ -175,24 +177,32 @@ function App({ game }) {
   }
 
   return (
-    <div className="baghchal-app">
-      <Canvas
-        handleClick={handleClick} 
-        statusArr = {boardStatus} 
-        isOver = {isOver} 
-        setIsOver = {setIsOver} 
-        handleNewGame = {handleNewGame} 
-        highlightElems = {highlightElems} 
-        isDraw = {isDraw}
-        isAIturn={isAIturn}/>
-      <Status 
-        statusArr = {boardStatus} 
-        handleNewGame = {handleNewGame} 
-        isOver = {isOver} 
-        isDraw = {isDraw} 
-        setMode = {setMode} 
-        moveHistory = {moveHistory}/>
-    </div>
+    <Router>
+    <Navbar></Navbar>
+      <Routes>
+        <Route path = "/Baghchal" exact element = {
+          <div className="baghchal-app">
+            <Canvas
+              handleClick={handleClick} 
+              statusArr = {boardStatus} 
+              isOver = {isOver} 
+              setIsOver = {setIsOver} 
+              handleNewGame = {handleNewGame} 
+              highlightElems = {highlightElems} 
+              isDraw = {isDraw}
+              isAIturn={isAIturn}/>
+            <Status 
+              statusArr = {boardStatus} 
+              handleNewGame = {handleNewGame} 
+              isOver = {isOver} 
+              isDraw = {isDraw} 
+              setMode = {setMode} 
+              moveHistory = {moveHistory}/>  
+        </div>          
+        }/>
+      </Routes>
+    </Router>
+
   );
 }
 

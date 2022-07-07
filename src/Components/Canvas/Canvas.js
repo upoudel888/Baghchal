@@ -178,13 +178,13 @@ const Canvas = ({handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightE
         </div>
 
         <div className="rules-btn" >
-                    <div className="rules" 
-                    onMouseEnter={()=>{setIsHoveringRules(true)}} 
-                    onMouseLeave={()=>{setIsHoveringRules(false)}} 
-                    onClick = {handleRulesClick}>
-                        { (isHoveringRules || isShowingRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
-                    </div>
-                    <span className = "title-name">Rules</span>
+                <h2 className = "title-name" style={{'font-weight' :'100'}}>Baghchal Rules</h2>
+                <div className="rules" 
+                onMouseEnter={()=>{setIsHoveringRules(true)}} 
+                onMouseLeave={()=>{setIsHoveringRules(false)}} 
+                onClick = {handleRulesClick}>
+                    { (isHoveringRules || isShowingRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
+                </div>
         </div>
 
         </React.Fragment>

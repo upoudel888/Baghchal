@@ -702,8 +702,8 @@ class Baghchal{
 
             //reward the trap only if no goats are endangered
             if(!this.goats.endangered.length){
-                if(friendlyTrapCount){
-                    score = score + (noOfTrapped -friendlyTrapCount) * 10;
+                if(friendlyTrapCount === noOfTrapped){
+                    score = score + noOfTrapped * 100;
                 }else{
                     score = score +   noOfTrapped * 250;
                 }
@@ -711,38 +711,71 @@ class Baghchal{
                 score = score + noOfTrapped * 10;
             }
             //accounting the inaccessible position for goats and tigers in the score
-            if(this.goats.onBoard.length >= 16){
-                //[inaccessibleToTigers,inaccessibleToGoats]
-                let noAcc = this.countInaccessible();
-                score = score + 200 * noAcc[0];          
-                score = score - 100 * noAcc[1];          
+            if(this.goats.onBoard.length >= 8){
+                //inaccessibleToTigers
+                let noAccTigers = this.countInaccessible(0);
+                //if a goat was not sacrificed for it then inaccessible positions to tigers aren't rewarded
+                if(this.moveHistory[this.moveHistory.length-1].split('-').length !== 4 && !this.goats.endangered.length){
+                    score = score + 200 * noAccTigers;          
+                }else{
+                    score = score + 50 * noAccTigers;
+                }
+
+                if(this.goats.onBoard.length >= 18){
+                    score = score - 150 * this.countInaccessible(1);
+                    //friendly traps are highliy favourable when
+                    //no goats are eaten
+                    //or noOfEatenGoats == noOfPositionsUnfavourable for tigers
+                    if(!this.goats.eaten.length || !this.goats.endangered.length){
+                        score += friendlyTrapCount * 20;
+                    }
+                    this.computeValidMovesTigers();
+                    
+                    if(this.tigers.validMoves.length <= 2){
+                        score -= 50;
+                    }
+                }         
             }
             
+                
+            
             score = score -  this.goats.eaten.length * 200;
-            score = score -   40 * this.goats.endangered.length ;
+            if(this.goats.onBoard >= 17  && this.goats.eaten.length <= 2){
+                score = score -   70 * this.goats.endangered.length ;
+            }else{
+                score = score - 40 * this.goats.endangered.length;
+            }
         }
         return score;
     }
 
     //counts no. of positions where tigers or goats cannot move to
-    countInaccessible(){
+    // player 1 is goat and 0 is tiger
+    countInaccessible(evalPlayer){
 
         //[[positions],[evaluations],[dependents]]
       let evaluatedPosTigers = [[],[],[]];
       let evaluatedPosGoats = [[],[],[]]
       for(let i = 0; i < 5 ; i++){
-          for(let j = 0 ; j < 5 ; j++){
-              if(this.board[i][j]=== null && !evaluatedPosTigers[0].includes(i*5+j)){
-                  this.evaluateTigers(i*5+j,evaluatedPosTigers);  
+        for(let j = 0 ; j < 5 ; j++){
+            if(evalPlayer){
+                if(this.board[i][j]=== null && !evaluatedPosGoats[0].includes(i*5+j)){
+                    this.evaluateGoats(i*5+j,evaluatedPosGoats);
                 }
-              if(this.board[i][j]=== null && !evaluatedPosGoats[0].includes(i*5+j)){
-                  this.evaluateGoats(i*5+j,evaluatedPosGoats);
+            }else{
+                if(this.board[i][j]=== null && !evaluatedPosTigers[0].includes(i*5+j)){
+                    this.evaluateTigers(i*5+j,evaluatedPosTigers);  
                 }
-          }
+            }
+        }
       }
-      let unreachableToTigers = evaluatedPosTigers[1].reduce( (a,b) => Number(a)+Number(b));
-      let unreachableToGoats = evaluatedPosGoats[1].reduce( (a,b) => Number(a)+Number(b));
-      return [unreachableToTigers,unreachableToGoats];
+      let unreachable = 0;
+      if(evalPlayer){
+        unreachable = evaluatedPosGoats[1].reduce( (a,b) => Number(a)+Number(b));
+      }else{
+        unreachable = evaluatedPosTigers[1].reduce( (a,b) => Number(a)+Number(b));
+      }
+      return unreachable;
     }
   
     //evaluate position where goats cannot move to

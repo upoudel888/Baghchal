@@ -1,5 +1,5 @@
 {
-  "homepage": "https://upoudel888.github.io/Baghchal",
+  "homepage": "https://www.ujjwalpaudel1.com.np/",
   "name": "baghchal",
   "version": "0.1.0",
   "private": true,
@@ -11,6 +11,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },

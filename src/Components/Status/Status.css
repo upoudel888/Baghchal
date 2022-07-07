@@ -12,7 +12,7 @@
 }
 .status-form-container-inner{
     will-change: transform;
-    box-shadow: 1px 1px 5px 0.5px white;
+    box-shadow: 0 0 4px rgba(255,255,255,0.2);
     border-radius: 5%;
     background-color: #28313b;
     position: relative;
@@ -25,7 +25,6 @@
 
 .status-form-container.show-score .status-form-container-inner{
     transform: rotateY(180deg);
-    box-shadow: 0px 1px 5px 0.5px white;
 }
 /* for safari */
 .status-form-container.show-score .user-options{
@@ -114,22 +113,7 @@ div.status{
 }
 
 
-.rules-btn{
-    grid-column: 3/4;
-    grid-row:1/2;
 
-    display: flex;
-    flex-wrap:nowrap;
-    justify-content: center;
-    margin : 8rem auto 0rem auto;
-    transform: translateX(-2rem);
-}
-.rules{
-    width: 2.3rem;
-    height: 2.3rem;
-    cursor: pointer;
-    text-align: center;
-}
 span.title-name{
     margin: 0.5rem 0.5rem;
 }

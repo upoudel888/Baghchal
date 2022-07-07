@@ -13,7 +13,7 @@ html{
     width: 38rem;
     height: 38rem;
     border-radius: 1rem;
-    box-shadow: 1px 1px 5px 0.5px white;
+    box-shadow: 0 0 4px rgba(255,255,255,0.2);
     background-color:  #28313b;  
 }
 
@@ -21,11 +21,10 @@ html{
     width: 5rem;
     height:5rem; 
 
-    border: 1px solid white;
+    box-shadow: 0 0 4px rgba(255,255,255,0.2);
     border-left: none;
     border-top-right-radius: 5%;
-    border-bottom-right-radius: 5%;
-    box-shadow: 1px 1px 5px 0.5px white;
+    
     background-color: rgb(13, 179, 185);
     background-image: url('../../assets/GOAT.png');
     background-position: center;
@@ -78,15 +77,15 @@ html{
 
 .Node{
     position: absolute;
-    background-color: #202930;
+    background-color: #20272f;
     height: 3rem;
     width: 3em;
     transform: translate(-25%,-25%);
     border-radius: 50%;
     /* paths have zIndex 0 and nodes have 1 so that nodes appear above paths */
     z-index: 1;
-    -webkit-tap-highlight-color: rgba(0,0,0,0)
-    
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+   
 }
 
 .Node.pointer-cursor{
@@ -132,8 +131,8 @@ html{
     position: absolute;
     height: 1rem;
     width: 1rem;
-    background-color: #202930;
-    box-shadow: 0px 0px 1px 0.2px white ;
+    background-color: #20272f;
+    box-shadow: 0 0 4px rgba(255,255,255,0.2);
     
 }
 
@@ -441,15 +440,19 @@ html{
     
 }
 
+/* .Node.highlight-danger,.Node.highlight-safe{
+    transition : box-shadow 0.1s ease-in;
+} */
+
+
 .highlight-safe{
-    /* background-color: rgb(13, 179, 185); */
-    box-shadow:  0px 0px 8px 4px rgb(13, 179, 185) !important ;
-    transition: background-color 0.1s ease-in;
+    box-shadow:  0px 0px 8px 3px rgb(13, 179, 185) !important ;
+    /* transition: background-color 0.1s ease-in; */
     box-shadow: none; 
 }
 
 .highlight-danger{
-    box-shadow: 0px 0px 8px 4px rgb(249, 60, 73) !important ; 
+    box-shadow: 0px 0px 8px 3px rgb(249, 60, 73) !important ; 
     opacity: 1 !important;
     z-index: 1 !important;
 }
@@ -557,6 +560,26 @@ html{
     display: flex;
     margin-top: 3rem;
   }
+
+
+  .rules-btn{
+    display: flex;
+    flex-direction: column;
+    flex-wrap:nowrap;
+    justify-content: center;
+    margin : 8rem auto 0rem auto;
+    transform: translate(-2rem,-1rem);
+}
+.rules{
+    margin-left: 2rem;
+    width: 2.3rem;
+    height: 2.3rem;
+    cursor: pointer;
+    text-align: center;
+}
+.rules.title-name{
+    font-weight: 1000;
+}
 .wobble-hor-top {
 	-webkit-animation: wobble-hor-top 1s both 2;
 	        animation: wobble-hor-top 1s both 2;
