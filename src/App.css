@@ -4,7 +4,9 @@
   padding: 0px;
   box-sizing: border-box;
   font-family: 'Abel', sans-serif;
+  /* background-color: rgba(100,100,0,0.2) !important; */
 }
+
 
 .baghchal-app{ 
   display: grid;
@@ -25,18 +27,26 @@
     -webkit-transform: translateX(-0.8rem);
     transform: translateX(-0.8rem);
   }
+  #root{
+    width: -moz-fit-content;
+    width:fit-content;
+  }
 }
 @media screen and (max-width: 688px) {
   .baghchal-app{
     margin: auto;
     margin-top: 3vh;
   }
+  #root{
+    width: -moz-fit-content;
+    width:fit-content;
+  }
 }
 @media screen and (max-width: 560px) {
   .baghchal-app{
     margin-top: 3vh;
-    -webkit-transform: rotatez(90deg) scale(0.6);
-    transform: rotatez(90deg) scale(0.6);
+    -webkit-transform: rotatez(90deg) scale(0.6) translateX(-4rem);
+    transform: rotatez(90deg) scale(0.6) translateX(-4rem);
     justify-content: center;
     align-items: center;
    }
@@ -44,17 +54,24 @@
      -webkit-transform: translateY(-4rem);
      transform: translateY(-4rem);
    }
+   #root{
+    width: 100%;
+   }
    
   }
   @media screen and (max-width: 380px) {
     
     .baghchal-app {  
-      -webkit-transform: rotatez(90deg) scale(0.5);
-      transform: scale(0.5) rotateZ(90deg);
+      -webkit-transform: rotatez(90deg) scale(0.5) translateX(-5rem);
+      transform: scale(0.5) rotateZ(90deg) translateX(-5rem);
       margin:auto;
     }
     .status-form-container{
       -webkit-transform: translateY(-4rem);
       transform: translateY(-4rem);
     }
+    #root{
+      width: 24rem;
+    }
+  
 }

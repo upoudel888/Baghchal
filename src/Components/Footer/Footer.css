@@ -1,0 +1,16 @@
+.footer{
+    width: 100%;
+    color: #ffffff;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    background-color: #20272f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 5vh;
+    bottom: 0;
+}
+
+.footer__copy{
+    text-align: center;
+    font-size: 1.1rem;
+}

@@ -1,5 +1,6 @@
 import './Status.css'
 import React, { useEffect, useContext} from 'react'
+import { Link } from 'react-router-dom';
 import {GiGoat,GiTigerHead } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 import { RiComputerFill } from "react-icons/ri";
@@ -187,7 +188,9 @@ const Status = () => {
                                 <span className = {optionClass["vsGoat"][1]}>VS Goat</span>
                             </div>
                         </IconContext.Provider>
-                        <button className = {buttonClass} onClick={handleNewGame}>New Game</button>
+                        <Link to = '/baghchal'>
+                            <button className = {buttonClass} onClick={handleNewGame}>New Game</button>
+                        </Link>
                         
                     </IconContext.Provider>
                     </div>

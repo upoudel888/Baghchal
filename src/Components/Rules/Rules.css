@@ -1,0 +1,173 @@
+.rules-container{
+    will-change: transform, opacity;
+    margin-top: 1rem;
+    padding: 0rem 1rem 1rem 1rem;
+    width: 38rem;
+    height: 38rem;
+    font-size: 1.1rem;
+    line-height: 1.4rem;
+    color: rgb(255, 255, 255);
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+.rules-container .div{
+    transition: 1s ease-in;
+}
+.rules-container  .title-name{
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.rules-title{
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.description-container{
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 5rem 30rem;
+    grid-template-columns: 5rem 30rem;
+    -ms-grid-rows: 10rem;
+    grid-template-rows: 10rem;
+    border: 1px solid #656565;
+    align-items: center;
+    justify-content: center;
+    text-align: justify;
+}
+
+.description-container .disp-goat,
+.description-container .disp-tiger{
+    grid-column: 1/2;
+    border-radius: 5%;
+}
+.description-container .obj-description{
+    grid-column: 2/3;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    line-height: 1.3rem;
+    background-image: '../../assets/GOAT.png';
+}
+.briefing{
+    line-height: 1.3rem;
+}
+
+.img-eg img{
+    margin-top: 1rem;
+    width: 15rem;
+    height: 15rem;
+    border: 1px solid #656565;
+    border-radius: 5%;
+}
+
+.img-eg{
+    display: flex;
+    justify-content: space-around;
+}
+.img-eg .title-name{
+    text-align:center;
+}
+
+.rules-container::-webkit-scrollbar {
+    width: 0.8rem;
+    height: 1em;
+}
+  
+.rules-container::-webkit-scrollbar-track {
+background: #dddddd;
+border-radius: 100vw;
+margin-left: 0.5rem;
+}
+  
+.rules-container::-webkit-scrollbar-thumb {
+background: rgb(13, 179, 185);
+border: 2px solid #dddddd;
+border-radius: 100vw;
+}
+  
+.rules-container::-webkit-scrollbar-thumb:hover {
+background: rgb(3, 159, 165);
+}
+
+/* for new tile */
+.scale-in-center {
+    -webkit-animation: scale-in-center 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: scale-in-center 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  
+  @-webkit-keyframes scale-in-center {
+    20% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes scale-in-center {
+    0% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      opacity: 0;
+    }
+  
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+
+
+  /* for new tile */
+.scale-out-center {
+    -webkit-animation: scale-out-center 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: scale-out-center 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    
+  }
+  
+  @-webkit-keyframes scale-out-center {
+    0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    }
+    100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      opacity: 1;
+    }
+  }
+  @keyframes scale-out-center {
+    0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    }
+    100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      opacity: 0;
+    }
+  
+  }
+
+.hide-rules{
+    display: none;
+}
+.cross{
+  position: -webkit-sticky;
+  position: sticky;
+  top:0;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-left: 96.5%;
+
+}
+.cross:hover{
+  cursor: pointer;
+}

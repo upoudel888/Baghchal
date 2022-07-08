@@ -1,16 +1,16 @@
 import './Canvas.css'
-import React,{useState,useEffect,useContext} from 'react'
+import React,{useState,useContext} from 'react'
 import Rules from '../Rules/Rules.js'
+import { Link } from 'react-router-dom';
 import { GiChecklist} from "react-icons/gi";
 import BaghchalContext  from '../../BaghchalContext';
+import MetaDecorator from '../../utils/MetaDecorator';
 
 
 
-const Canvas = () => { 
+const Canvas = ({showRules}) => { 
     const [isHoveringRules,setIsHoveringRules]= useState(false);
-    const [isShowingRules,setIsShowingRules]  = useState(true);
-    const [animationStyle,setAnimationStyle] = useState('scale-in-center');
-
+   
     const {handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw,isAIturn} =  useContext(BaghchalContext);
 
     let turnClass =  'turn unveal';
@@ -54,7 +54,7 @@ const Canvas = () => {
         focusableNodes = [];
     }
 
-    var overLayClass = isOver || isDraw || isShowingRules ? 'baghchal-overlay overlay-visible scale-in-center' : "baghchal-overlay overlay-visible scale-out-center";
+    var overLayClass = isOver || isDraw || showRules ? 'baghchal-overlay overlay-visible scale-in-center' : "baghchal-overlay overlay-visible";
     let winnerTextClass = isOver || isDraw ? 'winner-text  wobble-hor-top' : "winner-text";
     let winnerClass = 'winner';
     if(isOver){
@@ -72,40 +72,16 @@ const Canvas = () => {
                 break;
         }
     }
-
-    const handleRulesClick = ()=>{
-        if(isShowingRules){         
-            setAnimationStyle('scale-out-center');   
-        }else{
-            setAnimationStyle('scale-in-center');
-        }
-        setIsShowingRules(!isShowingRules);
-        //scale out center to work
-        if(isShowingRules){
-            if(isOver || isDraw){
-                setAnimationStyle('hide-rules');
-                setIsShowingRules(!isShowingRules);
-            }else{
-                setTimeout(()=>{
-                    //hide-rules to remove <RULES> component from the dom
-                    setAnimationStyle('scale-out-center hide-rules');
-                    setIsShowingRules(!isShowingRules); 
-                },300);
-            }
-        }  
+    const metaTag = {
+        'title' : "Baghchal Play Online",
+        'description' : `Play traditional Nepalese Board Game Baghchal online.
+        Bagh-Chal is a two player game. Call it a Tiger and Goat game.
+        Play Baghchal Online with your friends and families.`
     }
-
-    // stop showing rules and show winner/loser status screen or new board
-    // when new game btn , give up btn is clicked 
-
-    useEffect(()=>{
-        isShowingRules && statusArr[2] !== -1 && handleRulesClick();
-    },[isOver,isDraw]);
-
-    
     return ( 
         
         <React.Fragment>
+            <MetaDecorator title = {metaTag.title} description={metaTag.description}/>
         <div className="canvas-container">
             {
                 nodes.map(node => {
@@ -141,35 +117,49 @@ const Canvas = () => {
                             }) 
             }
             
-                
+            {
+                isOver 
+                ? 
                 <div className={overLayClass}>
-                    {
-                        !isShowingRules ?
-                        isOver 
-                        ? <React.Fragment>
-                                <div className={winnerClass} role="img" aria-label={winnerClass}></div>
-                                <div className={winnerTextClass}>{winnerClass.split('-')[1]}s Won ! </div>
-                                <button className="play-again-btn" onClick={()=>{
-                                    handleRulesClick();
-                                    handleNewGame();
-                                }}>Play Again</button>
-                                </React.Fragment>
-                            : <React.Fragment>
-                                <div className="draw-container">
-                                    <div className='winner winner-Tiger' role="img" aria-label='tiger'></div>
-                                    <div className='winner winner-Goat' role="img" aria-label='goat'></div>
-                                </div>
-                                <div className={winnerTextClass}>Draw </div>
-
-                                <button className="play-again-btn" onClick={()=>{
-                                    handleRulesClick();
-                                    handleNewGame();
-                                }}>Play Again</button>
-                                </React.Fragment>
-                        : null
-                    }
-                    <Rules animationStyle={animationStyle} handleRulesClick = {handleRulesClick}/>   
+                    <div className={winnerClass} role="img" aria-label={winnerClass}></div>
+                    <div className={winnerTextClass}>{winnerClass.split('-')[1]}s Won ! </div>
+                    <Link to='/baghchal'>
+                        <button className="play-again-btn" onClick={()=>{
+                            handleNewGame();
+                        }}>Play Again</button>
+                    </Link>
                 </div>
+                : ''
+            }
+            {
+                isDraw
+                ?
+                <div className={overLayClass}>
+                    <div className="draw-container">
+                        <div className='winner winner-Tiger' role="img" aria-label='tiger'></div>
+                        <div className='winner winner-Goat' role="img" aria-label='goat'></div>
+                    </div>
+                    <div className={winnerTextClass}>Draw </div>
+                    <Link to='/baghchal'>
+                        <button className="play-again-btn" onClick={()=>{
+                            handleNewGame();
+                        }}>Play Again</button>
+                    </Link>
+                </div>
+                : ''
+            }
+            {
+                
+                showRules 
+                ? 
+                <div className={overLayClass}>
+                    <Rules/> 
+                </div>
+                : ' '
+            }
+                
+        
+
             
         
         </div>
@@ -186,8 +176,10 @@ const Canvas = () => {
                 <div className="rules" 
                 onMouseEnter={()=>{setIsHoveringRules(true)}} 
                 onMouseLeave={()=>{setIsHoveringRules(false)}} 
-                onClick = {handleRulesClick}>
-                    { (isHoveringRules || isShowingRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
+                >
+                    <Link to = '/baghchal/rules'>
+                        { (isHoveringRules || showRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
+                    </Link>
                 </div>
         </div>
 
