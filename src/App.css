@@ -29,7 +29,7 @@
   }
   #root{
     width: -moz-fit-content;
-    width:fit-content;
+  width: fit-content;
   }
 }
 @media screen and (max-width: 688px) {

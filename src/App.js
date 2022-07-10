@@ -1,7 +1,7 @@
 import './App.css';
 
 import React from 'react';
-import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom'
+import {HashRouter,Routes,Route,Navigate} from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
 
 import { Canvas,Status,Navbar,Footer} from './Components'
@@ -10,9 +10,11 @@ import {BaghchalProvider} from './BaghchalContext';
 
 
 function App() {
+
+
   return (
     <HelmetProvider>
-    <BrowserRouter>
+    <HashRouter basename='/'>
     <Navbar></Navbar>
     <div className="baghchal-app">
     <BaghchalProvider>
@@ -30,7 +32,7 @@ function App() {
     </div> 
     <Footer></Footer>
 
-    </BrowserRouter>
+    </HashRouter>
     </HelmetProvider>
   );
 }
