@@ -2,14 +2,14 @@ import './Canvas.css'
 import React,{useState,useContext} from 'react'
 import Rules from '../Rules/Rules.js'
 import { Link } from 'react-router-dom';
-import { GiChecklist} from "react-icons/gi";
+
 import BaghchalContext  from '../../BaghchalContext';
 import MetaDecorator from '../../utils/MetaDecorator';
 
 
 
 const Canvas = ({showRules}) => { 
-    const [isHoveringRules,setIsHoveringRules]= useState(false);
+
    
     const {handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw,isAIturn} =  useContext(BaghchalContext);
 
@@ -46,6 +46,8 @@ const Canvas = ({showRules}) => {
                  '2-8','8-14','14-18','18-22',                      //diagonal path (other digonal)
                  '2-6','6-10','10-16','16-22'
                 ];
+
+    
                         // turn ? goat.pos : tiger.pos
     let focusableNodes = (statusArr[2]) ? statusArr[1]['pos'] : statusArr[0]['pos'];
     // if it is goats turn and user has goats available
@@ -76,46 +78,56 @@ const Canvas = ({showRules}) => {
         'title' : "Baghchal Play Online",
         'description' : `Play traditional Nepalese Board Game Baghchal online.
         Bagh-Chal is a two player game. Call it a Tiger and Goat game.
-        Play Baghchal Online with your friends and families.`
+        Play Baghchal Online.`,
+        'link':'/baghchal'
     }
     return ( 
         
         <React.Fragment>
-            <MetaDecorator title = {metaTag.title} description={metaTag.description}/>
+            <MetaDecorator title = {metaTag.title} description={metaTag.description} link = {metaTag.link}/>
         <div className="canvas-container">
-            {
-                nodes.map(node => {
-                            let classname = `Node Node-${String(node)}`;
-                            
-                            // added class pointer-cursor to show it's focusable
-                            if(highlightNodes.includes(node)){
-                                classname = `Node Node-${String(node)} highlight-safe pointer-cursor`; 
-                            }
-                            //if the node has tiger/goat on in then the Zindex NODE need's to be changes
-                            // so that click events get detected
-                            if(focusableNodes.includes(node)){
-                                classname = `Node Node-${String(node)} highlight-safe pointer-cursor1`;
-                            }
-                            if(endangeredNodes.includes(node)){
-                                classname = `Node Node-${String(node)} highlight-danger`;
-                            }
-                        
-                            return (
-                                <div className = {classname} key = {node} onClick = {()=>{handleClick(node)}}></div>   
-                            )
-                            }) 
-
-            }
-            {      
-
-                paths.map(path => {
-                                let classname = `Path Path-${String(path)}`;
-                                if(highlightPaths.includes(path)){
-                                    classname = `${classname} highlight-safe`;
+            <div className="canvas-container-inner">
+                {
+                    nodes.map(node => {
+                                let classname = `Node Node-${String(node)}`;
+                                
+                                // added class pointer-cursor to show it's focusable
+                                if(highlightNodes.includes(node)){
+                                    classname = `Node Node-${String(node)} highlight-safe pointer-cursor`; 
                                 }
-                                return (<div className = {classname} key = {paths.indexOf(path)} ></div>)
-                            }) 
-            }
+                                //if the node has tiger/goat on in then the Zindex NODE need's to be changes
+                                // so that click events get detected
+                                if(focusableNodes.includes(node)){
+                                    classname = `Node Node-${String(node)} highlight-safe pointer-cursor1`;
+                                }
+                                if(endangeredNodes.includes(node)){
+                                    classname = `Node Node-${String(node)} highlight-danger`;
+                                }
+                            
+                                return (
+                                    <div className = {classname} key = {node} onClick = {()=>{handleClick(node)}}></div>   
+                                )
+                                }) 
+
+                }
+                {      
+
+                    paths.map(path => {
+                                    let classname = `Path Path-${String(path)}`;
+                                    if(highlightPaths.includes(path)){
+                                        classname = `${classname} highlight-safe`;
+                                    }
+                                    return (<div className = {classname} key = {paths.indexOf(path)} ></div>)
+                                }) 
+                }
+                <div className={turnClass}> 
+                    <span className="title-name">Turn</span>
+                    { statusArr[2] ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
+                                :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
+                    <button className = {isAIturn ? "give-up-btn no-click1" : 'give-up-btn' }  onClick={()=>{setIsOver(true)}}>Give Up  </button>
+                </div>
+            </div>
+            
             
             {
                 isOver 
@@ -158,30 +170,11 @@ const Canvas = ({showRules}) => {
                 : ' '
             }
                 
-        
-
             
+        </div>
+
+
         
-        </div>
-
-        <div className={turnClass}> 
-            <span className="title-name">Turn</span><br />
-            { statusArr[2] ? <div className="disp-goat" role = 'img' aria-label = 'GOAT'></div>
-                        :<div className="disp-tiger" role = 'img' aria-label = 'TIGER'></div>}       
-            <button className = {isAIturn ? "give-up-btn no-click1" : 'give-up-btn' }  onClick={()=>{setIsOver(true)}}>Give Up  </button>
-        </div>
-
-        <div className="rules-btn" >
-                <h2 className = "title-name" style={{'font-weight' :'100'}}>Baghchal Rules</h2>
-                <div className="rules" 
-                onMouseEnter={()=>{setIsHoveringRules(true)}} 
-                onMouseLeave={()=>{setIsHoveringRules(false)}} 
-                >
-                    <Link to = '/baghchal/rules'>
-                        { (isHoveringRules || showRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size='45px'/> : <GiChecklist color = 'white' size='43px'/>}
-                    </Link>
-                </div>
-        </div>
 
         </React.Fragment>
 

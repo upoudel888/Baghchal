@@ -1,9 +1,11 @@
 import './Status.css'
 import React, { useEffect, useContext} from 'react'
 import { Link } from 'react-router-dom';
-import {GiGoat,GiTigerHead } from "react-icons/gi";
+import {GiGoat,GiTigerHead,GiChecklist } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
-import { RiComputerFill } from "react-icons/ri";
+import { RiComputerFill} from "react-icons/ri";
+
+
 
 import { useState,useRef } from 'react';
 import { IconContext } from 'react-icons';
@@ -11,9 +13,10 @@ import _ from 'lodash';
 
 import BaghchalContext from '../../BaghchalContext';
 
-const Status = () => {
+const Status = ({showRules}) => {
+
     const {statusArr,handleNewGame,isOver,isDraw,setMode,moveHistory} = useContext(BaghchalContext);
-    
+    const [isHoveringRules,setIsHoveringRules]= useState(false);
     const [userOptions,setUserOptions] = useState({
                                                                 //[hovering,selected]
                                                     'vsPlayer2' : [false,true],           //0
@@ -22,7 +25,7 @@ const Status = () => {
                                                     'vsGoat'    : [false,false]           //3
                                                 });
     const [optionClass,setOptionClass] = useState({
-            "innerIconsStyle" : {size:'1.3rem' ,style : {zIndex : -1 , marginTop : 6}},
+            "innerIconsStyle" : {size:`1.3rem` ,style : {position : 'absolute', zIndex : -1, transform : 'translate(-50%,25%)'}},
             'vsPlayer2' : 'vsPlayer2 active-btn',                 
             'vsComp'    : 'vsComp',            
                                         //for inner text
@@ -58,7 +61,7 @@ const Status = () => {
             
         }
         if(userOptn['vsComp'][1]){
-            temp['innerIconsStyle'] = {size:'1.3rem' ,style : {zIndex : -1 ,marginTop : 6}};
+            temp['innerIconsStyle'] = {size:`1.3rem` ,style : {position : 'absolute', zIndex : -1,transform : 'translate(-50%,25%)'}};
             temp['vsComp'] = 'vsComp active-btn';
 
             temp['vsPlayer2'] = 'vsPlayer2';
@@ -66,7 +69,7 @@ const Status = () => {
             temp['vsGoat'] = ['vsGoat','title-name'];
             
         }else{
-            temp['innerIconsStyle'] = {size:'1.3rem' ,style : {zIndex : -1 ,marginTop : 6},color: 'rgb(68,68,68)'};
+            temp['innerIconsStyle'] = {size:`1.3rem` ,style : {position : 'absolute', zIndex : -1, transform : 'translate(-50%,25%)'},color: 'rgb(68,68,68)'};
             temp['vsComp'] = 'vsComp';
             temp['vsTiger'] = ['vsTiger no-click','title-name no-click'];
             temp['vsGoat'] = ['vsGoat no-click','title-name no-click'];
@@ -136,15 +139,28 @@ const Status = () => {
 
 
     return ( 
-        <React.Fragment>
+        
 
             
+        <div className="rules-status">
+            <div className="rules-btn" >
+                <h1 className = "title-name" style={{'fontWeight' :'100','textAlign':'center'}}>Baghchal <br/>Rules and Strategy</h1>
+                <div className="rules" 
+                onMouseEnter={()=>{setIsHoveringRules(true)}} 
+                onMouseLeave={()=>{setIsHoveringRules(false)}} 
+                >
+                    <Link to = '/baghchal/rules'>
+                        { (isHoveringRules || showRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size={`3rem`}/> : <GiChecklist color = 'white' size={`3rem`}/>}
+                    </Link>
+                </div>
+            </div>
 
+        
             <div className={statusClass}>
                 <div className="status-form-container-inner">
-     
+        
                     <div className="user-options">
-                    <IconContext.Provider value = {{size:'1.3rem' ,style : {zIndex : -1 ,marginTop : 6}}}>
+                    <IconContext.Provider value = {{size:`1.3rem` ,style : {position : 'absolute', zIndex : -1, transform : 'translate(-50%,25%)'}}}>
                         {/* vs Player2 */}
                         <div className="click-btn">
                             <div className={optionClass["vsPlayer2"]} 
@@ -154,7 +170,7 @@ const Status = () => {
                                     {/* if hovering or button is active */}
                                 { (userOptions['vsPlayer2'][0] || userOptions['vsPlayer2'][1]) ? <FaUser color = 'rgb(13, 179, 185)'/> : <FaUser color = 'white'/>}
                             </div>
-                            <span className = "title-name">VS Player2</span>
+                            <span className = "title-name">VS Player-2</span>
                         </div>
 
                         {/* vs computer */}
@@ -200,20 +216,20 @@ const Status = () => {
                         
                         <div className="status-main">
                             <div className="status">
-                                <span className="title-name">Goats Available </span><br />
-                                <span className="display-numbers">{statusArr[1]['available'].length} / 20</span>           
+                                <span className="title-name">Goats Available </span>
+                                <span className="display-numbers">{statusArr[1]['available'].length} / 20 </span>
                             </div>
                             <div className="status">
-                                <span className="title-name">Goats on board</span><br />
-                                <span className="display-numbers">{statusArr[1]['onBoard'].length} </span><br />
+                                <span className="title-name">Goats on board</span>
+                                <span className="display-numbers">{statusArr[1]['onBoard'].length} </span>
                             </div>
                             <div className="status">
-                                <span className="title-name">Goats Captured</span><br />
-                                <span className="display-numbers">{statusArr[1]['eaten'].length} / 20</span><br />
+                                <span className="title-name">Goats Captured</span>
+                                <span className="display-numbers">{statusArr[1]['eaten'].length} / 20</span>
                             </div>
                             <div className="status">
-                                <span className="title-name">Tigers Trapped</span><br />
-                                <span className="display-numbers"> {statusArr[0]['trapStatus'].reduce((a,b)=>(a+b))} / 4</span><br />
+                                <span className="title-name">Tigers Trapped</span>
+                                <span className="display-numbers"> {statusArr[0]['trapStatus'].reduce((a,b)=>(a+b))} / 4</span>
                             </div>   
                         </div>
 
@@ -223,19 +239,20 @@ const Status = () => {
                             <div className="histories" ref = {movesParent}>
                                 {
                                     moveHistory.map((move,index) => {
-                                        return <React.Fragment key = {index}>{move} <br/></React.Fragment>
+                                        return <span className='history' key = {index}>{move}</span>
                                     })
                                 }
                             </div>
-
                         </div>
+
                     </div>        
                 </div>
             </div>
+        </div>
 
             
 
-        </React.Fragment>
+
      );
 }
  

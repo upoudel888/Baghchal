@@ -46,14 +46,14 @@ const Rules = () => {
     const imagePaths = [[img2,'Jump to capture'],[img1,'Trapped Tiger']];
     const metaTag = {
         'title' :  'Baghchal Game Rules',
-        'description' : `Baghchal Rules are pretty straighforwad. 
-        Tigers aim to capture goats while goats aim to trap the tigers. 
-        Play against a descent Baghchal Engine to improve your Baghchal Strategy.`
+        'description' : `Baghchal Rules.Tigers aim to capture goats while goats aim to trap the tigers. 
+        Play against a Baghchal Engine to improve your Baghchal Strategy.`,
+        'link' : '/baghchal/rules'
     }
 
     return ( 
         <div className={`rules-container`}>
-            <MetaDecorator title = {metaTag.title} description = {metaTag.description}/>
+            <MetaDecorator title = {metaTag.title} description = {metaTag.description} link = {metaTag.link}/>
             <div className="cross" 
                 onMouseEnter={()=>{setIsHoveringCross(true)}} 
                 onMouseLeave={()=>{setIsHoveringCross(false)}}>
@@ -84,7 +84,7 @@ const Rules = () => {
                                                 {
                                                     rules[key][keyIn].map((info,indexInfo)=>{
                                                         return (
-                                                            <React.Fragment key = {indexInfo}>{info}<br/></React.Fragment>
+                                                            <React.Fragment key = {indexInfo}>{info}<br/><br/></React.Fragment>
                                                         )
                                                     })
                                                 

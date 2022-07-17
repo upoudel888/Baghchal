@@ -51,7 +51,7 @@ class Baghchal{
     }
 
     setParent(){
-        this.parent = document.querySelector(".canvas-container");
+        this.parent = document.querySelector(".canvas-container-inner");
     }
 
 
@@ -90,7 +90,7 @@ class Baghchal{
     startGame(){
 
         //removing tigers and goats of previous game if any   
-        this.parent = document.querySelector(".canvas-container");
+        this.parent = document.querySelector(".canvas-container-inner");
             //removing tigers
         let removeEle = document.querySelectorAll(".tiger");
         if(removeEle){
@@ -284,8 +284,9 @@ class Baghchal{
             //putting goat on the board
             let elem = document.createElement('div');
             elem.classList.add('goat',`goat-${pos}`);
-            elem.style.marginTop = `${Math.floor(pos/5)*8}rem`;
-            elem.style.marginLeft = `${(pos%5)*8}rem`;
+            elem.style.marginTop = `${Math.floor(pos/5)*21.5}%`;
+            elem.style.marginLeft = `${(pos%5)*21.5}%`;
+                
             elem.style.zIndex = 1;
             this.parent.appendChild(elem);
     
@@ -314,8 +315,8 @@ class Baghchal{
 
                 //updating DOM    
                 let goat1 = document.querySelector(`.goat-${this.prevSelection}`);
-                goat1.style.marginLeft = `${(pos%5)*8}rem`;
-                goat1.style.marginTop =`${Math.floor(pos/5)*8}rem` ;
+                goat1.style.marginLeft = `${(pos%5)*21.5}%`;
+                goat1.style.marginTop =`${Math.floor(pos/5)*21.5}%`;
 
                 //updating this.goat.pos
                 this.goats.pos.splice(this.goats.pos.indexOf(this.prevSelection),1);
@@ -363,15 +364,14 @@ class Baghchal{
         //*****straight movement*****          ********diagonal movement******
 
         if(factor1 === 1 || factor2 === 5 || factor1 === 4 || factor2 === 6){             // normal manuevering movements
-            tiger1.style.marginLeft = `${(pos%5)*8}rem`;
-            tiger1.style.marginTop =`${Math.floor(pos/5)*8}rem` ;
-
+            tiger1.style.marginLeft = `${(pos%5)*21.5}%`;
+            tiger1.style.marginTop =`${Math.floor(pos/5)*21.5}%`;
             //updating moveHistory
             this.moveHistory.push(`t-${this.prevSelection}-${pos}`);
 
         }else if(factor1 === 2 || factor2 === 10 || factor1 === 8 || factor2 === 12){    //jump to capture movement           
-            tiger1.style.marginLeft = `${(pos%5)*8}rem`;
-            tiger1.style.marginTop =`${Math.floor(pos/5)*8}rem` ;
+            tiger1.style.marginLeft = `${(pos%5)*21.5}%`;
+            tiger1.style.marginTop =`${Math.floor(pos/5)*21.5}%`;
 
             //removing the captured goat
             let removePos = -1;
