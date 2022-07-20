@@ -58,7 +58,7 @@ const Rules = () => {
                 onMouseEnter={()=>{setIsHoveringCross(true)}} 
                 onMouseLeave={()=>{setIsHoveringCross(false)}}>
                 <Link to = '/baghchal'>
-                    { (isHoveringCross) ? <ImCross color = 'rgb(13, 179, 185)' size='21px'/> : <ImCross color = 'white' size='20px'/>}
+                    { (isHoveringCross) ? <ImCross color = 'rgb(13, 179, 185)'/> : <ImCross color = 'white'/>}
                 </Link>
             </div>
             {

@@ -718,7 +718,7 @@ class Baghchal{
                 if(this.moveHistory[this.moveHistory.length-1].split('-').length !== 4 && !this.goats.endangered.length){
                     score = score + 200 * noAccTigers;          
                 }else{
-                    score = score + 50 * noAccTigers;
+                    score = score + 15 * noAccTigers;
                 }
 
                 if(this.goats.onBoard.length >= 18){

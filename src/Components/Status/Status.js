@@ -144,7 +144,7 @@ const Status = ({showRules}) => {
             
         <div className="rules-status">
             <div className="rules-btn" >
-                <h1 className = "title-name" style={{'fontWeight' :'100','textAlign':'center'}}>Baghchal <br/>Rules and Strategy</h1>
+                <h1 className = "title-name" style={{'fontWeight' :'100','textAlign':'center'}}>Baghchal Rules</h1>
                 <div className="rules" 
                 onMouseEnter={()=>{setIsHoveringRules(true)}} 
                 onMouseLeave={()=>{setIsHoveringRules(false)}} 

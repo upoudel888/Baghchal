@@ -90,6 +90,7 @@
     max-width: 95% !important;
     padding-top: 95% !important;
     transform: rotateZ(90deg) ;
+    z-index: 1;
   }
   .rules-status{
     flex : 1 0 47% !important;
@@ -100,6 +101,17 @@
   :root{
     --font-style-basis : 1.2vh !important;
   }
+  .user-options{
+    gap: calc(0.5 * var(--font-style-basis)) !important;
+  }
+  
+}
+
+@media screen and (max-width:350px) {
+  .status-main,.histories,.user-options{
+    overflow: hidden;
+  }
+  
 }
 
 

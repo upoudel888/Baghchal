@@ -1,7 +1,7 @@
 .rules-container{
     will-change: transform, opacity;
-    margin-top: 1rem;
-    padding: 0rem 1rem 1rem 1rem;
+    padding: 1rem 1rem 1rem 1rem;
+    margin: 1rem 0 !important;
     width: 100%;
     height: 100%;
     font-size: 1.1rem;
@@ -9,8 +9,9 @@
     color: rgb(255, 255, 255);
     background-color: rgba(0,0,0,0.5);
     overflow-y: auto;
-    overflow-x: hidden;
+
 }
+
 .rules-container .div{
     transition: 1s ease-in;
 }
@@ -45,10 +46,12 @@
     width: 75%;
     padding-top: 1rem;
     line-height: 1.3rem;
+    text-align: justify;
     background-image: '../../assets/GOAT.png';
 }
 .briefing{
     line-height: 1.3rem;
+    text-align: justify;
 }
 
 .img-eg img{
@@ -74,7 +77,7 @@
 }
 
 .rules-container::-webkit-scrollbar {
-    width: 0.8rem;
+  width: calc(1.2 * var(--font-style-basis));
     height: 1em;
 }
   
@@ -165,14 +168,16 @@ background: rgb(3, 159, 165);
     display: none;
 }
 .cross{
+  position: relative;
   position: -webkit-sticky;
   position: sticky;
-  top:0;
-  width: 1.2rem;
-  height: 1.2rem;
-  margin-left: 96.5%;
-
+  top: 0;
+  margin-left: 97%;
 }
 .cross:hover{
   cursor: pointer;
+}
+.cross svg{
+  width: calc(2.5 * var(--font-style-basis));
+  
 }

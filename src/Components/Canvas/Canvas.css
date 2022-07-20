@@ -565,8 +565,8 @@
   }
 
   .play-again-btn{
-    width: calc(12 * var(--font-style-basis)) !important;
-    height: calc(2.7 * var(--font-style-basis)) !important;
+    min-width: calc(12 * var(--font-style-basis)) !important;
+    height: calc(3 * var(--font-style-basis)) !important;
   }
 
   .give-up-btn.no-click1{
