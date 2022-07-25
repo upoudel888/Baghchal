@@ -677,28 +677,29 @@ class Baghchal{
                 default:
                     break;
             }
-        }else if(this.checkRepetition()){
-            let tempArr = this.countInaccessible();
-            
-            // this.turn === 1 means it was tigers turn previously
-            if(this.turn){
-
-                // if other tigers are trapped then go for the draw
-                if((noOfTrapped - friendlyTrapCount) >= 2 && ((this.goats.eaten.length - tempArr[0]) < 2 )){
-                    score = -1000;
-                }else{
-                    score = score + 700;
-                }   
-            }else{
-                // if 3 or more goats are eaten then go for the draw
-                // goats eaten - inaccessible to tigers
-                if(this.goats.eaten.length - tempArr[0] >= 3 && (noOfTrapped-friendlyTrapCount) <= 2){
-                    score = 1000;
-                }else{
-                    score = score - 700;
-                }
-            }
         }else{
+        // }else if(this.checkRepetition()){
+        //     let tempArr = this.countInaccessible();
+            
+        //     // this.turn === 1 means it was tigers turn previously
+        //     if(this.turn){
+
+        //         // if other tigers are trapped then go for the draw
+        //         if((noOfTrapped - friendlyTrapCount) >= 2 && ((this.goats.eaten.length - tempArr[0]) < 2 )){
+        //             score = -1000;
+        //         }else{
+        //             score = score + 700;
+        //         }   
+        //     }else{
+        //         // if 3 or more goats are eaten then go for the draw
+        //         // goats eaten - inaccessible to tigers
+        //         if(this.goats.eaten.length - tempArr[0] >= 3 && (noOfTrapped-friendlyTrapCount) <= 2){
+        //             score = 1000;
+        //         }else{
+        //             score = score - 700;
+        //         }
+        //     }
+        // }else{
 
             //reward the trap only if no goats are endangered
             if(!this.goats.endangered.length){
@@ -718,7 +719,7 @@ class Baghchal{
                 if(this.moveHistory[this.moveHistory.length-1].split('-').length !== 4 && !this.goats.endangered.length){
                     score = score + 200 * noAccTigers;          
                 }else{
-                    score = score + 15 * noAccTigers;
+                    score = score + 50 * noAccTigers;
                 }
 
                 if(this.goats.onBoard.length >= 18){

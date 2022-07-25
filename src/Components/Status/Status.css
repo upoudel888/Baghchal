@@ -216,6 +216,7 @@ span.title-name{
 .new-game-btn{
     min-width: calc(12 * var(--font-style-basis)) !important;
     height: calc(3 * var(--font-style-basis)) !important;
+    font-size: calc(1.4 * var(--font-style-basis));;
 }
 
   ul {
