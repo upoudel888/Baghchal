@@ -817,6 +817,8 @@ class Baghchal{
         return true;
     };
 
+
+
     //evaluate position where tigers cannot move to
     evaluateTigers(pos,evaluatedPos){
   

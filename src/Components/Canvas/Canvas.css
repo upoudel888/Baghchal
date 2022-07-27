@@ -81,7 +81,7 @@
 
 
 .turn.hide{
-    transform: translateX(-7rem);
+    transform: translateX(calc(-7 * var(--factor1)));
     z-index: -1;
 }
 .turn.unveal{
@@ -503,7 +503,7 @@
 /* to slide the winner/draw images to right with animation 
 /* It is of no use now that I used scale-in-center */
 .baghchal-overlay > div{
-    margin-bottom: 1rem;
+    margin-bottom: calc(1 * var(--font-style-basis));
     transform: translateX(-5rem);
     opacity: 0.3;
 }
@@ -514,7 +514,7 @@
 
 .winner{
     will-change: transform;
-    margin-top: 7vh;
+    margin-top: 17%;
     width: 35%;
     height: 35%;
     background-position: center;
@@ -578,7 +578,7 @@
 
   .draw-container{
     display: flex;
-    margin-top: 3rem;
+    margin-top: 17%;
     width: 100%;
     height: 35%;
     justify-content: center;

@@ -53,7 +53,7 @@
     width: 27% !important;
   }
   :root{
-    --font-style-basis : 1.2vh !important;
+    --font-style-basis : 1.2vw !important;
   }
 }
 @media  screen and (max-width : 688px) {
@@ -67,7 +67,7 @@
     width: 30% !important;
   }
   :root{
-    --font-style-basis : 1vh !important;
+    --font-style-basis : 1vw !important;
   }
 }
 @media  screen and (max-width : 560px) {
@@ -81,7 +81,7 @@
     width: 32% !important;
   }
   :root{
-    --font-style-basis : 1vh !important;
+    --font-style-basis : 1vw !important;
   }
 }
 @media  screen and (max-width : 480px) {
@@ -96,7 +96,6 @@
     flex : 1 0 47% !important;
     max-width: 47% !important;
     transform: rotateZ(90deg)translate(calc(-3 * var(--font-style-basis)),calc(0.5*var(--font-style-basis)));
-    /* flex-direction: row-reverse !important; */
   }
   :root{
     --font-style-basis : 1.8vw !important;
@@ -120,59 +119,3 @@
   
 }
 
-
-/* @media screen and (max-width: 992px) {
-  .baghchal-app{
-    justify-content: left;
-    transform: scale(0.85);
-    -webkit-transform: translateX(-0.8rem);
-    transform: translateX(-0.8rem);
-  }
-  #root{
-    width: -moz-fit-content;
-  width: fit-content;
-  }
-}
-@media screen and (max-width: 688px) {
-  .baghchal-app{
-    margin: auto;
-    margin-top: 3vh;
-  }
-  #root{
-    width: -moz-fit-content;
-    width:fit-content;
-  }
-}
-@media screen and (max-width: 560px) {
-  .baghchal-app{
-    margin-top: 3vh;
-    -webkit-transform: rotatez(90deg) scale(0.6) translateX(-4rem);
-    transform: rotatez(90deg) scale(0.6) translateX(-4rem);
-    justify-content: center;
-    align-items: center;
-   }
-   .status-form-container{
-     -webkit-transform: translateY(-4rem);
-     transform: translateY(-4rem);
-   }
-   #root{
-    width: 100%;
-   }
-   
-  }
-  @media screen and (max-width: 380px) {
-    
-    .baghchal-app {  
-      -webkit-transform: rotatez(90deg) scale(0.5) translateX(-5rem);
-      transform: scale(0.5) rotateZ(90deg) translateX(-5rem);
-      margin:auto;
-    }
-    .status-form-container{
-      -webkit-transform: translateY(-4rem);
-      transform: translateY(-4rem);
-    }
-    #root{
-      width: 24rem;
-    }
-  
-} */
