@@ -93,6 +93,7 @@ export function BaghchalProvider({children}){
             }, 300);
         }
         }
+        console.log(game.current.countInaccessible(0));
         setMoveHistory(game.current.getMoveHistory());
         setHighlightElems(arr1);
         setStatusArr(game.current.getBoardStatus());

@@ -677,29 +677,28 @@ class Baghchal{
                 default:
                     break;
             }
-        }else{
-        // }else if(this.checkRepetition()){
-        //     let tempArr = this.countInaccessible();
+        }else if(this.checkRepetition()){
+            let tempArr = this.countInaccessible();
             
-        //     // this.turn === 1 means it was tigers turn previously
-        //     if(this.turn){
+            // this.turn === 1 means it was tigers turn previously
+            if(this.turn){
 
-        //         // if other tigers are trapped then go for the draw
-        //         if((noOfTrapped - friendlyTrapCount) >= 2 && ((this.goats.eaten.length - tempArr[0]) < 2 )){
-        //             score = -1000;
-        //         }else{
-        //             score = score + 700;
-        //         }   
-        //     }else{
-        //         // if 3 or more goats are eaten then go for the draw
-        //         // goats eaten - inaccessible to tigers
-        //         if(this.goats.eaten.length - tempArr[0] >= 3 && (noOfTrapped-friendlyTrapCount) <= 2){
-        //             score = 1000;
-        //         }else{
-        //             score = score - 700;
-        //         }
-        //     }
-        // }else{
+                // if other tigers are trapped then go for the draw
+                if((noOfTrapped - friendlyTrapCount) >= 2 && ((this.goats.eaten.length - tempArr[0]) < 2 )){
+                    score = -1000;
+                }else{
+                    score = score + 700;
+                }   
+            }else{
+                // if 3 or more goats are eaten then go for the draw
+                // goats eaten - inaccessible to tigers
+                if(this.goats.eaten.length - tempArr[0] >= 3 && (noOfTrapped-friendlyTrapCount) <= 2){
+                    score = 1000;
+                }else{
+                    score = score - 700;
+                }
+            }
+        }else{
 
             //reward the trap only if no goats are endangered
             if(!this.goats.endangered.length){
@@ -765,7 +764,7 @@ class Baghchal{
                 }
             }else{
                 if(this.board[i][j]=== null && !evaluatedPosTigers[0].includes(i*5+j)){
-                    this.evaluateTigers(i*5+j,evaluatedPosTigers);  
+                    this.evaluateTigerInaccessible(i*5+j,evaluatedPosTigers);  
                 }
             }
         }
@@ -864,6 +863,31 @@ class Baghchal{
       evaluatedPos[1].push(true);
       return true;
   
+    }
+
+    evaluateTigerInaccessible(pos,evaluatedPos){
+        let possibleChecks = this.getNeighbours(pos,2);
+        let adjNeighbours = possibleChecks.map(ele => ele[0]);
+        let inAccessible = true;
+        inAccessible = adjNeighbours.every( (pos,index) =>{
+            let playerAtPos = this.board[Math.floor(pos/5)][pos%5];
+            if( playerAtPos === 1 && !this.goats.endangered.includes(pos)){
+                if(possibleChecks[index].length === 2){
+                    let pos1 = possibleChecks[index][1];
+                    let playerAtJumpPos = this.board[Math.floor(pos1/5)][pos1%5];
+                    if(playerAtJumpPos !== 0){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+                return true;
+            }else{
+                return false;
+            }
+        });
+        evaluatedPos[0].push(pos);
+        evaluatedPos[1].push(inAccessible);
     }
 
     
