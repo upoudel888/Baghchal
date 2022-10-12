@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.8f2d7f4a.css",
-    "main.js": "/static/js/main.e2c32fd9.js",
-    "static/media/jump.jpg": "/static/media/jump.0693d4e1a6d6cc06ab6e.jpg",
-    "static/media/trapped.jpg": "/static/media/trapped.197a264e1e96f147c921.jpg",
-    "static/media/TIGER.png": "/static/media/TIGER.3aabfc71394103ad478e.png",
-    "static/media/GOAT.png": "/static/media/GOAT.93a2cd5bc73afa880c29.png",
-    "static/media/logo1.png": "/static/media/logo1.f052bd33ab15619fde43.png",
-    "index.html": "/index.html",
-    "main.8f2d7f4a.css.map": "/static/css/main.8f2d7f4a.css.map",
-    "main.e2c32fd9.js.map": "/static/js/main.e2c32fd9.js.map"
+    "main.css": "/Baghchal/static/css/main.d49b2358.css",
+    "main.js": "/Baghchal/static/js/main.b005cb13.js",
+    "static/media/jump.jpg": "/Baghchal/static/media/jump.0693d4e1a6d6cc06ab6e.jpg",
+    "static/media/trapped.jpg": "/Baghchal/static/media/trapped.197a264e1e96f147c921.jpg",
+    "static/media/TIGER.png": "/Baghchal/static/media/TIGER.3aabfc71394103ad478e.png",
+    "static/media/GOAT.png": "/Baghchal/static/media/GOAT.93a2cd5bc73afa880c29.png",
+    "static/media/logo1.png": "/Baghchal/static/media/logo1.f052bd33ab15619fde43.png",
+    "index.html": "/Baghchal/index.html",
+    "main.d49b2358.css.map": "/Baghchal/static/css/main.d49b2358.css.map",
+    "main.b005cb13.js.map": "/Baghchal/static/js/main.b005cb13.js.map"
   },
   "entrypoints": [
-    "static/css/main.8f2d7f4a.css",
-    "static/js/main.e2c32fd9.js"
+    "static/css/main.d49b2358.css",
+    "static/js/main.b005cb13.js"
   ]
 }
