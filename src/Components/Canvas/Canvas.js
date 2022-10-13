@@ -76,9 +76,11 @@ const Canvas = ({showRules}) => {
     }
     const metaTag = {
         'title' : "Baghchal game Play Online",
-        'description' : `Play traditional Nepalese Board Game Baghchal online.
-        Bagh-Chal is a two player game. Call it a Tiger and Goat game. Baghchal game. Baghchal rules
-        Play Baghchal Online.`,
+        'description' : `Baghchal. Play traditional Nepalese Board Game Baghchal online.
+                        Bagh-Chal is Tiger and Goat game. 
+                        Play Baghchal Online. Baghchal game is a traditional Nepalese Board game. 
+                        See Baghchal rules and learn how to play Baghchal game online. 
+                        Play with Baghchal-ai and learn how to win baghchal and build your best baghchal strategy.`,
         'link':'/Baghchal'
     }
     return ( 

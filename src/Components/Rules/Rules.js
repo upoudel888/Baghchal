@@ -25,7 +25,7 @@ const Rules = () => {
                                             `Player-Goat is provided with 20 goats all of which must be placed strategically on the board.
                                             It is only when all the 20 goats are placed on the board, Player-Goat is allowed to maneuver the goats
                                             along the edges/paths.`,
-                                            `Player-Goat must be mindful not to let tigers capture the goats. Tigers jump over goats to capture is illustrated below.`,
+                                            `Player-Goat must be mindful not to let tigers capture the goats. Tigers jump over goats to capture ( Illustration is show below).`,
                                             `Player-Goat wins when all the tigers are trapped i.e. when every tiger has no valid moves left.`
                                         ],
                                     
@@ -36,7 +36,7 @@ const Rules = () => {
                                         ]
                                     
                         },
-        'draw-title title-name' : 'Draw',
+        'draw-title' : 'Draw',
         'draw-briefing briefing' : `3 fold repetition rule has been implemented. If both players make redundant moves there are chances of draw.`
         
 
@@ -49,7 +49,7 @@ const Rules = () => {
     const metaTag = {
         'title' :  'Baghchal Game Rules',
         // based on keywords for SEO ;)
-        'description' : `Baghchal game is a traditional Nepalese Board game. Play Baghchal online. See Baghchal rules and learn how to play Baghchal. 
+        'description' : `Baghchal game is a traditional Nepalese Board game. Play Baghchal online. See Baghchal rules and learn how to play Baghchal game online. 
                         Play with Baghchal-AI and learn how to win baghchal and build your best baghchal strategy.`,
         'link' : '/Baghchal/rules'
     }
@@ -68,7 +68,7 @@ const Rules = () => {
                 Object.keys(rules).map((key,index) =>{
                     if(typeof(rules[key])==='string'){
                         return key==='rules-title' ?
-                                <h2 className={key} key = {index}>{rules[key]}</h2>
+                                <h1 className={key} key = {index}>{rules[key]}</h1>
                                : 
                                 <div className={key} key= {index}>{rules[key]}</div>
                         

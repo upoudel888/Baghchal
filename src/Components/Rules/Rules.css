@@ -25,8 +25,12 @@
 
 .rules-title{
     text-align: center;
+    font-size: 1.5rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
+}
+.draw-title{
+  font-weight: 600;
 }
 .description-container{
     display:flex;
@@ -193,4 +197,5 @@ background: rgb(3, 159, 165);
 .briefing1{
   margin-top: 1rem;
 }
+
 
