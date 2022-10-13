@@ -14,34 +14,36 @@ function App() {
 
   return (
     <HelmetProvider>
-    <BrowserRouter basename='/'>
-    <Navbar></Navbar>
-    <div className="baghchal-app">
-    <BaghchalProvider>
-      <Routes>
-        <Route path = "/" exact element={
-          <>
-          <Canvas showRules = {false}/>
-          <Status showRules = {false}/>
-        </> 
-        }/>
+    <BrowserRouter>
   
-        <Route path = "/baghchal" exact element = {
-          <>
-            <Canvas showRules = {false}/>
-            <Status showRules = {false}/>
-          </> 
-        }/>
-        <Route path = "/baghchal/rules" exact element = {
-          <>
-            <Canvas showRules = {true}/>
-            <Status showRules = {true}/>
-          </> 
-        }/>
-      </Routes>
-    </BaghchalProvider>
-    </div> 
-    <Footer></Footer>
+      <Navbar></Navbar>
+
+      <div className="baghchal-app">
+        <BaghchalProvider>
+          <Routes>
+            <Route path = "/" exact element={
+              <>
+                <Canvas showRules = {true}/>
+                <Status showRules = {true}/>
+              </> 
+            }/>
+      
+            <Route path = "/Baghchal" exact element = {
+              <>
+                <Canvas showRules = {false}/>
+                <Status showRules = {false}/>
+              </> 
+            }/>
+            <Route path = "/Baghchal/rules" exact element = {
+              <>
+                <Canvas showRules = {true}/>
+                <Status showRules = {true}/>
+              </> 
+            }/>
+          </Routes>
+        </BaghchalProvider>
+      </div> 
+      <Footer></Footer>
 
     </BrowserRouter>
     </HelmetProvider>

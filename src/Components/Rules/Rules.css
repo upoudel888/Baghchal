@@ -12,8 +12,10 @@
 
 }
 
+
+
 .rules-container .div{
-    transition: 1s ease-in;
+    transition: 1s ease-in;    
 }
 .rules-container  .title-name{
   margin-top: 1rem;
@@ -184,3 +186,11 @@ background: rgb(3, 159, 165);
   width: calc(2.5 * var(--font-style-basis));
   
 }
+
+.bold-text{
+  display: inline;
+}
+.briefing1{
+  margin-top: 1rem;
+}
+

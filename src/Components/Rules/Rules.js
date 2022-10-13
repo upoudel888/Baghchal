@@ -13,23 +13,25 @@ const Rules = () => {
 
     let rules = {
         'rules-title' : "Baghchal Board Game",
-        'briefing'    : `Baghchal (Tiger and Goat game) is a classic Nepalese two player board game. Baghchal
-                        board is a 5 X 5 grid with 25 nodes interconnected with each other through edges.
+        
+        'briefing'    : `Baghchal (Tiger and Goat game) is a traditional Nepalese board game. It is a two player
+                        Board game. As acclaimed, back in the days it was played by hearders as a passtime while grazing cattles.`,
+        'briefing1'    : `Baghchal board is a 5 X 5 grid with 25 nodes interconnected with each other through edges.
                         "Bagh" means "Tiger" and "Chal" means "To-move".
                         Two players, one playing Tiger and the other playing Goats,
-                        compete in a mind game of Baghchal. `,
-        'Tiger and Goat Game Rules'    : {
+                        compete in a mind game of Baghchal.`,
+        'Baghchal Rules'    : {
                         "Player Goat"   : [
                                             `Player-Goat is provided with 20 goats all of which must be placed strategically on the board.
                                             It is only when all the 20 goats are placed on the board, Player-Goat is allowed to maneuver the goats
                                             along the edges/paths.`,
-                                            `Player-Goat must be mindful not to let tigers capture the goats.`,
+                                            `Player-Goat must be mindful not to let tigers capture the goats. Tigers jump over goats to capture is illustrated below.`,
                                             `Player-Goat wins when all the tigers are trapped i.e. when every tiger has no valid moves left.`
                                         ],
                                     
                         "Player Tiger"   : [`In the beginning, four tigers are spawnned at four coners of the board.
                                             Player-Goat places their goats on the board and tries to corner and trap the tigers.`,
-                                            `Player-Tiger must aim to capture the goats.`,
+                                            `Player-Tiger must aim to capture the goats. Tigers jump over goats to capture them.`,
                                             `Player-Tiger wins when 5 goats are captured.`
                                         ]
                                     
@@ -46,9 +48,10 @@ const Rules = () => {
     const imagePaths = [[img2,'Jump to capture'],[img1,'Trapped Tiger']];
     const metaTag = {
         'title' :  'Baghchal Game Rules',
-        'description' : `Baghchal Rules.Tigers aim to capture goats while goats aim to trap the tigers. 
-        Play against a Baghchal Engine to improve your Baghchal Strategy.`,
-        'link' : '/baghchal/rules'
+        // based on keywords for SEO ;)
+        'description' : `Baghchal game is a traditional Nepalese Board game. Play Baghchal online. See Baghchal rules and learn how to play Baghchal. 
+                        Play with Baghchal-AI and learn how to win baghchal and build your best baghchal strategy.`,
+        'link' : '/Baghchal/rules'
     }
 
     return ( 
@@ -57,7 +60,7 @@ const Rules = () => {
             <div className="cross" 
                 onMouseEnter={()=>{setIsHoveringCross(true)}} 
                 onMouseLeave={()=>{setIsHoveringCross(false)}}>
-                <Link to = '/baghchal'>
+                <Link to = '/Baghchal'>
                     { (isHoveringCross) ? <ImCross color = 'rgb(13, 179, 185)'/> : <ImCross color = 'white'/>}
                 </Link>
             </div>

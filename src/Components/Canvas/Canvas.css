@@ -116,11 +116,11 @@
     cursor: pointer;  
 }
 
-
+/* cubic-bezier(.26,.45,.52,.77); */
 .tiger{
     will-change: margin;
     position: absolute;
-    transition: margin 0.17s cubic-bezier(.26,.45,.52,.77);
+    transition: margin 0.17s ease-in-out;
     background-color: none;
     background-image: url('../../assets/TIGER.png');
     background-position: center;
@@ -134,7 +134,7 @@
 .goat{
     will-change: margin;
     position: absolute;
-    transition: margin 0.17s cubic-bezier(.26,.45,.52,.77);
+    transition: margin 0.17s ease-in-out;
     background-color: none;
     background-image: url('../../assets/GOAT.png');
     background-position: center;

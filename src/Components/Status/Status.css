@@ -35,7 +35,7 @@
 }
 .rules-btn .title-name{
     color: white !important;
-    font-size: calc(1.5 * var(--font-style-basis)) !important;
+    font-size: calc(1.7 * var(--font-style-basis)) !important;
 }
 .status-form-container{
     width: 95%;
@@ -126,10 +126,10 @@
     padding: calc(1 * var(--font-style-basis)) 0;
 }
 .move-history .title-name{
-    font-size: calc(1.5 * var(--font-style-basis));
+    font-size: calc(1.7 * var(--font-style-basis));
 }
 .history{
-    font-size: calc(1 * var(--font-style-basis));
+    font-size: calc(1.1 * var(--font-style-basis));
 }
 .histories{
     display: flex;

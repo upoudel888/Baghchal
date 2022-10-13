@@ -149,7 +149,7 @@ const Status = ({showRules}) => {
                 onMouseEnter={()=>{setIsHoveringRules(true)}} 
                 onMouseLeave={()=>{setIsHoveringRules(false)}} 
                 >
-                    <Link to = '/baghchal/rules'>
+                    <Link to = '/Baghchal/rules'>
                         { (isHoveringRules || showRules) ? <GiChecklist color = 'rgb(13, 179, 185)' size={`3rem`}/> : <GiChecklist color = 'white' size={`3rem`}/>}
                     </Link>
                 </div>
@@ -204,7 +204,7 @@ const Status = ({showRules}) => {
                                 <span className = {optionClass["vsGoat"][1]}>VS Goat</span>
                             </div>
                         </IconContext.Provider>
-                        <Link to = '/baghchal'>
+                        <Link to = '/Baghchal'>
                             <button className = {buttonClass} onClick={handleNewGame}>New Game</button>
                         </Link>
                         

@@ -1,5 +1,5 @@
 import './Canvas.css'
-import React,{useState,useContext} from 'react'
+import React,{useContext} from 'react'
 import Rules from '../Rules/Rules.js'
 import { Link } from 'react-router-dom';
 
@@ -75,11 +75,11 @@ const Canvas = ({showRules}) => {
         }
     }
     const metaTag = {
-        'title' : "Baghchal Play Online",
+        'title' : "Baghchal game Play Online",
         'description' : `Play traditional Nepalese Board Game Baghchal online.
-        Bagh-Chal is a two player game. Call it a Tiger and Goat game.
+        Bagh-Chal is a two player game. Call it a Tiger and Goat game. Baghchal game. Baghchal rules
         Play Baghchal Online.`,
-        'link':'/baghchal'
+        'link':'/Baghchal'
     }
     return ( 
         
