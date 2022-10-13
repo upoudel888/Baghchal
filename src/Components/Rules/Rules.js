@@ -47,10 +47,10 @@ const Rules = () => {
     }
     const imagePaths = [[img2,'Jump to capture'],[img1,'Trapped Tiger']];
     const metaTag = {
-        'title' :  'Baghchal Game Rules',
+        'title' :  'Baghchal Rules',
         // based on keywords for SEO ;)
-        'description' : `Baghchal game is a traditional Nepalese Board game. Play Baghchal online. See Baghchal rules and learn how to play Baghchal game online. 
-                        Play with Baghchal-AI and learn how to win baghchal and build your best baghchal strategy.`,
+        'description' : ` Play Baghchal online. Baghchal game is a traditional Nepalese game.See Baghchal rules and learn how to play Baghchal game online. 
+                        Play with Baghchal AI and learn how to win baghchal and build your best baghchal strategy.`,
         'link' : '/Baghchal/rules'
     }
 
@@ -80,7 +80,7 @@ const Rules = () => {
                                         {
                                             keyIn === "Player Goat" && <h2 className="rules-title" key = {indexIn}> {key}</h2> 
                                         }
-                                        <h2 className="title-name" key = {`title-${indexIn}`}> {keyIn}</h2>
+                                        <h1 className="title-name" key = {`title-${indexIn}`}> {keyIn}</h1>
                                         <div className="description-container" key = {`des-${indexIn}`}>
                                             <div className={enumImage[keyIn.split(" ")[1]]} role = 'img' aria-label = 'GOAT' key = {`img-${indexIn}`}></div>
                                             <div className="obj-description" key = {`desInner-${indexIn}`}>
