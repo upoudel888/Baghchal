@@ -4,7 +4,7 @@
   padding: 0px;
   box-sizing: border-box;
   font-family: 'Abel', sans-serif;
-  /* background-color: rgba(100,100,0,0.2) !important; */
+  /* background-color: rgba(100,100,0,0.2) !important;  */
 }
 
 #root{
@@ -95,7 +95,11 @@
   .rules-status{
     flex : 1 0 47% !important;
     max-width: 47% !important;
-    transform: rotateZ(90deg)translate(calc(-3 * var(--font-style-basis)),calc(0.5*var(--font-style-basis)));
+    transform: rotateZ(90deg)translate(calc(0.5*var(--font-style-basis)),calc(3.5*var(--font-style-basis)));
+  }
+  .rules-btn{
+    position: absolute;
+    transform: translateY(calc(-19*var(--font-style-basis)));
   }
   :root{
     --font-style-basis : 1.8vw !important;

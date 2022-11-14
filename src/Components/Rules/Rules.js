@@ -8,19 +8,19 @@ import MetaDecorator from '../../utils/MetaDecorator';
 import img1 from '../../assets/trapped.jpg'
 import img2 from '../../assets/jump.jpg'
 
-const Rules = () => {
+const Rules = ({isHomePage}) => {
     const [isHoveringCross,setIsHoveringCross]= useState(false);
 
     let rules = {
-        'rules-title' : "Baghchal Board Game",
+        'rules-title' : "Bagchal Board Game",
         
-        'briefing'    : `Baghchal (Tiger and Goat game) is a traditional Nepalese board game. It is a two player
+        'briefing'    : `Bagchal (Baghchal / Tiger and Goat game) is a traditional Nepalese board game. It is a two player
                         Board game. As acclaimed, back in the days it was played by hearders as a passtime while grazing cattles.`,
-        'briefing1'    : `Baghchal board is a 5 X 5 grid with 25 nodes interconnected with each other through edges.
+        'briefing1'    : `Bagchal board is a 5 X 5 grid with 25 nodes interconnected with each other through edges.
                         "Bagh" means "Tiger" and "Chal" means "To-move".
                         Two players, one playing Tiger and the other playing Goats,
-                        compete in a mind game of Baghchal.`,
-        'Baghchal Rules'    : {
+                        compete in a mind game of Bagchal.`,
+        'Bagchal Rules'    : {
                         "Player Goat"   : [
                                             `Player-Goat is provided with 20 goats all of which must be placed strategically on the board.
                                             It is only when all the 20 goats are placed on the board, Player-Goat is allowed to maneuver the goats
@@ -47,10 +47,12 @@ const Rules = () => {
     }
     const imagePaths = [[img2,'Jump to capture'],[img1,'Trapped Tiger']];
     const metaTag = {
-        'title' :  'Baghchal Rules',
+        'title' :  isHomePage ? 'Bagchal':'Bagchal Rules',
         // based on keywords for SEO ;)
-        'description' : ` Play Baghchal online. Baghchal game is a traditional Nepalese game.See Baghchal rules and learn how to play Baghchal game online. 
-                        Play with Baghchal AI and learn how to win baghchal and build your best baghchal strategy.`,
+        'description' : ` Bagchal (Tiger and goat game) is a traditional Nepalese Board game. Play Bagchal online. See Bagchal rules
+        and play with Bagchal-AI to build your own Bagchal strategy. Bagchal board. Baghchal online. Baghchal rules. 
+        Bagh-chal online, Bagchal online, Baghchal online`,
+        
         'link' : '/Baghchal/rules'
     }
 

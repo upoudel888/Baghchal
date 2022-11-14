@@ -23,20 +23,20 @@ function App() {
           <Routes>
             <Route path = "/" exact element={
               <>
-                <Canvas showRules = {true}/>
+                <Canvas showRules = {true} isHomePage = {true}/>  {/*For landing page title --> in rules.js */}
                 <Status showRules = {true}/>
               </> 
             }/>
       
             <Route path = "/Baghchal" exact element = {
               <>
-                <Canvas showRules = {false}/>
+                <Canvas showRules = {false} isHomePage = {false}/>
                 <Status showRules = {false}/>
               </> 
             }/>
             <Route path = "/Baghchal/rules" exact element = {
               <>
-                <Canvas showRules = {true}/>
+                <Canvas showRules = {true} isHomePage = {false}/>
                 <Status showRules = {true}/>
               </> 
             }/>

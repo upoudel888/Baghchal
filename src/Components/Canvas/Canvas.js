@@ -8,7 +8,7 @@ import MetaDecorator from '../../utils/MetaDecorator';
 
 
 
-const Canvas = ({showRules}) => { 
+const Canvas = ({showRules,isHomePage}) => { 
 
    
     const {handleClick,statusArr,isOver,setIsOver,handleNewGame,highlightElems,isDraw,isAIturn} =  useContext(BaghchalContext);
@@ -75,12 +75,10 @@ const Canvas = ({showRules}) => {
         }
     }
     const metaTag = {
-        'title' : "Baghchal game Play Online",
-        'description' : `Baghchal. Play traditional Nepalese Board Game Baghchal online.
-                        Bagh-Chal is Tiger and Goat game. 
-                        Play Baghchal Online. Baghchal game is a traditional Nepalese Board game. 
-                        See Baghchal rules and learn how to play Baghchal game online. 
-                        Play with Baghchal-ai and learn how to win baghchal and build your best baghchal strategy.`,
+        'title' : "Bagchal",
+        'description' : `Bagchal (Tiger and goat game) is a traditional Nepalese Board game. Play Bagchal online. See Bagchal rules
+        and play with Bagchal-AI to build your own Bagchal strategy. Bagchal board. Baghchal online. Baghchal rules. 
+        Bagh-chal online, Bagchal online, Baghchal online`,
         'link':'/Baghchal'
     }
     return ( 
@@ -167,7 +165,7 @@ const Canvas = ({showRules}) => {
                 showRules 
                 ? 
                 <div className={overLayClass}>
-                    <Rules/> 
+                    <Rules isHomePage = {isHomePage}/> 
                 </div>
                 : ' '
             }
